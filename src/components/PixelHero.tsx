@@ -299,6 +299,7 @@ export default function PixelHero() {
         animationDoneRef.current = true;
         setAnimationDone(true);
         playSERef.current("1up");
+        window.dispatchEvent(new CustomEvent("hero-animation-done"));
         // Show real logo after a brief moment
         setTimeout(() => {
           showLogoRef.current = true;

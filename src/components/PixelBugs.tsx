@@ -402,6 +402,7 @@ function PixelFireworks({ fireworks }: { fireworks: Firework[] }) {
 export default function PixelBugs() {
   const { playSE, engine } = useSoundEngine();
   const { t } = useLanguage();
+  const [heroReady, setHeroReady] = useState(false);
   const [bugs, setBugs] = useState<ActiveBug[]>([]);
   const [collection, setCollection] = useState<Record<string, number>>({});
   const [combo, setCombo] = useState(0);
@@ -418,6 +419,7 @@ export default function PixelBugs() {
   const [clearTime, setClearTime] = useState(0);
   const [playerName, setPlayerName] = useState("");
   const [rankingOpen, setRankingOpen] = useState(false);
+  const [showCollection, setShowCollection] = useState(false);
   const [clearPhase, setClearPhase] = useState<"name" | "ranking" | "done">("name");
   const [clearRankings, setClearRankings] = useState<{ name: string; time: number; date: string }[]>([]);
   const [clearStats, setClearStats] = useState({ totalClears: 0, totalPlayers: 0 });
@@ -462,6 +464,7 @@ export default function PixelBugs() {
 
   const handleCapture = useCallback(
     (bug: ActiveBug) => {
+      setShowCollection(true);
       // Combo: pitch increases with consecutive catches
       const newCombo = combo + 1;
       setCombo(newCombo);
@@ -540,15 +543,23 @@ export default function PixelBugs() {
     [combo, engine, spawnFirework]
   );
 
-  // Initial spawn + start timer
+  // Wait for hero animation to finish before spawning bugs
   useEffect(() => {
+    const handler = () => setHeroReady(true);
+    window.addEventListener("hero-animation-done", handler);
+    return () => window.removeEventListener("hero-animation-done", handler);
+  }, []);
+
+  // Initial spawn + start timer (after hero animation)
+  useEffect(() => {
+    if (!heroReady) return;
     setGameStartTime(Date.now());
     const initial: ActiveBug[] = [];
     for (let i = 0; i < 3; i++) {
       initial.push(spawnBug(keyCounterRef.current++));
     }
     setBugs(initial);
-  }, []);
+  }, [heroReady]);
 
   // Cheat mode listener
   useEffect(() => {
@@ -816,13 +827,14 @@ export default function PixelBugs() {
               if (engine) {
                 engine.resume().then(() => engine.se.play("damage"));
               }
-              setTimeout(() => setBossShake(false), 200);
-
-              // Flee immediately on hit
-              const margin = 80;
-              const nx = margin + Math.random() * (window.innerWidth - margin * 2 - 256);
-              const ny = margin + Math.random() * (window.innerHeight - margin * 2 - 256);
-              setBossPos({ x: nx, y: ny });
+              // Shake, then flee after shake finishes
+              setTimeout(() => {
+                setBossShake(false);
+                const margin = 80;
+                const nx = margin + Math.random() * (window.innerWidth - margin * 2 - 256);
+                const ny = margin + Math.random() * (window.innerHeight - margin * 2 - 256);
+                setBossPos({ x: nx, y: ny });
+              }, 500);
 
               if (newHp <= 0) {
                 if (bossFleeTimerRef.current) clearInterval(bossFleeTimerRef.current);
@@ -1048,7 +1060,7 @@ export default function PixelBugs() {
       )}
 
       {/* Collection counter + ranking button */}
-      {totalCaught > 0 && (
+      {showCollection && (
         <div className="fixed bottom-4 right-4 z-40 flex items-center gap-2">
           <button
             onClick={() => {
