@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, useCallback } from "react";
+import { useSoundEngine } from "./SoundProvider";
 
 interface Particle {
   x: number;
@@ -30,6 +31,9 @@ export default function PixelHero() {
   const [showLogo, setShowLogo] = useState(false);
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
   const [logoLoaded, setLogoLoaded] = useState(false);
+  const { playSE } = useSoundEngine();
+  const playSERef = useRef(playSE);
+  playSERef.current = playSE;
 
   // Extract pixel positions from the actual logo image
   const extractLogoPixels = useCallback((): Promise<{ col: number; row: number; gridCols: number; gridRows: number }[]> => {
@@ -292,6 +296,7 @@ export default function PixelHero() {
       if (progress >= 1 && !animationDoneRef.current) {
         animationDoneRef.current = true;
         setAnimationDone(true);
+        playSERef.current("1up");
         // Show real logo after a brief moment
         setTimeout(() => {
           showLogoRef.current = true;
@@ -376,7 +381,7 @@ export default function PixelHero() {
           animationDone ? "opacity-100" : "opacity-0"
         }`}
       >
-        <a href="#about" className="block animate-bounce">
+        <a href="#about" className="block animate-bounce" onClick={() => playSE("select")}>
           <svg
             width="24"
             height="24"

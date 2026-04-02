@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@types/three": "^0.183.1",
+    "8bit-sound-engine": "^0.5.0",
     "next": "16.2.0",
     "react": "19.2.4",
     "react-dom": "19.2.4",

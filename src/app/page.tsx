@@ -1,9 +1,12 @@
 import PixelHero from "@/components/PixelHero";
 import PixelDivider from "@/components/PixelDivider";
 import YouTubeEmbed from "@/components/YouTubeEmbed";
+import SoundLink from "@/components/SoundLink";
+import SplashScreen from "@/components/SplashScreen";
 
 export default function Home() {
   return (
+    <SplashScreen>
     <main>
       {/* HERO */}
       <PixelHero />
@@ -79,21 +82,21 @@ export default function Home() {
             Follow Us
           </p>
           <div className="flex justify-center gap-4 mb-10">
-            <a
+            <SoundLink
               href="#"
               className="w-11 h-11 bg-black text-white flex items-center justify-center text-xs font-bold font-[var(--font-jetbrains-mono)] hover:bg-gray-800 transition-colors"
               aria-label="X (Twitter)"
             >
               X
-            </a>
-            <a
+            </SoundLink>
+            <SoundLink
               href="#"
               className="w-11 h-11 bg-black text-white flex items-center justify-center text-xs font-bold font-[var(--font-jetbrains-mono)] hover:bg-gray-800 transition-colors"
               aria-label="Instagram"
             >
               IG
-            </a>
-            <a
+            </SoundLink>
+            <SoundLink
               href="https://www.youtube.com/watch?v=HoRqKxLJFAo"
               target="_blank"
               rel="noopener noreferrer"
@@ -101,7 +104,7 @@ export default function Home() {
               aria-label="YouTube"
             >
               YT
-            </a>
+            </SoundLink>
           </div>
           <p className="text-xs text-gray-400 font-[var(--font-jetbrains-mono)]">
             &copy; 養老昆虫クラブ
@@ -109,5 +112,6 @@ export default function Home() {
         </div>
       </footer>
     </main>
+    </SplashScreen>
   );
 }

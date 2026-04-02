@@ -1,14 +1,19 @@
 "use client";
 
 import { useState } from "react";
+import { useSoundEngine } from "./SoundProvider";
 
 export default function YouTubeEmbed({ videoId }: { videoId: string }) {
   const [loaded, setLoaded] = useState(false);
+  const { playSE } = useSoundEngine();
 
   if (!loaded) {
     return (
       <button
-        onClick={() => setLoaded(true)}
+        onClick={() => {
+          playSE("powerup");
+          setLoaded(true);
+        }}
         className="relative w-full aspect-video bg-gray-100 flex items-center justify-center group cursor-pointer rounded-lg overflow-hidden"
         aria-label="動画を再生"
       >
