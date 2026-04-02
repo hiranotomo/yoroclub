@@ -51,6 +51,7 @@ export default function SplashScreen({
         onClick={() => {
           playSE("powerup");
           setEntered(true);
+          fetch("/api/players", { method: "POST" }).catch(() => {});
         }}
         className="mt-4 px-8 py-3 bg-black text-white text-sm font-[var(--font-jetbrains-mono)] tracking-widest hover:bg-gray-800 transition-colors animate-pulse"
       >

@@ -9,6 +9,7 @@ import { LanguageSwitcher } from "@/components/LanguageProvider";
 import { useLanguage } from "@/components/LanguageProvider";
 import PixelBugs from "@/components/PixelBugs";
 import SectionSound from "@/components/SectionSound";
+import { MuteButton } from "@/components/SoundProvider";
 
 export default function PageContent() {
   const { t } = useLanguage();
@@ -18,6 +19,7 @@ export default function PageContent() {
       <LanguageSwitcher />
       <PixelBugs />
       <SectionSound />
+      <MuteButton />
       <main>
         {/* HERO */}
         <PixelHero />

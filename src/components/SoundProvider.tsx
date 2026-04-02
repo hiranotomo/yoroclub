@@ -9,18 +9,22 @@ import {
   useState,
 } from "react";
 import type { ReactNode } from "react";
-import { createSoundEngine } from "8bit-sound-engine";
+import { createSoundEngine, overworld } from "8bit-sound-engine";
 
 type SoundEngine = ReturnType<typeof createSoundEngine>;
 
 interface SoundContextValue {
   playSE: (name: string) => void;
   engine: SoundEngine | null;
+  muted: boolean;
+  toggleMute: () => void;
 }
 
 const SoundContext = createContext<SoundContextValue>({
   playSE: () => {},
   engine: null,
+  muted: false,
+  toggleMute: () => {},
 });
 
 export function useSoundEngine() {
@@ -31,6 +35,8 @@ export default function SoundProvider({ children }: { children: ReactNode }) {
   const engineRef = useRef<SoundEngine | null>(null);
   const bgmStartedRef = useRef(false);
   const [engine, setEngine] = useState<SoundEngine | null>(null);
+  const [muted, setMuted] = useState(false);
+  const mutedRef = useRef(false);
 
   // Initialize engine on mount
   useEffect(() => {
@@ -51,11 +57,7 @@ export default function SoundProvider({ children }: { children: ReactNode }) {
 
       try {
         await engine.resume();
-        const res = await fetch(
-          "https://8bit-eight.vercel.app/api/songs/d101122a"
-        );
-        const song = await res.json();
-        engine.bgm.play(song.definition);
+        engine.bgm.play(overworld);
       } catch {
         bgmStartedRef.current = false;
       }
@@ -80,9 +82,24 @@ export default function SoundProvider({ children }: { children: ReactNode }) {
     };
   }, [engine]);
 
+  const toggleMute = useCallback(() => {
+    if (!engine) return;
+    const newMuted = !mutedRef.current;
+    mutedRef.current = newMuted;
+    setMuted(newMuted);
+    // Mute/unmute all BGM channels
+    if (newMuted) {
+      engine.bgm.stop({ fade: 100 });
+    } else {
+      engine.resume().then(() => {
+        engine.bgm.play(overworld);
+      });
+    }
+  }, [engine]);
+
   const playSE = useCallback(
     (name: string) => {
-      if (!engine) return;
+      if (!engine || mutedRef.current) return;
       engine.resume().then(() => {
         engine.se.play(name);
       });
@@ -91,8 +108,23 @@ export default function SoundProvider({ children }: { children: ReactNode }) {
   );
 
   return (
-    <SoundContext.Provider value={{ playSE, engine }}>
+    <SoundContext.Provider value={{ playSE, engine, muted, toggleMute }}>
       {children}
     </SoundContext.Provider>
+  );
+}
+
+export function MuteButton() {
+  const { muted, toggleMute } = useSoundEngine();
+
+  return (
+    <button
+      onClick={toggleMute}
+      className="fixed bottom-4 left-4 z-50 w-8 h-8 bg-black/60 text-white flex items-center justify-center text-xs font-[var(--font-jetbrains-mono)] hover:bg-black/80 transition-colors rounded"
+      aria-label={muted ? "Unmute" : "Mute"}
+      title={muted ? "Sound ON" : "Sound OFF"}
+    >
+      {muted ? "🔇" : "♪"}
+    </button>
   );
 }

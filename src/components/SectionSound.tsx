@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import { useSoundEngine } from "./SoundProvider";
+import { overworld } from "8bit-sound-engine";
 
 interface SectionConfig {
   id: string;
@@ -62,12 +63,7 @@ export default function SectionSound() {
                     engine.bgm.stop({ fade: 500 });
                     break;
                   case "resume":
-                    // Re-fetch and play BGM
-                    fetch("https://8bit-eight.vercel.app/api/songs/d101122a")
-                      .then((r) => r.json())
-                      .then((song) => {
-                        engine.bgm.play(song.definition);
-                      });
+                    engine.bgm.play(overworld);
                     break;
                 }
               });
