@@ -1,0 +1,1125 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>養老昆虫クラブ SNS投稿カレンダー v2</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif;
+    background: #f5f0eb;
+    color: #2d2d2d;
+    padding: 2rem;
+    line-height: 1.6;
+  }
+  h1 { font-size: 1.8rem; margin-bottom: 0.5rem; color: #1a472a; }
+  h2 { font-size: 1.3rem; margin: 2rem 0 1rem; color: #2d2d2d; }
+  .subtitle { color: #666; margin-bottom: 2rem; font-size: 0.95rem; }
+  .specs {
+    display: flex; gap: 1.5rem; flex-wrap: wrap; margin-bottom: 2rem;
+  }
+  .spec-card {
+    background: white; border-radius: 8px; padding: 1rem 1.5rem;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08); flex: 1; min-width: 200px;
+  }
+  .spec-card h3 { font-size: 0.8rem; color: #888; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.3rem; }
+  .spec-card p { font-size: 1rem; font-weight: 600; }
+  .stats {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+    gap: 1rem; margin: 2rem 0;
+  }
+  .stat-card {
+    background: white; border-radius: 8px; padding: 1rem;
+    text-align: center; box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+  }
+  .stat-num { font-size: 2rem; font-weight: 700; line-height: 1; }
+  .stat-label { font-size: 0.8rem; color: #888; margin-top: 0.3rem; }
+  .stat-yorou .stat-num { color: #2e7d32; }
+  .stat-mushi .stat-num { color: #e65100; }
+  .stat-mc .stat-num { color: #d81b60; }
+  .stat-tabi .stat-num { color: #4527a0; }
+  .stat-guide .stat-num { color: #00695c; }
+  .stat-live .stat-num { color: #bf360c; }
+
+  .readiness {
+    display: flex; gap: 1rem; margin: 1.5rem 0; padding: 1rem;
+    background: white; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+  }
+  .readiness-item { display: flex; align-items: center; gap: 0.5rem; font-size: 0.9rem; }
+  .readiness-bar { height: 8px; border-radius: 4px; }
+
+  .phase { margin-bottom: 2.5rem; }
+  .phase-header { display: flex; align-items: center; gap: 0.8rem; margin-bottom: 1rem; }
+  .phase-badge {
+    display: inline-block; padding: 0.3rem 0.8rem; border-radius: 20px;
+    font-size: 0.85rem; font-weight: 600; color: white;
+  }
+  .phase-1 .phase-badge { background: #4a9c6d; }
+  .phase-2 .phase-badge { background: #c4873b; }
+  .phase-3 .phase-badge { background: #c0392b; }
+  .phase-desc { color: #666; font-size: 0.9rem; }
+
+  .calendar-grid {
+    display: grid; grid-template-columns: 42px 72px 1fr 80px 36px;
+    gap: 0; background: white; border-radius: 12px; overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  }
+  .grid-header {
+    background: #2d2d2d; color: white; padding: 0.6rem 0.6rem;
+    font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em;
+  }
+  .grid-cell {
+    padding: 0.6rem; border-bottom: 1px solid #f0ebe5;
+    font-size: 0.85rem; display: flex; align-items: center;
+  }
+  .date-cell { font-weight: 600; color: #555; font-size: 0.82rem; }
+  .dow { font-size: 0.72rem; color: #999; margin-left: 0.2rem; }
+  .dow-sat { color: #2980b9 !important; }
+  .dow-sun { color: #c0392b !important; }
+
+  .series-badge {
+    display: inline-block; padding: 0.15rem 0.5rem; border-radius: 10px;
+    font-size: 0.7rem; font-weight: 600; white-space: nowrap; margin-right: 0.4rem;
+  }
+  .series-yorou { background: #e8f5e9; color: #2e7d32; }
+  .series-mushi { background: #fff3e0; color: #e65100; }
+  .series-mc { background: #fce4ec; color: #d81b60; }
+  .series-tabi { background: #ede7f6; color: #4527a0; }
+  .series-guide { background: #e0f2f1; color: #00695c; }
+  .series-live { background: #fbe9e7; color: #bf360c; }
+
+  .theme-cell { flex: 1; line-height: 1.4; }
+  .quote { color: #1a472a; font-weight: 500; }
+  .format-badge { font-size: 0.72rem; color: #888; white-space: nowrap; }
+  .format-thread { color: #2980b9; font-weight: 600; }
+
+  .status-icon { font-size: 0.9rem; text-align: center; }
+
+  .event-row .grid-cell { background: #fffde7; }
+  .gw-row .grid-cell { background: #fff8e1; }
+  .countdown-row .grid-cell { background: #ffebee; }
+
+  /* Accordion row styles */
+  .post-row {
+    display: contents;
+    cursor: pointer;
+  }
+  .post-row > .grid-cell {
+    cursor: pointer;
+  }
+  .post-row > .grid-cell:hover {
+    background-color: rgba(0,0,0,0.03);
+  }
+  .post-row.event-row > .grid-cell { background: #fffde7; }
+  .post-row.gw-row > .grid-cell { background: #fff8e1; }
+  .post-row.countdown-row > .grid-cell { background: #ffebee; }
+
+  .expand-indicator {
+    font-size: 0.7rem; color: #aaa; margin-left: 0.4rem;
+    transition: transform 0.2s;
+    display: inline-block;
+  }
+  .post-row.expanded .expand-indicator {
+    transform: rotate(90deg);
+  }
+
+  .post-detail {
+    grid-column: 1 / -1;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-out;
+    background: #faf8f5;
+    border-bottom: 1px solid #f0ebe5;
+  }
+  .post-detail.open {
+    max-height: 800px;
+    transition: max-height 0.4s ease-in;
+  }
+  .post-detail-inner {
+    padding: 1rem 1.5rem;
+  }
+  .post-body {
+    font-size: 0.9rem;
+    line-height: 1.7;
+    color: #333;
+    white-space: pre-line;
+    margin-bottom: 0.8rem;
+  }
+  .post-body .hashtags {
+    color: #2980b9;
+    font-size: 0.85rem;
+  }
+  .post-meta {
+    display: flex;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    font-size: 0.78rem;
+    color: #888;
+    padding-top: 0.6rem;
+    border-top: 1px solid #e8e3dd;
+  }
+  .post-meta-item {
+    display: flex; align-items: center; gap: 0.3rem;
+  }
+  .post-meta-label {
+    font-weight: 600; color: #999;
+  }
+  .post-placeholder {
+    font-size: 0.9rem;
+    color: #999;
+    font-style: italic;
+    padding: 0.5rem 0;
+  }
+  .post-thread-label {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: #2980b9;
+    margin: 0.8rem 0 0.3rem;
+  }
+
+  .legend {
+    display: flex; gap: 1.2rem; flex-wrap: wrap; margin: 1.5rem 0; padding: 1rem;
+    background: white; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+  }
+  .legend-item { display: flex; align-items: center; gap: 0.4rem; font-size: 0.82rem; }
+  .legend-color { width: 12px; height: 12px; border-radius: 3px; }
+
+  .request-section {
+    background: white; border-radius: 12px; padding: 1.5rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06); margin-top: 2rem;
+  }
+  .request-section h2 { margin-top: 0; color: #c0392b; }
+  .request-table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
+  .request-table th {
+    background: #f5f0eb; padding: 0.5rem 0.8rem; text-align: left;
+    font-size: 0.8rem; color: #666;
+  }
+  .request-table td { padding: 0.5rem 0.8rem; border-bottom: 1px solid #f0ebe5; font-size: 0.85rem; }
+  .priority-high { color: #c0392b; font-weight: 600; }
+  .priority-med { color: #e67e22; }
+
+  /* Theme Song Section */
+  .theme-song-section {
+    background: white; border-radius: 12px; padding: 1.5rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06); margin-top: 2rem;
+  }
+  .theme-song-section h2 { margin-top: 0; color: #4527a0; }
+  .theme-song-card {
+    display: flex; gap: 1.5rem; align-items: center; flex-wrap: wrap;
+    margin-top: 1rem; padding: 1rem;
+    background: #f5f0eb; border-radius: 8px;
+  }
+  .theme-song-info { flex: 1; min-width: 200px; }
+  .theme-song-title { font-size: 1.2rem; font-weight: 700; color: #2d2d2d; }
+  .theme-song-artist { font-size: 0.95rem; color: #666; margin-top: 0.3rem; }
+  .theme-song-presents { font-size: 0.82rem; color: #888; margin-top: 0.2rem; }
+  .theme-song-link {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    background: #c0392b; color: white; padding: 0.6rem 1.2rem;
+    border-radius: 8px; text-decoration: none; font-size: 0.9rem; font-weight: 600;
+    transition: background 0.2s;
+  }
+  .theme-song-link:hover { background: #a93226; }
+  .theme-song-note {
+    font-size: 0.82rem; color: #888; margin-top: 0.8rem;
+  }
+
+  @media print {
+    body { padding: 1rem; background: white; }
+    .calendar-grid { box-shadow: none; border: 1px solid #ddd; }
+    .phase-badge, .series-badge { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+    .post-detail { max-height: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<h1>🪲 養老昆虫クラブ SNS投稿カレンダー v2</h1>
+<p class="subtitle">X（Twitter）52日間の投稿計画 ｜ 2026年4月3日〜5月24日 ｜ <a href="https://yoroclub.vercel.app/" style="color:#1a472a;">公式サイト</a></p>
+
+<div class="specs">
+  <div class="spec-card"><h3>期間</h3><p>4/3〜5/24（52日）</p></div>
+  <div class="spec-card"><h3>頻度</h3><p>毎日1投稿</p></div>
+  <div class="spec-card"><h3>トーン</h3><p>知的カジュアル</p></div>
+  <div class="spec-card"><h3>プラットフォーム</h3><p>X 先行</p></div>
+</div>
+
+<div class="stats">
+  <div class="stat-card stat-yorou"><div class="stat-num">14</div><div class="stat-label">養老語録</div></div>
+  <div class="stat-card stat-mushi"><div class="stat-num">9</div><div class="stat-label">虫のすごさ</div></div>
+  <div class="stat-card stat-mc"><div class="stat-num">8</div><div class="stat-label">ムシちゃん物語</div></div>
+  <div class="stat-card stat-tabi"><div class="stat-num">5</div><div class="stat-label">虫旅</div></div>
+  <div class="stat-card stat-guide"><div class="stat-num">13</div><div class="stat-label">展覧会ガイド</div></div>
+  <div class="stat-card stat-live"><div class="stat-num">3</div><div class="stat-label">現場レポート</div></div>
+</div>
+
+<div class="readiness">
+  <div class="readiness-item">🟢 確定 <strong>36本</strong>（69%）</div>
+  <div class="readiness-item">🟡 仮置き <strong>5本</strong>（10%）</div>
+  <div class="readiness-item">🔵 素材待ち <strong>11本</strong>（21%）</div>
+</div>
+
+<div class="legend">
+  <div class="legend-item"><div class="legend-color" style="background:#fffde7"></div>イベント日</div>
+  <div class="legend-item"><div class="legend-color" style="background:#fff8e1"></div>GW</div>
+  <div class="legend-item"><div class="legend-color" style="background:#ffebee"></div>カウントダウン</div>
+  <div class="legend-item">🟢 確定</div>
+  <div class="legend-item">🟡 仮置き（差し替え可）</div>
+  <div class="legend-item">🔵 素材待ち</div>
+  <div class="legend-item" style="margin-left:auto; color:#aaa; font-size:0.78rem;">各行クリックで投稿本文を展開</div>
+</div>
+
+<!-- Phase 1 -->
+<div class="phase phase-1">
+  <div class="phase-header">
+    <span class="phase-badge">序盤：出会い</span>
+    <span class="phase-desc">4/3〜4/20（18日）世界観の確立＋ムシちゃん登場</span>
+  </div>
+  <div class="calendar-grid">
+    <div class="grid-header">#</div><div class="grid-header">日付</div><div class="grid-header">テーマ</div><div class="grid-header">形式</div><div class="grid-header"></div>
+
+    <!-- #01 -->
+    <div class="post-row" onclick="togglePost(this)">
+    <div class="grid-cell">01</div><div class="grid-cell date-cell">4/3 <span class="dow">木</span></div>
+    <div class="grid-cell theme-cell"><span class="series-badge series-yorou">養老語録</span><span class="quote">「答えはぜんぶ、虫にある」</span>展覧会メインキャッチ<span class="expand-indicator">&#9654;</span></div>
+    <div class="grid-cell"><span class="format-badge">1ツイート</span></div><div class="grid-cell status-icon">🟢</div>
+    </div>
+    <div class="post-detail"><div class="post-detail-inner">
+      <div class="post-body">養老孟司「ありのままを見ればいいんです。木の枝の葉っぱをよく見てください。あの葉っぱ一枚が、すべての答えでしょう。虫だってそう。もう、答えはそこにある」。虫展のメインコピーは「答えはぜんぶ、虫にある」。今日から始まります。
+<span class="hashtags">#養老昆虫クラブ #虫展 #養老語録</span></div>
+      <div class="post-meta">
+        <div class="post-meta-item"><span class="post-meta-label">ソース:</span> 虫展キャッチコピーと展示テキスト</div>
+        <div class="post-meta-item"><span class="post-meta-label">使用権:</span> 使用OK</div>
+      </div>
+    </div></div>
+
+    <!-- #02 -->
+    <div class="post-row event-row" onclick="togglePost(this)">
+    <div class="grid-cell">02</div><div class="grid-cell date-cell">4/4 <span class="dow">金</span></div>
+    <div class="grid-cell theme-cell"><span class="series-badge series-guide">展覧会ガイド</span>本日対談！養老孟司×小檜山賢二<span class="quote">「80年見てても飽きない」</span><span class="expand-indicator">&#9654;</span></div>
+    <div class="grid-cell"><span class="format-badge">1ツイート</span></div><div class="grid-cell status-icon">🟢</div>
+    </div>
+    <div class="post-detail"><div class="post-detail-inner">
+      <div class="post-body">本日開催！養老孟司×小檜山賢二 対談「虫ってさ、80年見てても飽きないね」80年虫を見続けた養老先生と、虫を撮り続けた小檜山さん。飽きないふたりが語り合います。会場：東京都写真美術館（恵比寿）
+<span class="hashtags">#養老昆虫クラブ #虫展</span></div>
+      <div class="post-meta">
+        <div class="post-meta-item"><span class="post-meta-label">ソース:</span> 展覧会公式情報</div>
+        <div class="post-meta-item"><span class="post-meta-label">使用権:</span> 公式告知</div>
+      </div>
+    </div></div>
+
+    <!-- #03 -->
+    <div class="post-row" onclick="togglePost(this)">
+    <div class="grid-cell">03</div><div class="grid-cell date-cell">4/5 <span class="dow dow-sat">土</span></div>
+    <div class="grid-cell theme-cell"><span class="series-badge series-mushi">虫のすごさ</span>深度合成写真の衝撃<span class="quote">「カンニングみたい」</span><span class="expand-indicator">&#9654;</span></div>
+    <div class="grid-cell"><span class="format-badge">1ツイート</span></div><div class="grid-cell status-icon">🟢</div>
+    </div>
+    <div class="post-detail"><div class="post-detail-inner">
+      <div class="post-body">養老先生が初めて小檜山賢二さんの写真を見た時の感想がすごい。「こんなものあり得ない!と本当にびっくりした。僕らは顕微鏡のピントを合わせるねじを細かく動かしながら見て、自分の頭の中で像を作っていたが、それがいきなり画像として見えた。試験のカンニングみたいだと思った」80年虫を見てきた人が「カンニング」と言うほどの衝撃。それが深度合成写真です。
+<span class="hashtags">#養老昆虫クラブ #虫展 #虫のすごさ</span></div>
+      <div class="post-meta">
+        <div class="post-meta-item"><span class="post-meta-label">ソース:</span> 大分合同新聞2024年8月17日</div>
+        <div class="post-meta-item"><span class="post-meta-label">使用権:</span> 要確認</div>
+      </div>
+    </div></div>
+
+    <!-- #04 -->
+    <div class="post-row" onclick="togglePost(this)">
+    <div class="grid-cell">04</div><div class="grid-cell date-cell">4/6 <span class="dow dow-sun">日</span></div>
+    <div class="grid-cell theme-cell"><span class="series-badge series-guide">展覧会ガイド</span>週末のお出かけに。基本情報＋アクセス<span class="expand-indicator">&#9654;</span></div>
+    <div class="grid-cell"><span class="format-badge">1ツイート</span></div><div class="grid-cell status-icon">🟢</div>
+    </div>
+    <div class="post-detail"><div class="post-detail-inner">
+      <div class="post-body">この週末、恵比寿で「虫」に会いませんか。「養老孟司と小檜山賢二の虫展」東京都写真美術館にて5月24日まで開催中です。一般1,500円／写真撮影OK。木・金は20時まで開館しているので、仕事帰りにもぜひ。
+<span class="hashtags">#養老昆虫クラブ #虫展</span></div>
+      <div class="post-meta">
+        <div class="post-meta-item"><span class="post-meta-label">ソース:</span> 展覧会公式情報</div>
+        <div class="post-meta-item"><span class="post-meta-label">使用権:</span> 公式告知</div>
+      </div>
+    </div></div>
+
+    <!-- #05 -->
+    <div class="post-row" onclick="togglePost(this)">
+    <div class="grid-cell">05</div><div class="grid-cell date-cell">4/7 <span class="dow">月</span></div>
+    <div class="grid-cell theme-cell"><span class="series-badge series-yorou">養老語録</span><span class="quote">「自分から世界を見に行く」</span><span class="expand-indicator">&#9654;</span></div>
+    <div class="grid-cell"><span class="format-badge">1ツイート</span></div><div class="grid-cell status-icon">🟢</div>
+    </div>
+    <div class="post-detail"><div class="post-detail-inner">
+      <div class="post-body">養老孟司「虫に限らず、勝手に入ってくる情報で満足せず、自分から世界を見に行くということが大事」。スマホの画面じゃなくて、外の世界を自分の目で。養老先生にとって虫とは「自然そのもの」なんだそうです。
+<span class="hashtags">#養老昆虫クラブ #虫展 #養老語録</span></div>
+      <div class="post-meta">
+        <div class="post-meta-item"><span class="post-meta-label">ソース:</span> 大分合同新聞2024年8月17日</div>
+        <div class="post-meta-item"><span class="post-meta-label">使用権:</span> 要確認</div>
+      </div>
+    </div></div>
+
+    <!-- #06 -->
+    <div class="post-row" onclick="togglePost(this)">
+    <div class="grid-cell">06</div><div class="grid-cell date-cell">4/8 <span class="dow">火</span></div>
+    <div class="grid-cell theme-cell"><span class="series-badge series-mushi">虫のすごさ</span>グンジョウオオコブハムシ（実物8mm→超拡大）<span class="expand-indicator">&#9654;</span></div>
+    <div class="grid-cell"><span class="format-badge">1ツイート</span></div><div class="grid-cell status-icon">🟢</div>
+    </div>
+    <div class="post-detail"><div class="post-detail-inner">
+      <div class="post-body">実物わずか8mm。でも拡大すると――「こんな昆虫が本当に存在するのかと思うほどの、色、形、質感にビックリ。小檜山さんいわく『これはもしかして岩石を真似た擬態か』」群青色に輝くゴツゴツの体表。これが自然の造形なんです。虫のデザインは人間の想像を軽く超えてきますよね。
+<span class="hashtags">#養老昆虫クラブ #虫展 #虫のすごさ</span></div>
+      <div class="post-meta">
+        <div class="post-meta-item"><span class="post-meta-label">ソース:</span> 週刊新潮2024年8月8日号</div>
+        <div class="post-meta-item"><span class="post-meta-label">使用権:</span> 要確認</div>
+      </div>
+    </div></div>
+
+    <!-- #07 -->
+    <div class="post-row" onclick="togglePost(this)">
+    <div class="grid-cell">07</div><div class="grid-cell date-cell">4/9 <span class="dow">水</span></div>
+    <div class="grid-cell theme-cell"><span class="series-badge series-mc">ムシちゃん物語</span>ムシちゃん登場！片田陽依——虫展アンバサダーのご紹介<span class="expand-indicator">&#9654;</span></div>
+    <div class="grid-cell"><span class="format-badge">1ツイート</span></div><div class="grid-cell status-icon">🔵</div>
+    </div>
+    <div class="post-detail"><div class="post-detail-inner">
+      <div class="post-placeholder">🔵 素材待ち — ムシちゃん登場！片田陽依——虫展アンバサダーのご紹介</div>
+    </div></div>
+
+    <!-- #08 -->
+    <div class="post-row" onclick="togglePost(this)">
+    <div class="grid-cell">08</div><div class="grid-cell date-cell">4/10 <span class="dow">木</span></div>
+    <div class="grid-cell theme-cell"><span class="series-badge series-yorou">養老語録</span><span class="quote">「1日10分、自然を見ると頭にも良い」</span><span class="expand-indicator">&#9654;</span></div>
+    <div class="grid-cell"><span class="format-badge">1ツイート</span></div><div class="grid-cell status-icon">🟢</div>
+    </div>
+    <div class="post-detail"><div class="post-detail-inner">
+      <div class="post-body">養老孟司「1日に10分、虫でも何でもいいので、自然のものを見ると頭にも良い、と普段から皆さんに勧めているのです」。都市にいると人間の脳が作ったものばかりに囲まれる。だからこそ、1日10分。まずは窓の外の木でも。
+<span class="hashtags">#養老昆虫クラブ #虫展 #養老語録</span></div>
+      <div class="post-meta">
+        <div class="post-meta-item"><span class="post-meta-label">ソース:</span> 週刊新潮2024年8月8日号</div>
+        <div class="post-meta-item"><span class="post-meta-label">使用権:</span> 要確認</div>
+      </div>
+    </div></div>
+
+    <!-- #09 -->
+    <div class="post-row event-row" onclick="togglePost(this)">
+    <div class="grid-cell">09</div><div class="grid-cell date-cell">4/11 <span class="dow">金</span></div>
+    <div class="grid-cell theme-cell"><span class="series-badge series-guide">展覧会ガイド</span>本日対談！奥本大三郎×小檜山賢二<span class="expand-indicator">&#9654;</span></div>
+    <div class="grid-cell"><span class="format-badge">1ツイート</span></div><div class="grid-cell status-icon">🟢</div>
+    </div>
+    <div class="post-detail"><div class="post-detail-inner">
+      <div class="post-body">本日開催！奥本大三郎×小檜山賢二 対談「ぼくたちの人生は虫で決まっている」ファーブル昆虫記の翻訳者・奥本大三郎さんと、虫の写真家・小檜山賢二さん。人生を虫に決められた二人の対話です。会場：東京都写真美術館（恵比寿）
+<span class="hashtags">#養老昆虫クラブ #虫展</span></div>
+      <div class="post-meta">
+        <div class="post-meta-item"><span class="post-meta-label">ソース:</span> 展覧会公式情報</div>
+        <div class="post-meta-item"><span class="post-meta-label">使用権:</span> 公式告知</div>
+      </div>
+    </div></div>
+
+    <!-- #10 -->
+    <div class="post-row" onclick="togglePost(this)">
+    <div class="grid-cell">10</div><div class="grid-cell date-cell">4/12 <span class="dow dow-sat">土</span></div>
+    <div class="grid-cell theme-cell"><span class="series-badge series-tabi">虫旅</span>台湾へ——養老先生<span class="quote">「辺境は国際的である」</span><span class="expand-indicator">&#9654;</span></div>
+    <div class="grid-cell"><span class="format-badge format-thread">スレッド2</span></div><div class="grid-cell status-icon">🟡</div>
+    </div>
+    <div class="post-detail"><div class="post-detail-inner">
+      <div class="post-thread-label">ツイート1:</div>
+      <div class="post-body">養老先生の台湾虫旅。「秘書の山口さんに早速調べてもらうとなんと那覇-台北便は毎日ある。学校や会社に休みの日はあっても、台北便が飛ばない日はない。やっぱり辺境は国際的である」沖縄から台北まで、毎日飛んでる。虫屋のフットワークは軽いんです。</div>
+      <div class="post-thread-label">ツイート2:</div>
+      <div class="post-body">台湾は小さな島に熱帯から高山帯まで凝縮されていて、虫の多様性がすごい。養老先生が何度も通うのも納得ですよね。日本の沖縄からすぐそこにある、虫の楽園です。
+<span class="hashtags">#養老昆虫クラブ #虫展 #虫旅</span></div>
+      <div class="post-meta">
+        <div class="post-meta-item"><span class="post-meta-label">ソース:</span> 「考える人」2010年夏号（新潮社）</div>
+        <div class="post-meta-item"><span class="post-meta-label">使用権:</span> 要確認</div>
+      </div>
+    </div></div>
+
+    <!-- #11 -->
+    <div class="post-row" onclick="togglePost(this)">
+    <div class="grid-cell">11</div><div class="grid-cell date-cell">4/13 <span class="dow dow-sun">日</span></div>
+    <div class="grid-cell theme-cell"><span class="series-badge series-guide">展覧会ガイド</span>「デザインあ」の岡崎智弘が参加。ようろうボックスとは？<span class="expand-indicator">&#9654;</span></div>
+    <div class="grid-cell"><span class="format-badge">1ツイート</span></div><div class="grid-cell status-icon">🟢</div>
+    </div>
+    <div class="post-detail"><div class="post-detail-inner">
+      <div class="post-body">東京展ならではの見どころ。NHK「デザインあ」展のデザイナー・岡崎智弘さんが新たに参加しています。展示空間をまるごと「養老先生の思考の部屋」として再構成。言葉と写真を組み合わせた立体インスタレーション「ようろうボックス」は必見です。
+<span class="hashtags">#養老昆虫クラブ #虫展</span></div>
+      <div class="post-meta">
+        <div class="post-meta-item"><span class="post-meta-label">ソース:</span> 展覧会公式情報</div>
+        <div class="post-meta-item"><span class="post-meta-label">使用権:</span> 公式告知</div>
+      </div>
+    </div></div>
+
+    <!-- #12 -->
+    <div class="post-row" onclick="togglePost(this)">
+    <div class="grid-cell">12</div><div class="grid-cell date-cell">4/14 <span class="dow">月</span></div>
+    <div class="grid-cell theme-cell"><span class="series-badge series-yorou">養老語録</span><span class="quote">「虫を触っている方が寿命が延びる気がする」</span><span class="expand-indicator">&#9654;</span></div>
+    <div class="grid-cell"><span class="format-badge">1ツイート</span></div><div class="grid-cell status-icon">🟢</div>
+    </div>
+    <div class="post-detail"><div class="post-detail-inner">
+      <div class="post-body">「好きですねえ。本当は一日中やっていたい。世間とのお付き合いより、虫を触っている方が寿命が延びる気がする」。昆虫標本作りが好きかと聞かれた養老先生、この即答。なんだか元気をもらえる言葉ですよね。
+<span class="hashtags">#養老昆虫クラブ #虫展 #養老語録</span></div>
+      <div class="post-meta">
+        <div class="post-meta-item"><span class="post-meta-label">ソース:</span> 大分合同新聞2024年8月17日</div>
+        <div class="post-meta-item"><span class="post-meta-label">使用権:</span> 要確認</div>
+      </div>
+    </div></div>
+
+    <!-- #13 -->
+    <div class="post-row" onclick="togglePost(this)">
+    <div class="grid-cell">13</div><div class="grid-cell date-cell">4/15 <span class="dow">火</span></div>
+    <div class="grid-cell theme-cell"><span class="series-badge series-mushi">虫のすごさ</span>フィリピンロクロクビオトシブミ——首を長〜くして<span class="expand-indicator">&#9654;</span></div>
+    <div class="grid-cell"><span class="format-badge">1ツイート</span></div><div class="grid-cell status-icon">🟢</div>
+    </div>
+    <div class="post-detail"><div class="post-detail-inner">
+      <div class="post-body">フィリピンロクロクビオトシブミ。名前の通り、まさにろくろ首。この長い首を持つのはオスだけで、首を突き上げて周囲を観察する仕草を見せるんだそうです。実物は12mm。名前のインパクトも、姿のインパクトも、虫の世界は想像を超えてきます。
+<span class="hashtags">#養老昆虫クラブ #虫展 #虫のすごさ</span></div>
+      <div class="post-meta">
+        <div class="post-meta-item"><span class="post-meta-label">ソース:</span> 週刊新潮2024年8月8日号</div>
+        <div class="post-meta-item"><span class="post-meta-label">使用権:</span> 要確認</div>
+      </div>
+    </div></div>
+
+    <!-- #14 -->
+    <div class="post-row" onclick="togglePost(this)">
+    <div class="grid-cell">14</div><div class="grid-cell date-cell">4/16 <span class="dow">水</span></div>
+    <div class="grid-cell theme-cell"><span class="series-badge series-mc">ムシちゃん物語</span>ムシちゃんの虫展レポート（4/10撮影素材）<span class="expand-indicator">&#9654;</span></div>
+    <div class="grid-cell"><span class="format-badge format-thread">スレッド2</span></div><div class="grid-cell status-icon">🔵</div>
+    </div>
+    <div class="post-detail"><div class="post-detail-inner">
+      <div class="post-placeholder">🔵 素材待ち — ムシちゃんの虫展レポート（4/10撮影素材）</div>
+    </div></div>
+
+    <!-- #15 -->
+    <div class="post-row" onclick="togglePost(this)">
+    <div class="grid-cell">15</div><div class="grid-cell date-cell">4/17 <span class="dow">木</span></div>
+    <div class="grid-cell theme-cell"><span class="series-badge series-yorou">養老語録</span><span class="quote">「人間の手あかがついていないからアート」</span><span class="expand-indicator">&#9654;</span></div>
+    <div class="grid-cell"><span class="format-badge">1ツイート</span></div><div class="grid-cell status-icon">🟢</div>
+    </div>
+    <div class="post-detail"><div class="post-detail-inner">
+      <div class="post-body">養老孟司「グンジョウオオコブハムシなんて、見ててきれいでしょ。人間の手あかが付いていない。僕はこれこそアートじゃないかと思う」。トビケラの巣も「どう見てもモダンアート」。自然の造形に人間は敵わない。
+<span class="hashtags">#養老昆虫クラブ #虫展 #養老語録</span></div>
+      <div class="post-meta">
+        <div class="post-meta-item"><span class="post-meta-label">ソース:</span> 大分合同新聞2024年8月17日</div>
+        <div class="post-meta-item"><span class="post-meta-label">使用権:</span> 要確認</div>
+      </div>
+    </div></div>
+
+    <!-- #16 -->
+    <div class="post-row" onclick="togglePost(this)">
+    <div class="grid-cell">16</div><div class="grid-cell date-cell">4/18 <span class="dow">金</span></div>
+    <div class="grid-cell theme-cell"><span class="series-badge series-mushi">虫のすごさ</span>アカガネサルハムシ——普通の虫が実はすごい<span class="expand-indicator">&#9654;</span></div>
+    <div class="grid-cell"><span class="format-badge">1ツイート</span></div><div class="grid-cell status-icon">🟢</div>
+    </div>
+    <div class="post-detail"><div class="post-detail-inner">
+      <div class="post-body">アカガネサルハムシ。実物は約7mm、日本で普通に見かけるハムシです。でも拡大して見ると、全身に毛が生えているのがわかる。虹色に輝く体に、びっしりと。「奇跡のような美しさ」。身近な虫にこそ、見えていなかった世界がある。それに気づかせてくれるのが深度合成写真なんですよね。
+<span class="hashtags">#養老昆虫クラブ #虫展 #虫のすごさ</span></div>
+      <div class="post-meta">
+        <div class="post-meta-item"><span class="post-meta-label">ソース:</span> 週刊新潮2024年8月8日号</div>
+        <div class="post-meta-item"><span class="post-meta-label">使用権:</span> 要確認</div>
+      </div>
+    </div></div>
+
+    <!-- #17 -->
+    <div class="post-row" onclick="togglePost(this)">
+    <div class="grid-cell">17</div><div class="grid-cell date-cell">4/19 <span class="dow dow-sat">土</span></div>
+    <div class="grid-cell theme-cell"><span class="series-badge series-tabi">虫旅</span><span class="quote">「虫が好きだというだけで朋友になる」</span>——虫屋のいいところ<span class="expand-indicator">&#9654;</span></div>
+    <div class="grid-cell"><span class="format-badge format-thread">スレッド2</span></div><div class="grid-cell status-icon">🟡</div>
+    </div>
+    <div class="post-detail"><div class="post-detail-inner">
+      <div class="post-thread-label">ツイート1:</div>
+      <div class="post-body">養老先生、台湾にて。「虫が好きだというだけで、すぐに朋友になってしまう。これは世界中どこでも同じである。そこが虫屋のいいところ」言葉が通じなくても、虫を見せれば友達になれる。虫屋の国際交流は、パスポートより網が大事なんですよね。</div>
+      <div class="post-thread-label">ツイート2:</div>
+      <div class="post-body">虫が好きな人は世界中にいて、虫を前にすると国籍も年齢も関係なくなる。養老先生がどの国でも楽しそうなのは、そういうことなんだと思います。
+<span class="hashtags">#養老昆虫クラブ #虫展 #虫旅</span></div>
+      <div class="post-meta">
+        <div class="post-meta-item"><span class="post-meta-label">ソース:</span> 「考える人」2010年夏号（新潮社）</div>
+        <div class="post-meta-item"><span class="post-meta-label">使用権:</span> 要確認</div>
+      </div>
+    </div></div>
+
+    <!-- #18 -->
+    <div class="post-row" onclick="togglePost(this)">
+    <div class="grid-cell">18</div><div class="grid-cell date-cell">4/20 <span class="dow dow-sun">日</span></div>
+    <div class="grid-cell theme-cell"><span class="series-badge series-guide">展覧会ガイド</span>展示の見どころ総まとめ（超拡大写真・3D映像・音響）<span class="expand-indicator">&#9654;</span></div>
+    <div class="grid-cell"><span class="format-badge">1ツイート</span></div><div class="grid-cell status-icon">🟢</div>
+    </div>
+    <div class="post-detail"><div class="post-detail-inner">
+      <div class="post-thread-label">ツイート1:</div>
+      <div class="post-body">「養老孟司と小檜山賢二の虫展」見どころ、まとめます。・小檜山賢二の超拡大写真パネル約120点・養老先生の虫採り映像・最先端3Dデジタル映像・安田寿之による音響デザイン・体験型アトラクション。写真OK。お子さんも大人も楽しめます。</div>
+      <div class="post-thread-label">ツイート2:</div>
+      <div class="post-body">虫を「見る」だけじゃなく、音で感じて、映像で没入して、自分の手で触れる。五感で虫の世界に入れる展覧会です。東京都写真美術館（恵比寿）にて5/24まで。木金は20時まで開館。
+<span class="hashtags">#養老昆虫クラブ #虫展</span></div>
+      <div class="post-meta">
+        <div class="post-meta-item"><span class="post-meta-label">ソース:</span> 展覧会公式情報</div>
+        <div class="post-meta-item"><span class="post-meta-label">使用権:</span> 公式告知</div>
+      </div>
+    </div></div>
+  </div>
+</div>
+
+<!-- Phase 2 -->
+<div class="phase phase-2">
+  <div class="phase-header">
+    <span class="phase-badge">中盤：深掘り</span>
+    <span class="phase-desc">4/21〜5/6（16日）ムシちゃん本格投入。GW前に来場欲を高める</span>
+  </div>
+  <div class="calendar-grid">
+    <div class="grid-header">#</div><div class="grid-header">日付</div><div class="grid-header">テーマ</div><div class="grid-header">形式</div><div class="grid-header"></div>
+
+    <!-- #19 -->
+    <div class="post-row" onclick="togglePost(this)">
+    <div class="grid-cell">19</div><div class="grid-cell date-cell">4/21 <span class="dow">月</span></div>
+    <div class="grid-cell theme-cell"><span class="series-badge series-yorou">養老語録</span><span class="quote">「子どもをハッピーにする」</span><span class="expand-indicator">&#9654;</span></div>
+    <div class="grid-cell"><span class="format-badge">1ツイート</span></div><div class="grid-cell status-icon">🟢</div>
+    </div>
+    <div class="post-detail"><div class="post-detail-inner">
+      <div class="post-body">養老孟司「大人はすぐに何かで測ろうとする。こういうことをすれば、こういういいことがある、みたいに。それはいい加減やめた方がいい。子どもがハッピーでなくなる」。測らなくていい。外を駆けずり回ればいいんですよ。
+<span class="hashtags">#養老昆虫クラブ #虫展 #養老語録</span></div>
+      <div class="post-meta">
+        <div class="post-meta-item"><span class="post-meta-label">ソース:</span> 大分合同新聞2024年8月17日</div>
+        <div class="post-meta-item"><span class="post-meta-label">使用権:</span> 要確認</div>
+      </div>
+    </div></div>
+
+    <!-- #20 -->
+    <div class="post-row" onclick="togglePost(this)">
+    <div class="grid-cell">20</div><div class="grid-cell date-cell">4/22 <span class="dow">火</span></div>
+    <div class="grid-cell theme-cell"><span class="series-badge series-mushi">虫のすごさ</span>トビケラの巣がモダンアート<span class="expand-indicator">&#9654;</span></div>
+    <div class="grid-cell"><span class="format-badge">1ツイート</span></div><div class="grid-cell status-icon">🟢</div>
+    </div>
+    <div class="post-detail"><div class="post-detail-inner">
+      <div class="post-body">トビケラという虫は、水中で小石や砂を集めて巣を作ります。養老先生「トビケラの巣も自然の物を並べただけ、それを小檜山さんが拡大しただけで、どう見てもモダンアート」人間が作ったものじゃないのに、アートにしか見えない。虫が「制作」したもの、ぜひ写真で見てほしいです。
+<span class="hashtags">#養老昆虫クラブ #虫展 #虫のすごさ</span></div>
+      <div class="post-meta">
+        <div class="post-meta-item"><span class="post-meta-label">ソース:</span> 大分合同新聞2024年8月17日</div>
+        <div class="post-meta-item"><span class="post-meta-label">使用権:</span> 要確認</div>
+      </div>
+    </div></div>
+
+    <!-- #21 -->
+    <div class="post-row" onclick="togglePost(this)">
+    <div class="grid-cell">21</div><div class="grid-cell date-cell">4/23 <span class="dow">水</span></div>
+    <div class="grid-cell theme-cell"><span class="series-badge series-mc">ムシちゃん物語</span>ムシちゃんのお気に入り展示は？<span class="expand-indicator">&#9654;</span></div>
+    <div class="grid-cell"><span class="format-badge">1ツイート</span></div><div class="grid-cell status-icon">🔵</div>
+    </div>
+    <div class="post-detail"><div class="post-detail-inner">
+      <div class="post-placeholder">🔵 素材待ち — ムシちゃんのお気に入り展示は？</div>
+    </div></div>
+
+    <!-- #22 -->
+    <div class="post-row" onclick="togglePost(this)">
+    <div class="grid-cell">22</div><div class="grid-cell date-cell">4/24 <span class="dow">木</span></div>
+    <div class="grid-cell theme-cell"><span class="series-badge series-yorou">養老語録</span><span class="quote">「虫に意識はある」</span>——解剖学者の答え<span class="expand-indicator">&#9654;</span></div>
+    <div class="grid-cell"><span class="format-badge">1ツイート</span></div><div class="grid-cell status-icon">🟢</div>
+    </div>
+    <div class="post-detail"><div class="post-detail-inner">
+      <div class="post-body">養老孟司「虫に霊や心があるかというご意見もあるかと思いますが、睡眠に関する遺伝子が見つかっているので、意識はあるのではないかと思います」。鎌倉・建長寺の虫塚。養老先生は毎年、虫を供養しているんです。
+<span class="hashtags">#養老昆虫クラブ #虫展 #養老語録</span></div>
+      <div class="post-meta">
+        <div class="post-meta-item"><span class="post-meta-label">ソース:</span> 建長寺虫塚法要の栞</div>
+        <div class="post-meta-item"><span class="post-meta-label">使用権:</span> 使用OK</div>
+      </div>
+    </div></div>
+
+    <!-- #23 -->
+    <div class="post-row" onclick="togglePost(this)">
+    <div class="grid-cell">23</div><div class="grid-cell date-cell">4/25 <span class="dow">金</span></div>
+    <div class="grid-cell theme-cell"><span class="series-badge series-mushi">虫のすごさ</span>小檜山<span class="quote">「養老さんは『これは何だ？』と深く考えてくれる」</span><span class="expand-indicator">&#9654;</span></div>
+    <div class="grid-cell"><span class="format-badge">1ツイート</span></div><div class="grid-cell status-icon">🟢</div>
+    </div>
+    <div class="post-detail"><div class="post-detail-inner">
+      <div class="post-body">小檜山賢二さんが養老先生について語った言葉。「写真を見ても多くの人が『へえ』と思うだけで終わるところを、養老さんは『これは何だ?』と深く考えてくれる。作る側も新しい価値観を感じられる」「見る」で止まるか、「考える」まで行くか。この二人の関係がこの虫展を作っているんですよね。
+<span class="hashtags">#養老昆虫クラブ #虫展 #虫のすごさ</span></div>
+      <div class="post-meta">
+        <div class="post-meta-item"><span class="post-meta-label">ソース:</span> 大分合同新聞2024年8月17日</div>
+        <div class="post-meta-item"><span class="post-meta-label">使用権:</span> 要確認</div>
+      </div>
+    </div></div>
+
+    <!-- #24 -->
+    <div class="post-row" onclick="togglePost(this)">
+    <div class="grid-cell">24</div><div class="grid-cell date-cell">4/26 <span class="dow dow-sat">土</span></div>
+    <div class="grid-cell theme-cell"><span class="series-badge series-tabi">虫旅</span>インド・ダージリンの霧——養老先生、未踏の地へ<span class="expand-indicator">&#9654;</span></div>
+    <div class="grid-cell"><span class="format-badge format-thread">スレッド3</span></div><div class="grid-cell status-icon">🟡</div>
+    </div>
+    <div class="post-detail"><div class="post-detail-inner">
+      <div class="post-thread-label">ツイート1:</div>
+      <div class="post-body">養老先生のインド虫旅。「ブータンには三回も足を運んでいるというのに、インドは未踏の地だ。それなら、インドに行ってみようか。ダージリンの霧と戯れ、シッキムの栄光を思う」虫屋の旅は、まだ行ったことのない場所へ向かう。それだけで十分な理由なんです。</div>
+      <div class="post-thread-label">ツイート2:</div>
+      <div class="post-body">ダージリンといえば紅茶ですが、養老先生にとっては虫採りの地。霧の中で網を振る。そういう旅の仕方があるんですよね。
+<span class="hashtags">#養老昆虫クラブ #虫展 #虫旅</span></div>
+      <div class="post-meta">
+        <div class="post-meta-item"><span class="post-meta-label">ソース:</span> 「考える人」2009年冬号・春号（新潮社）</div>
+        <div class="post-meta-item"><span class="post-meta-label">使用権:</span> 要確認</div>
+      </div>
+    </div></div>
+
+    <!-- #25 -->
+    <div class="post-row" onclick="togglePost(this)">
+    <div class="grid-cell">25</div><div class="grid-cell date-cell">4/27 <span class="dow dow-sun">日</span></div>
+    <div class="grid-cell theme-cell"><span class="series-badge series-guide">展覧会ガイド</span>大分展28,949人の実績。東京展はさらにパワーアップ<span class="expand-indicator">&#9654;</span></div>
+    <div class="grid-cell"><span class="format-badge">1ツイート</span></div><div class="grid-cell status-icon">🟢</div>
+    </div>
+    <div class="post-detail"><div class="post-detail-inner">
+      <div class="post-body">昨夏、大分県立美術館で開催した「虫展」。来場者28,949人、なんと3日で1万人を突破しました。東京展はそこからさらにバージョンアップ。岡崎智弘さんの空間デザイン、「ようろうボックス」など新要素が加わっています。大分で見た方も、ぜひもう一度。
+<span class="hashtags">#養老昆虫クラブ #虫展</span></div>
+      <div class="post-meta">
+        <div class="post-meta-item"><span class="post-meta-label">ソース:</span> 展覧会公式情報</div>
+        <div class="post-meta-item"><span class="post-meta-label">使用権:</span> 公式告知</div>
+      </div>
+    </div></div>
+
+    <!-- #26 -->
+    <div class="post-row" onclick="togglePost(this)">
+    <div class="grid-cell">26</div><div class="grid-cell date-cell">4/28 <span class="dow">月</span></div>
+    <div class="grid-cell theme-cell"><span class="series-badge series-yorou">養老語録</span>東大名誉教授？ ご本人は<span class="quote">「虫屋」</span><span class="expand-indicator">&#9654;</span></div>
+    <div class="grid-cell"><span class="format-badge">1ツイート</span></div><div class="grid-cell status-icon">🟢</div>
+    </div>
+    <div class="post-detail"><div class="post-detail-inner">
+      <div class="post-body">「東大名誉教授」「解剖学者」、あるいは「『バカの壁』の人」。養老孟司さんの肩書きはいろいろありますが、ご本人の気持ちとしては「虫屋」だそうです。88歳、現役の虫屋。かっこいいですよね。
+<span class="hashtags">#養老昆虫クラブ #虫展 #養老語録</span></div>
+      <div class="post-meta">
+        <div class="post-meta-item"><span class="post-meta-label">ソース:</span> 週刊新潮2024年8月8日号</div>
+        <div class="post-meta-item"><span class="post-meta-label">使用権:</span> 要確認</div>
+      </div>
+    </div></div>
+
+    <!-- #27 -->
+    <div class="post-row gw-row" onclick="togglePost(this)">
+    <div class="grid-cell">27</div><div class="grid-cell date-cell">4/29 <span class="dow">火</span></div>
+    <div class="grid-cell theme-cell"><span class="series-badge series-guide">展覧会ガイド</span>GWのお出かけに。ダンゴムシ好きの5歳児も来たよ<span class="expand-indicator">&#9654;</span></div>
+    <div class="grid-cell"><span class="format-badge">1ツイート</span></div><div class="grid-cell status-icon">🟢</div>
+    </div>
+    <div class="post-detail"><div class="post-detail-inner">
+      <div class="post-body">GW、どこ行こう？のご提案です。大分展で2万人目の来場者になった桜大ちゃん（5歳）はこう言いました。「ダンゴムシが好き。幼稚園で捕まえてるよ」お子さんの「虫が好き」、この展覧会で全力で応援します。写真撮影もOKですよ。東京都写真美術館（恵比寿）にて。
+<span class="hashtags">#養老昆虫クラブ #虫展</span></div>
+      <div class="post-meta">
+        <div class="post-meta-item"><span class="post-meta-label">ソース:</span> 展覧会公式情報</div>
+        <div class="post-meta-item"><span class="post-meta-label">使用権:</span> 公式告知</div>
+      </div>
+    </div></div>
+
+    <!-- #28 -->
+    <div class="post-row gw-row" onclick="togglePost(this)">
+    <div class="grid-cell">28</div><div class="grid-cell date-cell">4/30 <span class="dow">水</span></div>
+    <div class="grid-cell theme-cell"><span class="series-badge series-mc">ムシちゃん物語</span>ムシちゃんと虫探し——恵比寿ガーデンプレイスで虫を見つける<span class="expand-indicator">&#9654;</span></div>
+    <div class="grid-cell"><span class="format-badge format-thread">スレッド2</span></div><div class="grid-cell status-icon">🔵</div>
+    </div>
+    <div class="post-detail"><div class="post-detail-inner">
+      <div class="post-placeholder">🔵 素材待ち — ムシちゃんと虫探し——恵比寿ガーデンプレイスで虫を見つける</div>
+    </div></div>
+
+    <!-- #29 -->
+    <div class="post-row gw-row" onclick="togglePost(this)">
+    <div class="grid-cell">29</div><div class="grid-cell date-cell">5/1 <span class="dow">木</span></div>
+    <div class="grid-cell theme-cell"><span class="series-badge series-yorou">養老語録</span><span class="quote">「六度目の大絶滅」</span>——一台の車が千万頭の虫を殺す<span class="expand-indicator">&#9654;</span></div>
+    <div class="grid-cell"><span class="format-badge">1ツイート</span></div><div class="grid-cell status-icon">🟢</div>
+    </div>
+    <div class="post-detail"><div class="post-detail-inner">
+      <div class="post-body">養老孟司「現代は虫がいなくなる時代。白亜紀の恐竜絶滅が五度目の大絶滅といわれていますが、現代を六度目の絶滅とする見方もあります。一台の車が廃車になるまでに千万頭の桁の虫を殺すともいわれています」。知らないうちに、私たちも加害者なんですね。
+<span class="hashtags">#養老昆虫クラブ #虫展 #養老語録</span></div>
+      <div class="post-meta">
+        <div class="post-meta-item"><span class="post-meta-label">ソース:</span> 建長寺虫塚法要の栞</div>
+        <div class="post-meta-item"><span class="post-meta-label">使用権:</span> 使用OK</div>
+      </div>
+    </div></div>
+
+    <!-- #30 -->
+    <div class="post-row gw-row" onclick="togglePost(this)">
+    <div class="grid-cell">30</div><div class="grid-cell date-cell">5/2 <span class="dow">金</span></div>
+    <div class="grid-cell theme-cell"><span class="series-badge series-guide">展覧会ガイド</span>GW後半おすすめ。写真撮影OK、木金は20時まで<span class="expand-indicator">&#9654;</span></div>
+    <div class="grid-cell"><span class="format-badge">1ツイート</span></div><div class="grid-cell status-icon">🟢</div>
+    </div>
+    <div class="post-detail"><div class="post-detail-inner">
+      <div class="post-body">GW後半、まだ予定が決まっていない方へ。「養老孟司と小檜山賢二の虫展」東京都写真美術館（恵比寿ガーデンプレイス内）写真撮影OK。お子さんと一緒に超拡大された虫の写真を撮るの、おすすめです。木・金は20時まで開館しています。
+<span class="hashtags">#養老昆虫クラブ #虫展</span></div>
+      <div class="post-meta">
+        <div class="post-meta-item"><span class="post-meta-label">ソース:</span> 展覧会公式情報</div>
+        <div class="post-meta-item"><span class="post-meta-label">使用権:</span> 公式告知</div>
+      </div>
+    </div></div>
+
+    <!-- #31 -->
+    <div class="post-row gw-row" onclick="togglePost(this)">
+    <div class="grid-cell">31</div><div class="grid-cell date-cell">5/3 <span class="dow dow-sat">土</span></div>
+    <div class="grid-cell theme-cell"><span class="series-badge series-live">現場レポート</span>ギャラリートーク・レポート（素材待ち）<span class="expand-indicator">&#9654;</span></div>
+    <div class="grid-cell"><span class="format-badge format-thread">スレッド2</span></div><div class="grid-cell status-icon">🔵</div>
+    </div>
+    <div class="post-detail"><div class="post-detail-inner">
+      <div class="post-placeholder">🔵 素材待ち — ギャラリートーク・レポート</div>
+    </div></div>
+
+    <!-- #32 -->
+    <div class="post-row gw-row" onclick="togglePost(this)">
+    <div class="grid-cell">32</div><div class="grid-cell date-cell">5/4 <span class="dow dow-sun">日</span></div>
+    <div class="grid-cell theme-cell"><span class="series-badge series-guide">展覧会ガイド</span><span class="quote">「かたちを見る。すべてはそこからはじまった。」</span><span class="expand-indicator">&#9654;</span></div>
+    <div class="grid-cell"><span class="format-badge">1ツイート</span></div><div class="grid-cell status-icon">🟢</div>
+    </div>
+    <div class="post-detail"><div class="post-detail-inner">
+      <div class="post-body">「答えはぜんぶ、虫にある」これが今回の虫展のメインコピーです。大げさに聞こえますか？ でも養老先生は本気でそう思っているんですよね。もうひとつのコピーも好きです。「かたちを見る。すべてはそこからはじまった。」見ること。それが始まりなんです。
+<span class="hashtags">#養老昆虫クラブ #虫展</span></div>
+      <div class="post-meta">
+        <div class="post-meta-item"><span class="post-meta-label">ソース:</span> 展覧会公式情報</div>
+        <div class="post-meta-item"><span class="post-meta-label">使用権:</span> 公式告知</div>
+      </div>
+    </div></div>
+
+    <!-- #33 -->
+    <div class="post-row gw-row" onclick="togglePost(this)">
+    <div class="grid-cell">33</div><div class="grid-cell date-cell">5/5 <span class="dow">月</span></div>
+    <div class="grid-cell theme-cell"><span class="series-badge series-mc">ムシちゃん物語</span>ムシちゃん×養老先生？（対面エピソードがあれば）<span class="expand-indicator">&#9654;</span></div>
+    <div class="grid-cell"><span class="format-badge">1ツイート</span></div><div class="grid-cell status-icon">🔵</div>
+    </div>
+    <div class="post-detail"><div class="post-detail-inner">
+      <div class="post-placeholder">🔵 素材待ち — ムシちゃん×養老先生？（対面エピソードがあれば）</div>
+    </div></div>
+
+    <!-- #34 -->
+    <div class="post-row gw-row" onclick="togglePost(this)">
+    <div class="grid-cell">34</div><div class="grid-cell date-cell">5/6 <span class="dow">火</span></div>
+    <div class="grid-cell theme-cell"><span class="series-badge series-guide">展覧会ガイド</span>GW最終日。東京→豊田（7月）→岡山（10月）へ巡回<span class="expand-indicator">&#9654;</span></div>
+    <div class="grid-cell"><span class="format-badge">1ツイート</span></div><div class="grid-cell status-icon">🟢</div>
+    </div>
+    <div class="post-detail"><div class="post-detail-inner">
+      <div class="post-body">GW最終日ですね。東京での虫展、会期は5月24日まで。東京で見られるのはあと少しです。この後は豊田市博物館（7〜9月）、岡山県立美術館（10〜11月）に巡回します。でも東京展ならではの展示もあるので、迷っている方は今のうちにぜひ。
+<span class="hashtags">#養老昆虫クラブ #虫展</span></div>
+      <div class="post-meta">
+        <div class="post-meta-item"><span class="post-meta-label">ソース:</span> 展覧会公式情報</div>
+        <div class="post-meta-item"><span class="post-meta-label">使用権:</span> 公式告知</div>
+      </div>
+    </div></div>
+  </div>
+</div>
+
+<!-- Phase 3 -->
+<div class="phase phase-3">
+  <div class="phase-header">
+    <span class="phase-badge">終盤：ラストスパート</span>
+    <span class="phase-desc">5/7〜5/24（18日）カウントダウン。展覧会ガイド＋現場レポート頻度UP</span>
+  </div>
+  <div class="calendar-grid">
+    <div class="grid-header">#</div><div class="grid-header">日付</div><div class="grid-header">テーマ</div><div class="grid-header">形式</div><div class="grid-header"></div>
+
+    <!-- #35 -->
+    <div class="post-row" onclick="togglePost(this)">
+    <div class="grid-cell">35</div><div class="grid-cell date-cell">5/7 <span class="dow">水</span></div>
+    <div class="grid-cell theme-cell"><span class="series-badge series-mc">ムシちゃん物語</span>ムシちゃんが語る「私が虫を好きになった理由」<span class="expand-indicator">&#9654;</span></div>
+    <div class="grid-cell"><span class="format-badge format-thread">スレッド2</span></div><div class="grid-cell status-icon">🔵</div>
+    </div>
+    <div class="post-detail"><div class="post-detail-inner">
+      <div class="post-placeholder">🔵 素材待ち — ムシちゃんが語る「私が虫を好きになった理由」</div>
+    </div></div>
+
+    <!-- #36 -->
+    <div class="post-row" onclick="togglePost(this)">
+    <div class="grid-cell">36</div><div class="grid-cell date-cell">5/8 <span class="dow">木</span></div>
+    <div class="grid-cell theme-cell"><span class="series-badge series-yorou">養老語録</span><span class="quote">「日本人の枠が狭くなっている」</span><span class="expand-indicator">&#9654;</span></div>
+    <div class="grid-cell"><span class="format-badge">1ツイート</span></div><div class="grid-cell status-icon">🟢</div>
+    </div>
+    <div class="post-detail"><div class="post-detail-inner">
+      <div class="post-body">養老孟司「日本人の枠が狭くなっている。こんな日本人もいるのだと知らせたい」。ラオスで虫を追い、ブータンに何度も通い、台湾で木の葉っぱを叩きまくる。養老先生の「枠」はどこまでも広い。
+<span class="hashtags">#養老昆虫クラブ #虫展 #養老語録</span></div>
+      <div class="post-meta">
+        <div class="post-meta-item"><span class="post-meta-label">ソース:</span> 「考える人」2007年秋号</div>
+        <div class="post-meta-item"><span class="post-meta-label">使用権:</span> 要確認</div>
+      </div>
+    </div></div>
+
+    <!-- #37 -->
+    <div class="post-row" onclick="togglePost(this)">
+    <div class="grid-cell">37</div><div class="grid-cell date-cell">5/9 <span class="dow">金</span></div>
+    <div class="grid-cell theme-cell"><span class="series-badge series-mushi">虫のすごさ</span>オオゾウムシ——撮影スポットでパチリ<span class="expand-indicator">&#9654;</span></div>
+    <div class="grid-cell"><span class="format-badge">1ツイート</span></div><div class="grid-cell status-icon">🟢</div>
+    </div>
+    <div class="post-detail"><div class="post-detail-inner">
+      <div class="post-body">日本最大のゾウムシ、オオゾウムシ。実物は約32mm。小檜山賢二さん「マイクロプレゼンスの手法で最初に手がけた写真です。撮影スポットになっているので、巨大になったゾウムシをバックに、ぜひパチリと撮ってみてください!」会場では巨大写真で見られます。記念撮影にぜひ。
+<span class="hashtags">#養老昆虫クラブ #虫展 #虫のすごさ</span></div>
+      <div class="post-meta">
+        <div class="post-meta-item"><span class="post-meta-label">ソース:</span> 週刊新潮2024年8月8日号</div>
+        <div class="post-meta-item"><span class="post-meta-label">使用権:</span> 要確認</div>
+      </div>
+    </div></div>
+
+    <!-- #38 -->
+    <div class="post-row" onclick="togglePost(this)">
+    <div class="grid-cell">38</div><div class="grid-cell date-cell">5/10 <span class="dow dow-sat">土</span></div>
+    <div class="grid-cell theme-cell"><span class="series-badge series-live">現場レポート</span>来場者の声・会場の様子（素材待ち）<span class="expand-indicator">&#9654;</span></div>
+    <div class="grid-cell"><span class="format-badge format-thread">スレッド2</span></div><div class="grid-cell status-icon">🔵</div>
+    </div>
+    <div class="post-detail"><div class="post-detail-inner">
+      <div class="post-placeholder">🔵 素材待ち — 来場者の声・会場の様子</div>
+    </div></div>
+
+    <!-- #39 -->
+    <div class="post-row countdown-row" onclick="togglePost(this)">
+    <div class="grid-cell">39</div><div class="grid-cell date-cell">5/11 <span class="dow dow-sun">日</span></div>
+    <div class="grid-cell theme-cell"><span class="series-badge series-guide">展覧会ガイド</span>残り2週間。<span class="quote">「自分から世界を見に行く」</span>＋来場案内<span class="expand-indicator">&#9654;</span></div>
+    <div class="grid-cell"><span class="format-badge">1ツイート</span></div><div class="grid-cell status-icon">🟢</div>
+    </div>
+    <div class="post-detail"><div class="post-detail-inner">
+      <div class="post-body">東京での虫展、残り2週間です。養老先生は言います。「自分から世界を見に行く」虫を見るとは、自分から世界に近づくこと。まだの方、ぜひ恵比寿へ。東京都写真美術館にて5/24まで。
+<span class="hashtags">#養老昆虫クラブ #虫展</span></div>
+      <div class="post-meta">
+        <div class="post-meta-item"><span class="post-meta-label">ソース:</span> 大分合同新聞2024年8月17日</div>
+        <div class="post-meta-item"><span class="post-meta-label">使用権:</span> 要確認</div>
+      </div>
+    </div></div>
+
+    <!-- #40 -->
+    <div class="post-row" onclick="togglePost(this)">
+    <div class="grid-cell">40</div><div class="grid-cell date-cell">5/12 <span class="dow">月</span></div>
+    <div class="grid-cell theme-cell"><span class="series-badge series-yorou">養老語録</span><span class="quote">「世間の人がはまらない理由がわからない」</span><span class="expand-indicator">&#9654;</span></div>
+    <div class="grid-cell"><span class="format-badge">1ツイート</span></div><div class="grid-cell status-icon">🟢</div>
+    </div>
+    <div class="post-detail"><div class="post-detail-inner">
+      <div class="post-body">養老孟司「世間の人があまりこういうことにはまらない理由のほうが、私には理解できない。お前のほうがよっぽど理解できないよ。そういわれることはわかっているが、やっぱり虫は面白いんですよ」。この正直さがたまらない。
+<span class="hashtags">#養老昆虫クラブ #虫展 #養老語録</span></div>
+      <div class="post-meta">
+        <div class="post-meta-item"><span class="post-meta-label">ソース:</span> 「考える人」2010年夏号</div>
+        <div class="post-meta-item"><span class="post-meta-label">使用権:</span> 要確認</div>
+      </div>
+    </div></div>
+
+    <!-- #41 -->
+    <div class="post-row" onclick="togglePost(this)">
+    <div class="grid-cell">41</div><div class="grid-cell date-cell">5/13 <span class="dow">火</span></div>
+    <div class="grid-cell theme-cell"><span class="series-badge series-mushi">虫のすごさ</span>台湾の驚異——日本の1/10の面積にチョウ400種超<span class="expand-indicator">&#9654;</span></div>
+    <div class="grid-cell"><span class="format-badge">1ツイート</span></div><div class="grid-cell status-icon">🟢</div>
+    </div>
+    <div class="post-detail"><div class="post-detail-inner">
+      <div class="post-body">台湾の面積は日本の10分の1。でもチョウの種類は400種超。日本は約231種。3000m級の山が200座以上あり、熱帯から寒帯まで幅広い生態系を持つから、虫がものすごく多い。養老先生いわく「採集に忙しくてしょうがない」。小さな島の、とんでもない多様性。虫の世界は数字で見てもすごいんです。
+<span class="hashtags">#養老昆虫クラブ #虫展 #虫のすごさ</span></div>
+      <div class="post-meta">
+        <div class="post-meta-item"><span class="post-meta-label">ソース:</span> 「考える人」2010年夏号</div>
+        <div class="post-meta-item"><span class="post-meta-label">使用権:</span> 要確認</div>
+      </div>
+    </div></div>
+
+    <!-- #42 -->
+    <div class="post-row" onclick="togglePost(this)">
+    <div class="grid-cell">42</div><div class="grid-cell date-cell">5/14 <span class="dow">水</span></div>
+    <div class="grid-cell theme-cell"><span class="series-badge series-mc">ムシちゃん物語</span>ムシちゃんおすすめ：虫展の楽しみ方ガイド<span class="expand-indicator">&#9654;</span></div>
+    <div class="grid-cell"><span class="format-badge">1ツイート</span></div><div class="grid-cell status-icon">🔵</div>
+    </div>
+    <div class="post-detail"><div class="post-detail-inner">
+      <div class="post-placeholder">🔵 素材待ち — ムシちゃんおすすめ：虫展の楽しみ方ガイド</div>
+    </div></div>
+
+    <!-- #43 -->
+    <div class="post-row" onclick="togglePost(this)">
+    <div class="grid-cell">43</div><div class="grid-cell date-cell">5/15 <span class="dow">木</span></div>
+    <div class="grid-cell theme-cell"><span class="series-badge series-yorou">養老語録</span><span class="quote">「ブータンは天国に近い」</span>——ゾウムシがいるから<span class="expand-indicator">&#9654;</span></div>
+    <div class="grid-cell"><span class="format-badge">1ツイート</span></div><div class="grid-cell status-icon">🟢</div>
+    </div>
+    <div class="post-detail"><div class="post-detail-inner">
+      <div class="post-body">養老孟司「路傍にローズヒップがたくさんあって、ゾウムシがついている。やっぱりブータンは天国に近い。べつにもう死にそうだという意味ではない。私の思う天国に近いのである」。ゾウムシがいれば天国。養老先生の天国観、最高です。
+<span class="hashtags">#養老昆虫クラブ #虫展 #養老語録</span></div>
+      <div class="post-meta">
+        <div class="post-meta-item"><span class="post-meta-label">ソース:</span> 「考える人」2009年冬号・春号</div>
+        <div class="post-meta-item"><span class="post-meta-label">使用権:</span> 要確認</div>
+      </div>
+    </div></div>
+
+    <!-- #44 -->
+    <div class="post-row countdown-row" onclick="togglePost(this)">
+    <div class="grid-cell">44</div><div class="grid-cell date-cell">5/16 <span class="dow">金</span></div>
+    <div class="grid-cell theme-cell"><span class="series-badge series-guide">展覧会ガイド</span>残り9日。小檜山<span class="quote">「養老さんは深く考えてくれる」</span>＋来場案内<span class="expand-indicator">&#9654;</span></div>
+    <div class="grid-cell"><span class="format-badge">1ツイート</span></div><div class="grid-cell status-icon">🟢</div>
+    </div>
+    <div class="post-detail"><div class="post-detail-inner">
+      <div class="post-body">会期終了まであと9日。小檜山賢二さんはこう語ります。「養老さんは『これは何だ？』と深く考えてくれる」虫を前にして「これは何だ？」と問い続ける。その姿勢がこの展覧会の核にあります。東京都写真美術館（恵比寿）5/24まで。
+<span class="hashtags">#養老昆虫クラブ #虫展</span></div>
+      <div class="post-meta">
+        <div class="post-meta-item"><span class="post-meta-label">ソース:</span> 大分合同新聞2024年8月17日</div>
+        <div class="post-meta-item"><span class="post-meta-label">使用権:</span> 要確認</div>
+      </div>
+    </div></div>
+
+    <!-- #45 -->
+    <div class="post-row" onclick="togglePost(this)">
+    <div class="grid-cell">45</div><div class="grid-cell date-cell">5/17 <span class="dow dow-sat">土</span></div>
+    <div class="grid-cell theme-cell"><span class="series-badge series-tabi">虫旅</span>ブータンはコクゾウムシの天国<span class="expand-indicator">&#9654;</span></div>
+    <div class="grid-cell"><span class="format-badge format-thread">スレッド2</span></div><div class="grid-cell status-icon">🟡</div>
+    </div>
+    <div class="post-detail"><div class="post-detail-inner">
+      <div class="post-thread-label">ツイート1:</div>
+      <div class="post-body">養老先生のブータン虫旅。「レストランの建物の壁に、コクゾウムシがたくさんついている。同じ建物の一階がお米屋さんだから、当然である。ブータンの人は虫を殺すような野暮なことはしない。コクゾウムシの天国でもある」害虫も天国にいられる国。いい話ですよね。</div>
+      <div class="post-thread-label">ツイート2:</div>
+      <div class="post-body">仏教の国ブータンでは、虫も生きものとして当たり前に共存している。養老先生はそれを「野暮なことはしない」と表現する。虫との付き合い方って、その国の文化そのものなんです。
+<span class="hashtags">#養老昆虫クラブ #虫展 #虫旅</span></div>
+      <div class="post-meta">
+        <div class="post-meta-item"><span class="post-meta-label">ソース:</span> 「考える人」2009年冬号・春号（新潮社）</div>
+        <div class="post-meta-item"><span class="post-meta-label">使用権:</span> 要確認</div>
+      </div>
+    </div></div>
+
+    <!-- #46 -->
+    <div class="post-row countdown-row" onclick="togglePost(this)">
+    <div class="grid-cell">46</div><div class="grid-cell date-cell">5/18 <span class="dow dow-sun">日</span></div>
+    <div class="grid-cell theme-cell"><span class="series-badge series-guide">展覧会ガイド</span>残り1週間カウントダウン＋<span class="quote">「自分から世界を見に行く」</span><span class="expand-indicator">&#9654;</span></div>
+    <div class="grid-cell"><span class="format-badge">1ツイート</span></div><div class="grid-cell status-icon">🟢</div>
+    </div>
+    <div class="post-detail"><div class="post-detail-inner">
+      <div class="post-body">東京での虫展、残り1週間です。「自分から世界を見に行く」養老先生のこの言葉、展覧会を見た後だと重みが変わります。虫の「かたち」を見つめた先に、世界の見え方が少し変わる。そんな体験です。東京都写真美術館（恵比寿）5/24まで。
+<span class="hashtags">#養老昆虫クラブ #虫展</span></div>
+      <div class="post-meta">
+        <div class="post-meta-item"><span class="post-meta-label">ソース:</span> 大分合同新聞2024年8月17日</div>
+        <div class="post-meta-item"><span class="post-meta-label">使用権:</span> 要確認</div>
+      </div>
+    </div></div>
+
+    <!-- #47 -->
+    <div class="post-row" onclick="togglePost(this)">
+    <div class="grid-cell">47</div><div class="grid-cell date-cell">5/19 <span class="dow">月</span></div>
+    <div class="grid-cell theme-cell"><span class="series-badge series-yorou">養老語録</span><span class="quote">「葉っぱを棒で叩きまくっていただけ」</span>——台湾の虫採り<span class="expand-indicator">&#9654;</span></div>
+    <div class="grid-cell"><span class="format-badge">1ツイート</span></div><div class="grid-cell status-icon">🟢</div>
+    </div>
+    <div class="post-detail"><div class="post-detail-inner">
+      <div class="post-body">養老孟司「台湾旅行は面白かったなあ。私は山の中で、なんの恨みもない木の葉っぱを、棒で叩きまくっていただけだが、それでも十分に気が晴れた」。これ、ビーティングという虫の採集法なんです。楽しそうだなあ。
+<span class="hashtags">#養老昆虫クラブ #虫展 #養老語録</span></div>
+      <div class="post-meta">
+        <div class="post-meta-item"><span class="post-meta-label">ソース:</span> 「考える人」2010年夏号</div>
+        <div class="post-meta-item"><span class="post-meta-label">使用権:</span> 要確認</div>
+      </div>
+    </div></div>
+
+    <!-- #48 -->
+    <div class="post-row countdown-row" onclick="togglePost(this)">
+    <div class="grid-cell">48</div><div class="grid-cell date-cell">5/20 <span class="dow">火</span></div>
+    <div class="grid-cell theme-cell"><span class="series-badge series-guide">展覧会ガイド</span>残り4日。平日は空いている＋大分展5歳児エピソード<span class="expand-indicator">&#9654;</span></div>
+    <div class="grid-cell"><span class="format-badge">1ツイート</span></div><div class="grid-cell status-icon">🟢</div>
+    </div>
+    <div class="post-detail"><div class="post-detail-inner">
+      <div class="post-body">東京展、残り4日。平日は比較的空いています。大分展で2万人目の来場者になった桜大ちゃん（5歳）は「ダンゴムシが好き。幼稚園で捕まえてるよ」と言っていました。5歳でもちゃんと楽しめる展覧会です。平日にお子さんと一緒にいかがですか。東京都写真美術館（恵比寿）5/24まで。
+<span class="hashtags">#養老昆虫クラブ #虫展</span></div>
+      <div class="post-meta">
+        <div class="post-meta-item"><span class="post-meta-label">ソース:</span> 展覧会公式情報</div>
+        <div class="post-meta-item"><span class="post-meta-label">使用権:</span> 公式告知</div>
+      </div>
+    </div></div>
+
+    <!-- #49 -->
+    <div class="post-row countdown-row" onclick="togglePost(this)">
+    <div class="grid-cell">49</div><div class="grid-cell date-cell">5/21 <span class="dow">水</span></div>
+    <div class="grid-cell theme-cell"><span class="series-badge series-mc">ムシちゃん物語</span>ムシちゃんから最後のメッセージ「虫展行った？」<span class="expand-indicator">&#9654;</span></div>
+    <div class="grid-cell"><span class="format-badge">1ツイート</span></div><div class="grid-cell status-icon">🔵</div>
+    </div>
+    <div class="post-detail"><div class="post-detail-inner">
+      <div class="post-placeholder">🔵 素材待ち — ムシちゃんから最後のメッセージ「虫展行った？」</div>
+    </div></div>
+
+    <!-- #50 -->
+    <div class="post-row countdown-row" onclick="togglePost(this)">
+    <div class="grid-cell">50</div><div class="grid-cell date-cell">5/22 <span class="dow">木</span></div>
+    <div class="grid-cell theme-cell"><span class="series-badge series-yorou">養老語録</span>標本10万点に<span class="quote">「新種が何百」</span>——88歳の現在地<span class="expand-indicator">&#9654;</span></div>
+    <div class="grid-cell"><span class="format-badge">1ツイート</span></div><div class="grid-cell status-icon">🟢</div>
+    </div>
+    <div class="post-detail"><div class="post-detail-inner">
+      <div class="post-body">養老先生が箱根の「養老昆虫館」に所蔵する標本は約10万点。そのうち「おそらく何百という新種がある」そうです。自宅に何百もの新種が眠っている。虫の世界の奥深さ、ちょっと気が遠くなりますよね。
+<span class="hashtags">#養老昆虫クラブ #虫展 #養老語録</span></div>
+      <div class="post-meta">
+        <div class="post-meta-item"><span class="post-meta-label">ソース:</span> リサーチJSONL</div>
+        <div class="post-meta-item"><span class="post-meta-label">使用権:</span> 要確認</div>
+      </div>
+    </div></div>
+
+    <!-- #51 -->
+    <div class="post-row countdown-row" onclick="togglePost(this)">
+    <div class="grid-cell">51</div><div class="grid-cell date-cell">5/23 <span class="dow">金</span></div>
+    <div class="grid-cell theme-cell"><span class="series-badge series-guide">展覧会ガイド</span>明日最終日。<span class="quote">「1日10分、自然を見る」</span>——最後に見に行きませんか<span class="expand-indicator">&#9654;</span></div>
+    <div class="grid-cell"><span class="format-badge">1ツイート</span></div><div class="grid-cell status-icon">🟢</div>
+    </div>
+    <div class="post-detail"><div class="post-detail-inner">
+      <div class="post-body">東京展、明日が最終日です。養老先生は言います。「1日10分、自然を見る」明日、恵比寿で虫を見る10分。それだけで何かが変わるかもしれません。東京都写真美術館、5月24日まで。
+<span class="hashtags">#養老昆虫クラブ #虫展</span></div>
+      <div class="post-meta">
+        <div class="post-meta-item"><span class="post-meta-label">ソース:</span> 週刊新潮2024年8月8日号</div>
+        <div class="post-meta-item"><span class="post-meta-label">使用権:</span> 要確認</div>
+      </div>
+    </div></div>
+
+    <!-- #52 -->
+    <div class="post-row countdown-row" onclick="togglePost(this)">
+    <div class="grid-cell">52</div><div class="grid-cell date-cell">5/24 <span class="dow dow-sat">土</span></div>
+    <div class="grid-cell theme-cell"><span class="series-badge series-guide">展覧会ガイド</span>最終日。<span class="quote">「答えはぜんぶ、虫にある」</span>——ありがとうございました<span class="expand-indicator">&#9654;</span></div>
+    <div class="grid-cell"><span class="format-badge">1ツイート</span></div><div class="grid-cell status-icon">🟢</div>
+    </div>
+    <div class="post-detail"><div class="post-detail-inner">
+      <div class="post-body">本日、東京展最終日です。「答えはぜんぶ、虫にある」ご来場いただいた皆さま、ありがとうございました。虫展はこの後、豊田市博物館（7〜9月）、岡山県立美術館（10〜11月）に巡回します。東京で見逃した方、ぜひお近くの会場で。
+<span class="hashtags">#養老昆虫クラブ #虫展</span></div>
+      <div class="post-meta">
+        <div class="post-meta-item"><span class="post-meta-label">ソース:</span> 展覧会公式情報</div>
+        <div class="post-meta-item"><span class="post-meta-label">使用権:</span> 公式告知</div>
+      </div>
+    </div></div>
+  </div>
+</div>
+
+<!-- Theme Song -->
+<div class="theme-song-section">
+  <h2>Theme Song</h2>
+  <div class="theme-song-card">
+    <div class="theme-song-info">
+      <div class="theme-song-title">「むしのいどころ」</div>
+      <div class="theme-song-artist">すてぃぎもろく</div>
+      <div class="theme-song-presents">養老昆虫クラブ presents</div>
+    </div>
+    <a href="https://www.youtube.com/watch?v=HoRqKxLJFAo" target="_blank" rel="noopener" class="theme-song-link">
+      &#9654; YouTube で聴く
+    </a>
+  </div>
+  <p class="theme-song-note">SNS投稿でテーマソングを紹介する際は、上記リンクを使用してください。</p>
+</div>
+
+<!-- AD素材リクエスト -->
+<div class="request-section">
+  <h2>AD（足立さん・平野さん）への素材リクエスト</h2>
+  <p style="color:#666; font-size:0.9rem; margin-bottom:1rem;">会期中にSNSの質を上げるために、以下の素材をいただけると投稿に活用できます。</p>
+
+  <h3 style="font-size:1rem; margin:1rem 0 0.5rem;">すぐほしいもの</h3>
+  <table class="request-table">
+    <tr><th>#</th><th>素材</th><th>用途</th><th>優先度</th></tr>
+    <tr><td>1</td><td><strong>ムシちゃん撮影素材</strong>（4/10撮影分：動画・写真）</td><td>ムシちゃん物語8本分</td><td class="priority-high">最優先</td></tr>
+    <tr><td>2</td><td><strong>ムシちゃんプロフィール情報</strong>（紹介文・使用OK写真）</td><td>MC-01（4/9投稿）</td><td class="priority-high">最優先</td></tr>
+    <tr><td>3</td><td><strong>使用許可済み小檜山写真リスト</strong></td><td>虫のすごさシリーズに紐付け</td><td class="priority-med">高</td></tr>
+  </table>
+
+  <h3 style="font-size:1rem; margin:1rem 0 0.5rem;">会期中に随時もらえると助かるもの</h3>
+  <table class="request-table">
+    <tr><th>#</th><th>素材</th><th>活用イメージ</th></tr>
+    <tr><td>4</td><td><strong>ギャラリートークの音声データ</strong></td><td>発言を抜粋して速報投稿に</td></tr>
+    <tr><td>5</td><td><strong>イベント時の写真</strong>（会場・来場者の雰囲気）</td><td>「今日の虫展」的な臨場感</td></tr>
+    <tr><td>6</td><td><strong>来場者の声</strong>（許可済みの感想・リアクション）</td><td>終盤カウントダウン投稿に</td></tr>
+    <tr><td>7</td><td><strong>ムシちゃん追加コンテンツ</strong>（虫展再訪・虫探し動画等）</td><td>MC-05〜MC-08を充実</td></tr>
+    <tr><td>8</td><td><strong>足立さんの裏話</strong>（展示制作秘話、出してOKなもの）</td><td>展覧会ガイドのネタ追加</td></tr>
+  </table>
+
+  <p style="margin-top:1rem; padding:0.8rem; background:#f5f0eb; border-radius:6px; font-size:0.85rem;">
+    <strong>渡し方:</strong> 動画・音声ファイル → そのまま渡してもらえればエディがJSONLに変換して取り込みます。テキスト・写真 → チャットでもメールでもOK。「これ使える？」レベルの相談も歓迎。
+  </p>
+</div>
+
+<div style="text-align:center; color:#aaa; margin-top:2rem; font-size:0.8rem;">
+  <p>現場レポート（🔵）の枠は、虫旅（🟡）と差し替え可能。実際のイベント情報が入り次第、仮置き枠を入れ替えます。</p>
+  <p style="margin-top:0.5rem;">養老昆虫クラブ SNS運用計画 v2 ｜ 制作：エディ ｜ 2026-04-02</p>
+</div>
+
+<script>
+function togglePost(row) {
+  const detail = row.nextElementSibling;
+  if (!detail || !detail.classList.contains('post-detail')) return;
+
+  const wasOpen = detail.classList.contains('open');
+
+  // Close all open details in the same grid
+  const grid = row.closest('.calendar-grid');
+  grid.querySelectorAll('.post-detail.open').forEach(function(d) {
+    d.classList.remove('open');
+  });
+  grid.querySelectorAll('.post-row.expanded').forEach(function(r) {
+    r.classList.remove('expanded');
+  });
+
+  // Toggle the clicked one (if it wasn't already open)
+  if (!wasOpen) {
+    detail.classList.add('open');
+    row.classList.add('expanded');
+  }
+}
+</script>
+
+</body>
+</html>
