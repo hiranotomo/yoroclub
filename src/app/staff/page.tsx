@@ -129,17 +129,19 @@ export default function StaffPage() {
     );
   }
 
+  const [mode, setMode] = useState<"calendar" | "preview">("calendar");
+
   return (
     <div style={{ height: "100vh", display: "flex", flexDirection: "column" }}>
-      <BufferToolbar />
-      <iframe
-        src="/staff/calendar.html"
-        style={{
-          flex: 1,
-          width: "100%",
-          border: "none",
-        }}
-      />
+      <StaffToolbar mode={mode} setMode={setMode} />
+      {mode === "calendar" ? (
+        <iframe
+          src="/staff/calendar.html"
+          style={{ flex: 1, width: "100%", border: "none" }}
+        />
+      ) : (
+        <TweetPreview />
+      )}
     </div>
   );
 }
@@ -187,78 +189,219 @@ const POSTS: { num: number; date: string; text: string }[] = [
   { num: 52, date: "2026-05-24T00:00:00.000Z", text: `本日、東京展最終日です。\n\n「答えはぜんぶ、虫にある」\n\nご来場いただいた皆さま、ありがとうございました。\n\n虫展はこの後、豊田市博物館（7〜9月）、岡山県立美術館（10〜11月）に巡回します。東京で見逃した方、ぜひお近くの会場で。\n\n#養老昆虫クラブ #虫展` },
 ];
 
-function BufferToolbar() {
-  const [status, setStatus] = useState<"idle" | "sending" | "done" | "error">("idle");
+function StaffToolbar({ mode, setMode }: { mode: "calendar" | "preview"; setMode: (m: "calendar" | "preview") => void }) {
+  const [bufferStatus, setBufStatus] = useState<"idle" | "sending" | "done" | "error">("idle");
   const [result, setResult] = useState<{ total: number; succeeded: number } | null>(null);
 
   async function handleSendToBuffer() {
     if (!confirm(`確定済み${POSTS.length}本をBufferに予約登録します。よろしいですか？`)) return;
-
-    setStatus("sending");
+    setBufStatus("sending");
     try {
       const res = await fetch("/api/buffer", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "x-staff-auth": "ok",
-        },
+        headers: { "Content-Type": "application/json", "x-staff-auth": "ok" },
         body: JSON.stringify({
           channelId: CHANNEL_ID_X,
           posts: POSTS.map((p) => ({ text: p.text, dueAt: p.date })),
         }),
       });
       const data = await res.json();
-      if (data.succeeded !== undefined) {
-        setResult(data);
-        setStatus("done");
-      } else {
-        setStatus("error");
-      }
-    } catch {
-      setStatus("error");
-    }
+      if (data.succeeded !== undefined) { setResult(data); setBufStatus("done"); }
+      else setBufStatus("error");
+    } catch { setBufStatus("error"); }
   }
+
+  const tabStyle = (active: boolean) => ({
+    background: active ? "white" : "transparent",
+    color: active ? "#1a472a" : "rgba(255,255,255,0.7)",
+    border: "none",
+    borderRadius: 6,
+    padding: "0.35rem 0.8rem",
+    fontWeight: active ? 700 : 400,
+    fontSize: "0.82rem",
+    cursor: "pointer" as const,
+  });
 
   return (
     <div
       style={{
-        background: "#1a472a",
-        color: "white",
-        padding: "0.6rem 1.5rem",
-        display: "flex",
-        alignItems: "center",
-        gap: "1rem",
+        background: "#1a472a", color: "white", padding: "0.5rem 1.5rem",
+        display: "flex", alignItems: "center", gap: "0.8rem",
         fontFamily: "-apple-system, BlinkMacSystemFont, 'Hiragino Kaku Gothic ProN', sans-serif",
         fontSize: "0.85rem",
       }}
     >
-      <span style={{ fontWeight: 700 }}>🪲 スタッフツール</span>
-      <span style={{ color: "rgba(255,255,255,0.5)" }}>|</span>
+      <span style={{ fontWeight: 700 }}>🪲</span>
 
-      {status === "idle" && (
-        <button
-          onClick={handleSendToBuffer}
-          style={{
-            background: "#e8f5e9",
-            color: "#1a472a",
-            border: "none",
-            borderRadius: 6,
-            padding: "0.4rem 1rem",
-            fontWeight: 600,
-            fontSize: "0.82rem",
-            cursor: "pointer",
-          }}
-        >
-          Bufferに一括登録（{POSTS.length}本）
+      <div style={{ display: "flex", gap: 4, background: "rgba(255,255,255,0.15)", borderRadius: 8, padding: 2 }}>
+        <button onClick={() => setMode("calendar")} style={tabStyle(mode === "calendar")}>カレンダー</button>
+        <button onClick={() => setMode("preview")} style={tabStyle(mode === "preview")}>プレビュー</button>
+      </div>
+
+      <span style={{ color: "rgba(255,255,255,0.3)" }}>|</span>
+
+      {bufferStatus === "idle" && (
+        <button onClick={handleSendToBuffer} style={{ background: "#e8f5e9", color: "#1a472a", border: "none", borderRadius: 6, padding: "0.35rem 0.8rem", fontWeight: 600, fontSize: "0.82rem", cursor: "pointer" }}>
+          Buffer登録（{POSTS.length}本）
         </button>
       )}
-      {status === "sending" && <span>送信中...</span>}
-      {status === "done" && result && (
-        <span style={{ color: "#a5d6a7" }}>
-          完了: {result.succeeded}/{result.total}本 登録成功
+      {bufferStatus === "sending" && <span>送信中...</span>}
+      {bufferStatus === "done" && result && <span style={{ color: "#a5d6a7" }}>完了: {result.succeeded}/{result.total}本</span>}
+      {bufferStatus === "error" && <span style={{ color: "#ef9a9a" }}>エラー</span>}
+    </div>
+  );
+}
+
+function formatDate(iso: string) {
+  const d = new Date(iso);
+  const m = d.getUTCMonth() + 1;
+  const day = d.getUTCDate();
+  const dow = ["日","月","火","水","木","金","土"][d.getUTCDay()];
+  return `${m}月${day}日(${dow})`;
+}
+
+function TweetPreview() {
+  const [current, setCurrent] = useState(0);
+
+  useEffect(() => {
+    function handleKey(e: KeyboardEvent) {
+      if (e.key === "ArrowRight" || e.key === "ArrowDown") setCurrent(c => Math.min(c + 1, POSTS.length - 1));
+      if (e.key === "ArrowLeft" || e.key === "ArrowUp") setCurrent(c => Math.max(c - 1, 0));
+    }
+    window.addEventListener("keydown", handleKey);
+    return () => window.removeEventListener("keydown", handleKey);
+  }, []);
+
+  const post = POSTS[current];
+  const textParts = post.text.split(/(#\S+)/g);
+  const charCount = post.text.replace(/\n/g, "").length;
+
+  return (
+    <div style={{
+      flex: 1, background: "#e8ecef", display: "flex", flexDirection: "column",
+      alignItems: "center", justifyContent: "center", padding: "1rem",
+      fontFamily: "-apple-system, BlinkMacSystemFont, 'Hiragino Kaku Gothic ProN', sans-serif",
+    }}>
+      {/* Navigation */}
+      <div style={{ display: "flex", alignItems: "center", gap: "1rem", marginBottom: "1rem" }}>
+        <button
+          onClick={() => setCurrent(c => Math.max(c - 1, 0))}
+          disabled={current === 0}
+          style={{ background: "none", border: "none", fontSize: "1.5rem", cursor: "pointer", opacity: current === 0 ? 0.3 : 1 }}
+        >←</button>
+        <span style={{ fontSize: "0.85rem", color: "#555", fontWeight: 600 }}>
+          #{post.num} — {formatDate(post.date)} ({current + 1}/{POSTS.length})
         </span>
-      )}
-      {status === "error" && <span style={{ color: "#ef9a9a" }}>エラーが発生しました</span>}
+        <button
+          onClick={() => setCurrent(c => Math.min(c + 1, POSTS.length - 1))}
+          disabled={current === POSTS.length - 1}
+          style={{ background: "none", border: "none", fontSize: "1.5rem", cursor: "pointer", opacity: current === POSTS.length - 1 ? 0.3 : 1 }}
+        >→</button>
+      </div>
+
+      {/* Phone frame */}
+      <div style={{
+        width: 375, maxHeight: "75vh", background: "#000", borderRadius: 40,
+        padding: "12px", boxShadow: "0 8px 40px rgba(0,0,0,0.25)",
+      }}>
+        <div style={{
+          background: "#000", borderRadius: 30, overflow: "hidden",
+          display: "flex", flexDirection: "column", height: "100%",
+        }}>
+          {/* Status bar */}
+          <div style={{
+            background: "#000", color: "white", padding: "8px 20px 4px",
+            display: "flex", justifyContent: "space-between", fontSize: "0.75rem", fontWeight: 600,
+          }}>
+            <span>9:41</span>
+            <div style={{ width: 120, height: 28, background: "#000", borderRadius: 14 }} />
+            <span>📶 🔋</span>
+          </div>
+
+          {/* X App header */}
+          <div style={{
+            background: "#000", padding: "8px 16px", display: "flex",
+            alignItems: "center", justifyContent: "space-between",
+            borderBottom: "1px solid #2f3336",
+          }}>
+            <span style={{ color: "white", fontSize: "1.2rem", fontWeight: 700 }}>𝕏</span>
+          </div>
+
+          {/* Tweet */}
+          <div style={{
+            background: "#000", padding: "12px 16px", overflowY: "auto", flex: 1,
+          }}>
+            {/* Author row */}
+            <div style={{ display: "flex", gap: "10px" }}>
+              <div style={{
+                width: 40, height: 40, borderRadius: 20,
+                background: "#1a472a", display: "flex", alignItems: "center",
+                justifyContent: "center", fontSize: "1.1rem", flexShrink: 0,
+              }}>🪲</div>
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <div style={{ display: "flex", alignItems: "center", gap: "4px" }}>
+                  <span style={{ color: "white", fontWeight: 700, fontSize: "0.9rem" }}>養老昆虫クラブ</span>
+                  <span style={{ color: "#71767b", fontSize: "0.85rem" }}>@yoroclub · {formatDate(post.date)}</span>
+                </div>
+                {/* Tweet text */}
+                <div style={{
+                  color: "#e7e9ea", fontSize: "0.93rem", lineHeight: 1.55,
+                  marginTop: 4, whiteSpace: "pre-line", wordBreak: "break-word",
+                }}>
+                  {textParts.map((part, i) =>
+                    part.startsWith("#") ? (
+                      <span key={i} style={{ color: "#1d9bf0" }}>{part}</span>
+                    ) : (
+                      <span key={i}>{part}</span>
+                    )
+                  )}
+                </div>
+                {/* Engagement row */}
+                <div style={{
+                  display: "flex", justifyContent: "space-between",
+                  marginTop: 12, paddingRight: "20%",
+                  color: "#71767b", fontSize: "0.8rem",
+                }}>
+                  <span>💬 —</span>
+                  <span>🔁 —</span>
+                  <span>❤️ —</span>
+                  <span>📊 —</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Character count */}
+      <div style={{
+        marginTop: "0.8rem", fontSize: "0.8rem",
+        color: charCount > 280 ? "#e53935" : "#888",
+        fontWeight: charCount > 280 ? 700 : 400,
+      }}>
+        {charCount}文字 {charCount > 280 && "⚠️ 280文字超過"}
+      </div>
+
+      {/* Thumbnail strip */}
+      <div style={{
+        display: "flex", gap: 4, marginTop: "0.8rem", overflowX: "auto",
+        maxWidth: "100%", padding: "4px 0",
+      }}>
+        {POSTS.map((p, i) => (
+          <button
+            key={p.num}
+            onClick={() => setCurrent(i)}
+            style={{
+              width: 28, height: 28, borderRadius: 4, border: "none",
+              background: i === current ? "#1a472a" : "#ddd",
+              color: i === current ? "white" : "#888",
+              fontSize: "0.6rem", fontWeight: 600, cursor: "pointer", flexShrink: 0,
+            }}
+          >
+            {p.num}
+          </button>
+        ))}
+      </div>
     </div>
   );
 }
