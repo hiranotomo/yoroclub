@@ -416,9 +416,11 @@ export default function PixelBugs() {
   const [gameCleared, setGameCleared] = useState(false);
   const [gameStartTime, setGameStartTime] = useState(0);
   const [clearTime, setClearTime] = useState(0);
-  const [showNameInput, setShowNameInput] = useState(false);
   const [playerName, setPlayerName] = useState("");
   const [rankingOpen, setRankingOpen] = useState(false);
+  const [clearPhase, setClearPhase] = useState<"name" | "ranking" | "done">("name");
+  const [clearRankings, setClearRankings] = useState<{ name: string; time: number; date: string }[]>([]);
+  const [clearStats, setClearStats] = useState({ totalClears: 0, totalPlayers: 0 });
   const bossTriggeredRef = useRef(false);
   const bossFleeTimerRef = useRef<ReturnType<typeof setInterval>>(undefined);
   const keyCounterRef = useRef(0);
@@ -828,7 +830,7 @@ export default function PixelBugs() {
                 setClearTime(elapsed);
                 setBossActive(false);
                 setGameCleared(true);
-                setShowNameInput(true);
+                setClearPhase("name");
                 if (engine) {
                   engine.resume().then(() => {
                     engine.bgm.stop({ fade: 300 });
@@ -863,27 +865,28 @@ export default function PixelBugs() {
         </div>
       )}
 
-      {/* GAME CLEAR + Name Entry */}
-      {gameCleared && (
-        <div className="fixed inset-0 z-[60] flex items-center justify-center bg-white">
-          <div className="text-center">
-            <div className="animate-game-clear">
-              <p className="text-5xl md:text-7xl font-bold font-[var(--font-jetbrains-mono)] text-black tracking-wider">
+      {/* GAME CLEAR screen */}
+      {gameCleared && clearPhase !== "done" && (
+        <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/95 overflow-y-auto py-8">
+          <div className="text-center w-full max-w-sm mx-4 font-[var(--font-jetbrains-mono)]">
+            {/* Title */}
+            <div className="animate-game-clear mb-6">
+              <p className="text-4xl md:text-6xl font-bold text-white tracking-wider">
                 GAME CLEAR!!
               </p>
-              <p className="mt-4 text-lg md:text-xl text-gray-600 font-bold font-[var(--font-jetbrains-mono)]">
+              <p className="mt-3 text-lg text-green-400 font-bold">
                 TIME: {clearTime}s
               </p>
             </div>
-            {showNameInput && (
-              <div className="mt-8 animate-fade-in">
-                <p className="text-sm font-[var(--font-jetbrains-mono)] text-gray-500 mb-3">
-                  ENTER YOUR NAME
-                </p>
+
+            {/* Phase: Name input */}
+            {clearPhase === "name" && (
+              <div className="animate-fade-in">
+                <p className="text-xs text-gray-500 mb-3">ENTER YOUR NAME</p>
                 <form
                   onSubmit={async (e) => {
                     e.preventDefault();
-                    const name = playerName.trim() || "ANONYMOUS";
+                    const name = playerName.trim() || "ANON";
                     try {
                       await fetch("/api/rankings", {
                         method: "POST",
@@ -895,30 +898,118 @@ export default function PixelBugs() {
                         }),
                       });
                     } catch { /* ignore */ }
-                    setShowNameInput(false);
                     if (engine) {
                       engine.resume().then(() => engine.se.play("coin"));
                     }
+                    // Fetch rankings to show
+                    try {
+                      const [rankRes, playerRes] = await Promise.all([
+                        fetch("/api/rankings").then((r) => r.json()),
+                        fetch("/api/players").then((r) => r.json()),
+                      ]);
+                      setClearRankings(rankRes.all ?? []);
+                      setClearStats({
+                        totalClears: rankRes.totalClears ?? 0,
+                        totalPlayers: playerRes.count ?? 0,
+                      });
+                    } catch { /* ignore */ }
+                    setClearPhase("ranking");
                   }}
                   className="flex flex-col items-center gap-3"
                 >
                   <input
                     type="text"
                     maxLength={7}
-                    pattern="[A-Za-z]*"
                     value={playerName}
-                    onChange={(e) => setPlayerName(e.target.value.replace(/[^A-Za-z]/g, "").toUpperCase())}
+                    onChange={(e) =>
+                      setPlayerName(
+                        e.target.value.replace(/[^A-Za-z]/g, "").toUpperCase()
+                      )
+                    }
                     placeholder="YOURNAME"
-                    className="w-48 px-4 py-2 bg-black text-white text-center text-lg font-[var(--font-jetbrains-mono)] tracking-widest border-2 border-gray-600 focus:border-white outline-none uppercase"
+                    className="w-48 px-4 py-2 bg-black text-white text-center text-lg tracking-widest border-2 border-gray-600 focus:border-green-400 outline-none uppercase"
                     autoFocus
                   />
                   <button
                     type="submit"
-                    className="px-6 py-2 bg-black text-white text-sm font-[var(--font-jetbrains-mono)] tracking-widest hover:bg-gray-800 transition-colors"
+                    className="px-6 py-2 bg-white text-black text-sm tracking-widest hover:bg-gray-200 transition-colors"
                   >
                     SUBMIT
                   </button>
                 </form>
+              </div>
+            )}
+
+            {/* Phase: Ranking */}
+            {clearPhase === "ranking" && (
+              <div className="animate-fade-in">
+                {/* Stats */}
+                <div className="flex justify-center gap-6 mb-4 text-[10px]">
+                  <span className="text-gray-500">
+                    PLAYERS <span className="text-cyan-400">{clearStats.totalPlayers}</span>
+                  </span>
+                  <span className="text-gray-500">
+                    CLEARS <span className="text-green-400">{clearStats.totalClears}</span>
+                  </span>
+                </div>
+
+                {/* Top 10 ranking */}
+                <div className="border border-gray-800 p-3 mb-4">
+                  <p className="text-[10px] text-yellow-400 tracking-[3px] mb-2">
+                    TOP 10 — FASTEST
+                  </p>
+                  <div className="flex items-center gap-2 text-[10px] text-gray-600 mb-1">
+                    <span className="w-5">#</span>
+                    <span className="w-16 text-left">NAME</span>
+                    <span className="w-12 text-right">TIME</span>
+                    <span className="flex-1 text-right">DATE</span>
+                  </div>
+                  {clearRankings.slice(0, 10).map((entry, i) => {
+                    const isMe =
+                      entry.name === (playerName.trim().toUpperCase() || "ANON") &&
+                      entry.time === clearTime;
+                    return (
+                      <div
+                        key={i}
+                        className={`flex items-center gap-2 text-xs py-0.5 ${
+                          isMe ? "text-yellow-300" : ""
+                        }`}
+                      >
+                        <span className="w-5 text-yellow-500/70">{i + 1}.</span>
+                        <span className="w-16 text-left truncate">
+                          {entry.name}
+                        </span>
+                        <span className="w-12 text-green-400 text-right">
+                          {entry.time}s
+                        </span>
+                        <span className="flex-1 text-gray-600 text-[10px] text-right">
+                          {(() => {
+                            try {
+                              const d = new Date(entry.date);
+                              return `${d.getMonth() + 1}/${d.getDate()}`;
+                            } catch {
+                              return "";
+                            }
+                          })()}
+                        </span>
+                      </div>
+                    );
+                  })}
+                  {clearRankings.length === 0 && (
+                    <p className="text-gray-600 text-xs py-2">NO DATA</p>
+                  )}
+                </div>
+
+                {/* Close button */}
+                <button
+                  onClick={() => {
+                    playSE("select");
+                    setClearPhase("done");
+                  }}
+                  className="px-8 py-3 bg-white text-black text-sm tracking-widest hover:bg-gray-200 transition-colors"
+                >
+                  CONTINUE
+                </button>
               </div>
             )}
           </div>
