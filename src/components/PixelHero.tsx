@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState, useCallback } from "react";
 import { useSoundEngine } from "./SoundProvider";
+import { useLanguage } from "./LanguageProvider";
 
 interface Particle {
   x: number;
@@ -32,6 +33,7 @@ export default function PixelHero() {
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
   const [logoLoaded, setLogoLoaded] = useState(false);
   const { playSE } = useSoundEngine();
+  const { t } = useLanguage();
   const playSERef = useRef(playSE);
   playSERef.current = playSE;
 
@@ -334,10 +336,10 @@ export default function PixelHero() {
             className="w-48 md:w-64"
           />
           <h1 className="text-2xl md:text-4xl font-bold tracking-[0.2em]">
-            養老昆虫クラブ
+            {t("hero.title")}
           </h1>
           <p className="text-sm text-gray-500">
-            養老孟司先生の周りにいる虫好きたちの集まりです
+            {t("hero.subtitle")}
           </p>
         </div>
       ) : (
@@ -366,10 +368,10 @@ export default function PixelHero() {
             style={{ bottom: "15%" }}
           >
             <h1 className="text-2xl md:text-4xl font-bold tracking-[0.2em] text-black">
-              養老昆虫クラブ
+              {t("hero.title")}
             </h1>
             <p className="mt-3 text-xs md:text-sm text-gray-500 tracking-wider">
-              養老孟司先生の周りにいる虫好きたちの集まりです
+              {t("hero.subtitle")}
             </p>
           </div>
         </>

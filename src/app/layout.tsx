@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Noto_Sans_JP, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import SoundProvider from "@/components/SoundProvider";
+import LanguageProvider from "@/components/LanguageProvider";
 
 const notoSansJP = Noto_Sans_JP({
   variable: "--font-noto-sans-jp",
@@ -37,7 +38,9 @@ export default function RootLayout({
       <body
         className={`${notoSansJP.variable} ${jetbrainsMono.variable} font-[var(--font-noto-sans-jp)] antialiased`}
       >
-        <SoundProvider>{children}</SoundProvider>
+        <SoundProvider>
+          <LanguageProvider>{children}</LanguageProvider>
+        </SoundProvider>
       </body>
     </html>
   );
