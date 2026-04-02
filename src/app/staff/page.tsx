@@ -9,6 +9,7 @@ export default function StaffPage() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState(false);
   const [checking, setChecking] = useState(true);
+  const [mode, setMode] = useState<"calendar" | "preview">("calendar");
 
   useEffect(() => {
     const saved = sessionStorage.getItem("yoro-staff-auth");
@@ -128,8 +129,6 @@ export default function StaffPage() {
       </div>
     );
   }
-
-  const [mode, setMode] = useState<"calendar" | "preview">("calendar");
 
   return (
     <div style={{ height: "100vh", display: "flex", flexDirection: "column" }}>
