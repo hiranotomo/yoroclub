@@ -37,6 +37,7 @@ export const dictionaries: Record<Locale, Record<string, string>> = {
 
     // Bugs
     "bugs.collected": "匹捕獲！",
+    "bugs.goal": "100匹つかまえよう！",
   },
 
   en: {
@@ -80,6 +81,7 @@ export const dictionaries: Record<Locale, Record<string, string>> = {
 
     // Bugs
     "bugs.collected": " caught!",
+    "bugs.goal": "Catch 100 bugs!",
   },
 
   zh: {
@@ -118,5 +120,6 @@ export const dictionaries: Record<Locale, Record<string, string>> = {
 
     // Bugs
     "bugs.collected": " 只已捕获！",
+    "bugs.goal": "捕捉100只虫子吧！",
   },
 };

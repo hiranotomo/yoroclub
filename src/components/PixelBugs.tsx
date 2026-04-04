@@ -420,6 +420,8 @@ export default function PixelBugs() {
   const [playerName, setPlayerName] = useState("");
   const [rankingOpen, setRankingOpen] = useState(false);
   const [showCollection, setShowCollection] = useState(false);
+  const [showGoalAnnounce, setShowGoalAnnounce] = useState(false);
+  const goalShownRef = useRef(false);
   const [clearPhase, setClearPhase] = useState<"name" | "ranking" | "done">("name");
   const [clearRankings, setClearRankings] = useState<{ name: string; time: number; date: string }[]>([]);
   const [clearStats, setClearStats] = useState({ totalClears: 0, totalPlayers: 0 });
@@ -465,6 +467,12 @@ export default function PixelBugs() {
   const handleCapture = useCallback(
     (bug: ActiveBug) => {
       setShowCollection(true);
+      // Show goal announcement on first catch
+      if (!goalShownRef.current) {
+        goalShownRef.current = true;
+        setShowGoalAnnounce(true);
+        setTimeout(() => setShowGoalAnnounce(false), 4000);
+      }
       // Combo: pitch increases with consecutive catches
       const newCombo = combo + 1;
       setCombo(newCombo);
@@ -1071,6 +1079,17 @@ export default function PixelBugs() {
             </p>
             <p className="text-sm md:text-base font-bold text-gray-600 mt-1">
               {t("bugs.collected")}
+            </p>
+          </div>
+        </div>
+      )}
+
+      {/* Goal announcement on first catch */}
+      {showGoalAnnounce && (
+        <div className="fixed inset-0 z-50 pointer-events-none flex items-center justify-center">
+          <div className="animate-goal-announce bg-black/90 border-2 border-yellow-400 px-8 py-5 text-center">
+            <p className="text-2xl md:text-4xl font-bold font-[var(--font-jetbrains-mono)] text-yellow-400 tracking-wider">
+              {t("bugs.goal")}
             </p>
           </div>
         </div>
