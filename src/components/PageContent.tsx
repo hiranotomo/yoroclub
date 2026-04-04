@@ -298,9 +298,35 @@ export default function PageContent() {
                 <h3 className="text-lg font-bold mb-2">
                   {t("ambassador.name")}
                 </h3>
-                <p className="text-sm text-gray-400 leading-relaxed">
+                <p className="text-sm text-gray-400 leading-relaxed mb-3">
                   {t("ambassador.description")}
                 </p>
+                <div className="flex flex-wrap gap-2">
+                  <a
+                    href="https://www.youtube.com/channel/UCBYFb5Tynk3s7sy4KI8iJ8w"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white text-black text-xs font-[var(--font-jetbrains-mono)] hover:bg-gray-200 transition-colors"
+                  >
+                    ▶ ひよりの虫日記
+                  </a>
+                  <a
+                    href="https://x.com/piyo_bug"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-gray-800 text-white text-xs font-[var(--font-jetbrains-mono)] hover:bg-gray-700 transition-colors"
+                  >
+                    𝕏 @piyo_bug
+                  </a>
+                  <a
+                    href="https://www.instagram.com/hiyori_katada/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-gray-800 text-white text-xs font-[var(--font-jetbrains-mono)] hover:bg-gray-700 transition-colors"
+                  >
+                    IG @hiyori_katada
+                  </a>
+                </div>
               </div>
             </div>
           </div>
