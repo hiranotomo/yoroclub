@@ -106,7 +106,14 @@ export default function PageContent() {
               {t("exhibition.label")}
             </p>
             <h2 className="text-lg md:text-2xl font-bold tracking-wide mb-3">
-              {t("exhibition.title")}
+              <a
+                href="https://crevis.co.jp/exhibitions/mushi_ten/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-gray-300 transition-colors underline decoration-gray-700 underline-offset-4 hover:decoration-gray-400"
+              >
+                {t("exhibition.title")}
+              </a>
             </h2>
             <p className="text-sm text-gray-400 mb-1">
               {t("exhibition.venue")}
