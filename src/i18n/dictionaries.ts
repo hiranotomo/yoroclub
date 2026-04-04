@@ -21,18 +21,48 @@ export const dictionaries: Record<Locale, Record<string, string>> = {
     "exhibition.label": "Exhibition",
     "exhibition.title": "養老孟司と小檜山賢二の虫展",
     "exhibition.venue": "東京都写真美術館（恵比寿）",
-    "exhibition.date": "2025.3.21 (金) — 5.24 (土)",
-    "exhibition.tour": "巡回：豊田市立博物館（2025年7月11日〜）",
+    "exhibition.date": "2026.3.21 (土) — 5.24 (日)",
     "exhibition.note": "養老昆虫クラブは本展に協力&応援中！",
+
+    // Events
+    "events.label": "Events",
+    "events.lecture": "講演会「ぼくたちの人生は虫で決まっている」",
+    "events.lectureSpeakers": "奥本大三郎 × 小檜山賢二",
+    "events.lectureDate": "4月11日（土）開場 13:30　開演 14:00",
+    "events.lectureVenue": "1Fホール",
+    "events.galleryTalk": "ギャラリートーク",
+    "events.galleryTalkVenue": "地下1階展示室",
+    "events.latestInfo": "最新情報はクレヴィスHPでご確認ください",
+
+    // Tour
+    "tour.label": "Tour",
+    "tour.title": "全国巡回スケジュール",
+
+    // Media
+    "media.label": "Media",
+    "media.title": "メディアで紹介されます！",
+
+    // Ambassador
+    "ambassador.label": "Ambassador",
+    "ambassador.title": "虫展アンバサダー",
+    "ambassador.name": "片田陽依",
+    "ambassador.description":
+      "昆虫が大好き。YouTube「ひよりの虫日記」で虫の魅力を発信中。TOKYO FM「リリー・フランキー スナック ラジオ」に虫展アンバサダーとして出演！",
 
     // Theme Song
     "theme.label": "Theme Song",
     "theme.title": "「むしのいどころ」",
     "theme.artist": "すてぃぎもろく",
-    "theme.presents": "養老昆虫クラブ presents",
+    "theme.presents": "養老昆虫クラブ presents 虫展テーマソング",
+    "theme.bio":
+      "2023年に電源を入れられたパニックロックバンド。直井幸太、蛙優太、親方の3人が音楽・映像・ビジュアルすべてを自ら手がける。",
+
+    // Event Photo
+    "eventPhoto.caption": "2026.4.4 講演会の様子",
 
     // Footer
     "footer.followUs": "Follow Us",
+    "footer.followNote": "最新情報はXでチェック！",
     "footer.copyright": "© 養老昆虫クラブ",
 
     // Bugs
@@ -63,20 +93,51 @@ export const dictionaries: Record<Locale, Record<string, string>> = {
       "Takeshi Yoro & Kenji Kohiyama: The Insect Exhibition",
     "exhibition.venue":
       "Tokyo Photographic Art Museum (Ebisu)",
-    "exhibition.date": "2025.3.21 (Fri) — 5.24 (Sat)",
-    "exhibition.tour":
-      "Tour: Toyota Municipal Museum (from July 11, 2025)",
+    "exhibition.date": "2026.3.21 (Sat) — 5.24 (Sun)",
     "exhibition.note":
       "Yoro Insect Club is supporting this exhibition!",
+
+    // Events
+    "events.label": "Events",
+    "events.lecture":
+      'Lecture: "Our Lives Are Determined by Insects"',
+    "events.lectureSpeakers": "Daisaburo Okumoto × Kenji Kohiyama",
+    "events.lectureDate": "Apr 11 (Sat) Doors 13:30 / Start 14:00",
+    "events.lectureVenue": "1F Hall",
+    "events.galleryTalk": "Gallery Talk",
+    "events.galleryTalkVenue": "B1F Exhibition Room",
+    "events.latestInfo": "Check Crevis HP for latest info",
+
+    // Tour
+    "tour.label": "Tour",
+    "tour.title": "National Tour Schedule",
+
+    // Media
+    "media.label": "Media",
+    "media.title": "Featured in the Media!",
+
+    // Ambassador
+    "ambassador.label": "Ambassador",
+    "ambassador.title": "Exhibition Ambassador",
+    "ambassador.name": "Hiyori Katada",
+    "ambassador.description":
+      'Insect lover. Shares the joy of insects on YouTube "Hiyori\'s Bug Diary". Featured on TOKYO FM as exhibition ambassador!',
 
     // Theme Song
     "theme.label": "Theme Song",
     "theme.title": '"Mushi no Idokoro"',
     "theme.artist": "Stigimoroku",
-    "theme.presents": "presented by Yoro Insect Club",
+    "theme.presents":
+      "Yoro Insect Club presents — Exhibition Theme Song",
+    "theme.bio":
+      "A panic rock band activated in 2023. Kota Naoi, Yuta Kaeru, and Oyakata produce all music, visuals, and videos themselves.",
+
+    // Event Photo
+    "eventPhoto.caption": "2026.4.4 Lecture Event",
 
     // Footer
     "footer.followUs": "Follow Us",
+    "footer.followNote": "Follow us on X for the latest updates!",
     "footer.copyright": "© Yoro Insect Club",
 
     // Bugs
@@ -104,18 +165,48 @@ export const dictionaries: Record<Locale, Record<string, string>> = {
     "exhibition.label": "展览",
     "exhibition.title": "养老孟司与小桧山贤二的虫展",
     "exhibition.venue": "东京都写真美术馆（惠比寿）",
-    "exhibition.date": "2025.3.21 (周五) — 5.24 (周六)",
-    "exhibition.tour": "巡展：丰田市立博物馆（2025年7月11日起）",
+    "exhibition.date": "2026.3.21 (周六) — 5.24 (周日)",
     "exhibition.note": "养老昆虫俱乐部正在协助和支持本展！",
+
+    // Events
+    "events.label": "活动",
+    "events.lecture": "讲演会「我们的人生由虫决定」",
+    "events.lectureSpeakers": "奥本大三郎 × 小桧山贤二",
+    "events.lectureDate": "4月11日（周六）开场 13:30 开演 14:00",
+    "events.lectureVenue": "1F大厅",
+    "events.galleryTalk": "展览导览",
+    "events.galleryTalkVenue": "地下1层展览室",
+    "events.latestInfo": "请在Crevis官网确认最新信息",
+
+    // Tour
+    "tour.label": "巡展",
+    "tour.title": "全国巡展日程",
+
+    // Media
+    "media.label": "媒体",
+    "media.title": "媒体报道！",
+
+    // Ambassador
+    "ambassador.label": "大使",
+    "ambassador.title": "虫展大使",
+    "ambassador.name": "片田阳依",
+    "ambassador.description":
+      "热爱昆虫。在YouTube「阳依的虫日记」中传播昆虫的魅力。作为虫展大使出演TOKYO FM节目！",
 
     // Theme Song
     "theme.label": "主题曲",
     "theme.title": "「虫之所在」",
     "theme.artist": "Stigimoroku",
-    "theme.presents": "养老昆虫俱乐部 出品",
+    "theme.presents": "养老昆虫俱乐部 出品 — 虫展主题曲",
+    "theme.bio":
+      "2023年激活的恐慌摇滚乐队。直井幸太、蛙优太、亲方三人亲自打造所有音乐、影像和视觉。",
+
+    // Event Photo
+    "eventPhoto.caption": "2026.4.4 讲演会现场",
 
     // Footer
     "footer.followUs": "关注我们",
+    "footer.followNote": "在X上关注我们获取最新信息！",
     "footer.copyright": "© 养老昆虫俱乐部",
 
     // Bugs
