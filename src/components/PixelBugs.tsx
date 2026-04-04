@@ -651,75 +651,106 @@ export default function PixelBugs() {
     const id = bug.type.id;
 
     if (id === "zoumushi") {
-      // Weevil: slow waddle on a surface, tiny side-to-side sway
-      phase += 0.015;
-      offsetX = Math.sin(phase * 4) * 0.15; // quick tiny sway
-      offsetY = 0;
-      // Very slow
-      const maxS = 0.15;
+      // Weevil: tiny waddle, left-right-left like walking on a leaf
+      phase += 0.02;
+      // Quick tiny side-to-side waddle — the signature weevil walk
+      offsetX = Math.sin(phase * 6) * 0.3;
+      // Tiny vertical bob in sync — each step lifts slightly
+      offsetY = Math.abs(Math.sin(phase * 6)) * 0.15;
+      const maxS = 0.12;
       const s = Math.sqrt(vx * vx + vy * vy);
       if (s > maxS) { vx = (vx / s) * maxS; vy = (vy / s) * maxS; }
 
     } else if (id === "butterfly") {
-      // Butterfly: gentle flutter
-      phase += 0.025;
-      offsetX = Math.sin(phase * 1.3) * 0.6;
-      offsetY = Math.sin(phase * 2.7) * 1.0;
-      if (Math.random() < 0.008) {
-        vx += (Math.random() - 0.5) * 0.15;
-        vy += (Math.random() - 0.5) * 0.1;
+      // Butterfly: big lazy zigzag float, like a real butterfly in a garden
+      phase += 0.035;
+      // Large sweeping sine waves — the signature butterfly wobble
+      offsetX = Math.sin(phase * 0.8) * 2.5;
+      offsetY = Math.sin(phase * 1.6) * 1.8 + Math.cos(phase * 2.3) * 0.8;
+      // Occasional random drift change — butterflies never go straight
+      if (Math.random() < 0.02) {
+        const turn = (Math.random() - 0.5) * 0.4;
+        vx += turn;
+        vy += (Math.random() - 0.5) * 0.3;
       }
-      const maxS = 0.2;
+      const maxS = 0.25;
       const s = Math.sqrt(vx * vx + vy * vy);
       if (s > maxS) { vx = (vx / s) * maxS; vy = (vy / s) * maxS; }
 
     } else if (id === "ladybug") {
-      // Ladybug: steady walk, occasional pause, rare short flight
+      // Ladybug: walk walk walk... stop... walk... then suddenly FLY a short distance
       phase += 0.02;
-      const pauseCycle = Math.sin(phase * 0.5);
-      if (pauseCycle > 0.85) {
-        // Paused — barely move
-        vx *= 0.95;
-        vy *= 0.95;
-      } else if (pauseCycle < -0.9 && Math.random() < 0.005) {
-        // Rare short flight burst
-        vx += (Math.random() - 0.5) * 1.5;
-        vy -= Math.random() * 1.0;
+      const pauseCycle = Math.sin(phase * 0.4);
+      if (pauseCycle > 0.8) {
+        // Paused — completely still, considering life
+        vx *= 0.9;
+        vy *= 0.9;
+        offsetX = 0;
+        offsetY = 0;
+      } else if (pauseCycle < -0.85 && Math.random() < 0.008) {
+        // Sudden short flight! — lifts off, lands somewhere nearby
+        const flightAngle = Math.random() * Math.PI * 2;
+        vx = Math.cos(flightAngle) * 1.2;
+        vy = Math.sin(flightAngle) * 1.2;
+      } else {
+        // Steady walk with tiny steps
+        offsetX = Math.sin(phase * 5) * 0.12;
       }
-      const maxS = 0.3;
+      const maxS = 1.2; // allow fast flight bursts
       const s = Math.sqrt(vx * vx + vy * vy);
       if (s > maxS) { vx = (vx / s) * maxS; vy = (vy / s) * maxS; }
+      // Quickly slow down after flight
+      if (s > 0.3) { vx *= 0.97; vy *= 0.97; }
 
     } else if (id === "kamikiri") {
-      // Longhorn beetle: scurrying with occasional direction change
-      phase += 0.02;
-      if (Math.random() < 0.01) {
-        const newAngle = Math.random() * Math.PI * 2;
-        vx = Math.cos(newAngle) * 0.3;
-        vy = Math.sin(newAngle) * 0.3;
+      // Longhorn beetle: fast scurry → freeze → sharp turn → scurry again
+      phase += 0.03;
+      const scurryCycle = Math.sin(phase * 0.7);
+      if (scurryCycle > 0.6) {
+        // Scurry! Fast and noisy
+        const s = Math.sqrt(vx * vx + vy * vy);
+        if (s < 0.3) {
+          const angle = Math.atan2(vy, vx);
+          vx = Math.cos(angle) * 0.5;
+          vy = Math.sin(angle) * 0.5;
+        }
+        offsetX = (Math.random() - 0.5) * 0.6;
+        offsetY = (Math.random() - 0.5) * 0.6;
+      } else if (scurryCycle < -0.7) {
+        // Freeze — antenna twitching
+        vx *= 0.85;
+        vy *= 0.85;
+        offsetX = (Math.random() - 0.5) * 0.1;
       }
-      const maxS = 0.3;
+      // Sharp direction change
+      if (Math.random() < 0.02) {
+        const newAngle = Math.random() * Math.PI * 2;
+        vx = Math.cos(newAngle) * 0.5;
+        vy = Math.sin(newAngle) * 0.5;
+      }
+      const maxS = 0.5;
       const s = Math.sqrt(vx * vx + vy * vy);
       if (s > maxS) { vx = (vx / s) * maxS; vy = (vy / s) * maxS; }
-      offsetX = (Math.random() - 0.5) * 0.15;
-      offsetY = (Math.random() - 0.5) * 0.15;
 
     } else if (id === "kuwagata") {
-      // Stag beetle: heavy, deliberate march. Slow but unstoppable
-      phase += 0.01;
-      offsetX = Math.sin(phase * 2) * 0.08; // very subtle sway
-      // Barely changes direction
-      if (Math.random() < 0.003) {
-        const tweak = (Math.random() - 0.5) * 0.3;
+      // Stag beetle: heavy, deliberate march. Slow steady steps, never stops
+      phase += 0.012;
+      // Slow rhythmic body sway — heavy insect rocking as it walks
+      offsetX = Math.sin(phase * 3) * 0.12;
+      offsetY = Math.abs(Math.sin(phase * 3)) * 0.08;
+      // Rarely changes direction — stubborn straight line
+      if (Math.random() < 0.002) {
+        const tweak = (Math.random() - 0.5) * 0.15;
         vx += tweak;
         vy += tweak;
       }
-      const maxS = 0.2;
+      const maxS = 0.18;
       const s = Math.sqrt(vx * vx + vy * vy);
-      if (s < 0.1) {
-        // Always keep moving — stag beetles don't stop easily
-        vx += (Math.random() - 0.5) * 0.1;
-        vy += (Math.random() - 0.5) * 0.1;
+      // Always maintain minimum speed — stag beetles don't stop
+      if (s < 0.12) {
+        const angle = Math.atan2(vy || 0.1, vx || 0.1);
+        vx = Math.cos(angle) * 0.15;
+        vy = Math.sin(angle) * 0.15;
       }
       if (s > maxS) { vx = (vx / s) * maxS; vy = (vy / s) * maxS; }
 
