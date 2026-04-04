@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import PixelHero from "@/components/PixelHero";
 import PixelDivider from "@/components/PixelDivider";
 import YouTubeEmbed from "@/components/YouTubeEmbed";
@@ -10,6 +11,7 @@ import { useLanguage } from "@/components/LanguageProvider";
 import PixelBugs from "@/components/PixelBugs";
 import SectionSound from "@/components/SectionSound";
 import { MuteButton } from "@/components/SoundProvider";
+import { useSoundEngine } from "@/components/SoundProvider";
 
 const GALLERY_TALKS = [
   { date: "4/25 (土) 14:00", speaker: "小檜山賢二" },
@@ -51,13 +53,29 @@ const MEDIA_LIST = [
 
 export default function PageContent() {
   const { t } = useLanguage();
+  const { playSE } = useSoundEngine();
+  const [bugsEnabled, setBugsEnabled] = useState(true);
 
   return (
     <SplashScreen>
       <LanguageSwitcher />
-      <PixelBugs />
+      {bugsEnabled && <PixelBugs />}
       <SectionSound />
-      <MuteButton />
+      {/* Controls: bottom-left */}
+      <div className="fixed bottom-4 left-4 z-50 flex gap-1">
+        <MuteButton />
+        <button
+          onClick={() => {
+            playSE("select");
+            setBugsEnabled((v) => !v);
+          }}
+          className="w-8 h-8 bg-black/60 text-white flex items-center justify-center text-xs font-[var(--font-jetbrains-mono)] hover:bg-black/80 transition-colors rounded"
+          aria-label={bugsEnabled ? "Bug game OFF" : "Bug game ON"}
+          title={bugsEnabled ? "Bug game OFF" : "Bug game ON"}
+        >
+          {bugsEnabled ? "🪲" : "⬜"}
+        </button>
+      </div>
       <main>
         {/* HERO */}
         <PixelHero />

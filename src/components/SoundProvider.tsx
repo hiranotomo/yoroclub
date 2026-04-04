@@ -120,7 +120,7 @@ export function MuteButton() {
   return (
     <button
       onClick={toggleMute}
-      className="fixed bottom-4 left-4 z-50 w-8 h-8 bg-black/60 text-white flex items-center justify-center text-xs font-[var(--font-jetbrains-mono)] hover:bg-black/80 transition-colors rounded"
+      className="w-8 h-8 bg-black/60 text-white flex items-center justify-center text-xs font-[var(--font-jetbrains-mono)] hover:bg-black/80 transition-colors rounded"
       aria-label={muted ? "Unmute" : "Mute"}
       title={muted ? "Sound ON" : "Sound OFF"}
     >
