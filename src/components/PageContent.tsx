@@ -12,6 +12,7 @@ import PixelBugs from "@/components/PixelBugs";
 import SectionSound from "@/components/SectionSound";
 import { MuteButton } from "@/components/SoundProvider";
 import { useSoundEngine } from "@/components/SoundProvider";
+import NewspaperShelf from "@/components/NewspaperShelf";
 
 const GALLERY_TALKS = [
   { date: "4/25 (土) 14:00", speaker: "小檜山賢二" },
@@ -96,6 +97,9 @@ export default function PageContent() {
             </p>
           </div>
         </section>
+
+        {/* NEWSPAPER (main content) */}
+        <NewspaperShelf />
 
         <PixelDivider inverted />
 

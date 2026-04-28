@@ -1,0 +1,1343 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>養老昆虫クラブ新聞 創刊号 ─ 2026.04.26</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700;900&family=Noto+Serif+JP:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+  @page { size: 257mm 364mm; margin: 0; } /* B4 portrait */
+  * { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: #ffffff;
+    font-family: "Noto Serif JP", "Hiragino Mincho ProN", "Yu Mincho", serif;
+    color: #111;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .sheet {
+    width: 257mm;
+    height: 364mm;
+    padding: 0 8mm 0;
+    margin: 8mm auto;
+    background: #ffffff;
+    position: relative;
+    box-shadow: 0 0 4px rgba(0,0,0,0.15);
+    page-break-after: always;
+    break-after: page;
+    overflow: hidden;
+  }
+  .sheet:last-child {
+    page-break-after: auto;
+    break-after: auto;
+  }
+  /* 多段組内の記事は段境界で自然に折り返す */
+  .columns-5 article.column-article,
+  .columns-5 .notice,
+  .columns-6 article.column-article,
+  .columns-6 .notice {
+    break-inside: auto;
+    page-break-inside: auto;
+  }
+  /* 緩急用：囲み記事（box）／引用記事（pullquote）／Q&A記事は段境界で切らない */
+  .columns-3 article.boxed,
+  .columns-3 article.pullquote,
+  .columns-3 article.qa,
+  .columns-4 article.boxed,
+  .columns-4 article.pullquote,
+  .columns-4 article.qa,
+  .columns-5 article.boxed,
+  .columns-5 article.pullquote,
+  .columns-5 article.qa,
+  .columns-6 article.boxed,
+  .columns-6 article.pullquote,
+  .columns-6 article.qa {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+  .columns-4 article.column-article,
+  .columns-4 .notice {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+  /* 囲み罫付きボックス記事 */
+  article.boxed {
+    border: 0.5mm solid #111;
+    padding: 2mm 3mm 2mm;
+    margin-bottom: 2.5mm;
+  }
+  article.boxed h3 {
+    border-top: none;
+    border-bottom: 0.4mm dotted #111;
+    padding: 0 0 1mm;
+    margin: 0 0 1.5mm;
+    text-align: center;
+    letter-spacing: 0.1em;
+  }
+  /* 引用ボックス（語録系） */
+  article.pullquote {
+    border-top: 0.8mm double #111;
+    border-bottom: 0.8mm double #111;
+    padding: 2mm 0 1.5mm;
+    margin-bottom: 2.5mm;
+  }
+  article.pullquote h3 {
+    border: none;
+    padding: 0;
+    margin: 0 0 1.5mm;
+    text-align: center;
+    font-size: 11pt;
+    letter-spacing: 0.2em;
+  }
+  article.pullquote h3::before { content: "─── "; opacity: 0.6; }
+  article.pullquote h3::after  { content: " ───"; opacity: 0.6; }
+  article.pullquote p {
+    font-size: 8pt;
+    line-height: 1.65;
+    margin: 0 0 1.2mm;
+    text-indent: 0;
+    text-align: left;
+  }
+  article.pullquote p::before { content: "「"; }
+  article.pullquote p::after  { content: "」"; }
+  /* Q&A強調記事 */
+  article.qa h3 {
+    background: #111;
+    color: #fff;
+    border: none;
+    padding: 1mm 2mm;
+    text-align: left;
+    letter-spacing: 0.04em;
+  }
+  /* 図版・QR・stubのみ折らない */
+  figure, .qr-inline, .stub {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+  /* sheet外（フル幅）テーブル等は折らない */
+  .sheet > article.column-article,
+  .sheet > table,
+  .today-box,
+  .yonkoma {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  /* ───────── 題字（マストヘッド） ───────── */
+  .masthead {
+    border-top: 2mm double #111;
+    border-bottom: 0.5mm solid #111;
+    padding: 1.5mm 0 0.5mm;
+    margin-bottom: 1.5mm;
+    position: relative;
+  }
+  .masthead-top {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: flex-end;
+    border-bottom: 0.3mm solid #111;
+    padding-bottom: 1mm;
+    margin-bottom: 1.5mm;
+    font-family: "Noto Sans JP", "Hiragino Sans", "Yu Gothic", sans-serif;
+    font-size: 8.5pt;
+    letter-spacing: 0.06em;
+  }
+  .masthead-top .left { text-align: left; line-height: 1.6; }
+  .masthead-top .right { text-align: right; line-height: 1.6; }
+  .masthead-top strong { display: block; font-size: 9.5pt; }
+
+  .colophon-bar {
+    border-bottom: 0.3mm dotted #111;
+    padding: 1mm 0 1mm;
+    margin-bottom: 1.5mm;
+    text-align: center;
+    font-family: "Noto Serif JP", "Hiragino Mincho ProN", "Yu Mincho", serif;
+    font-size: 9pt;
+    letter-spacing: 0.16em;
+  }
+  .colophon-bar span { margin: 0 1.5em; }
+  .colophon-bar .label {
+    font-size: 7.5pt;
+    letter-spacing: 0.22em;
+    color: #555;
+    margin-right: 0.4em;
+    font-family: "Noto Sans JP", "Hiragino Sans", sans-serif;
+  }
+
+  .title-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 6mm;
+  }
+  .title-row .deco-logo {
+    flex: 0 0 38mm;
+    text-align: center;
+    padding: 0;
+  }
+  .title-row .deco-logo img {
+    width: 38mm;
+    height: 38mm;
+    object-fit: contain;
+    display: block;
+    margin: 0 auto;
+    background: #fff;
+  }
+
+  .title-row .deco {
+    flex: 0 0 28mm;
+    text-align: center;
+    font-family: "Noto Serif JP", "Hiragino Mincho ProN", serif;
+    padding: 1mm 1mm;
+    font-size: 7pt;
+    line-height: 1.4;
+    letter-spacing: 0.08em;
+  }
+  .title-row .deco img {
+    width: 100%;
+    height: auto;
+    display: block;
+    filter: grayscale(100%) contrast(1.05);
+  }
+  .title-row .deco .cap {
+    display: block;
+    font-size: 9pt;
+    letter-spacing: 0.16em;
+    margin-top: 1.5mm;
+    border-top: 0.3mm solid #111;
+    padding-top: 1.5mm;
+    font-weight: 700;
+  }
+
+  h1.paper-title {
+    flex: 1 1 auto;
+    text-align: center;
+    margin: 0;
+    font-size: 38pt;
+    font-weight: 900;
+    letter-spacing: 0.08em;
+    line-height: 1.0;
+    font-family: "Noto Serif JP", "Hiragino Mincho ProN", "Yu Mincho", serif;
+    text-shadow: 0.2mm 0 0 #111;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+  h1.paper-title .yoro {
+    display: inline-block;
+    transform: scale(1.05, 1.0);
+    transform-origin: center;
+  }
+
+  .subtitle-row {
+    text-align: center;
+    margin-top: 0;
+    font-family: "Noto Sans JP", "Hiragino Sans", "Yu Gothic", sans-serif;
+    font-size: 13pt;
+    letter-spacing: 0.32em;
+    font-weight: 600;
+  }
+  .subtitle-row .en {
+    font-family: "Times New Roman", serif;
+    font-style: italic;
+    font-size: 8pt;
+    letter-spacing: 0.18em;
+    margin: 0 0 0.3mm;
+    display: block;
+    font-weight: 400;
+    color: #555;
+  }
+
+  /* ───────── 1面トップ（リード記事） ───────── */
+  .top-headline {
+    border-top: 1mm solid #111;
+    border-bottom: 0.4mm solid #111;
+    padding: 2.5mm 0 3mm;
+    margin-bottom: 3mm;
+    text-align: center;
+  }
+  .top-headline .kicker {
+    font-family: "Noto Sans JP", "Hiragino Sans", "Yu Gothic", sans-serif;
+    font-size: 8.5pt;
+    letter-spacing: 0.35em;
+    border: 0.3mm solid #111;
+    display: inline-block;
+    padding: 0.8mm 3mm;
+    margin-bottom: 2.5mm;
+  }
+  .top-headline h2 {
+    font-size: 22pt;
+    line-height: 1.2;
+    margin: 0 0 2mm;
+    letter-spacing: 0.04em;
+    font-weight: 900;
+  }
+  .top-headline .deck {
+    font-size: 10pt;
+    letter-spacing: 0.05em;
+    line-height: 1.55;
+    color: #1a1a1a;
+    margin: 0;
+  }
+
+  /* ───────── 多段組レイアウト ───────── */
+  .columns-5 {
+    column-count: 5;
+    column-gap: 3mm;
+    column-rule: 0.3mm solid #111;
+    margin-bottom: 1mm;
+  }
+  .columns-6 {
+    column-count: 6;
+    column-gap: 2.5mm;
+    column-rule: 0.3mm solid #111;
+    margin-bottom: 1mm;
+  }
+  .columns-7 {
+    column-count: 7;
+    column-gap: 2mm;
+    column-rule: 0.3mm solid #111;
+    margin-bottom: 1mm;
+  }
+  .columns-4 {
+    column-count: 4;
+    column-gap: 5mm;
+    column-rule: 0.3mm solid #111;
+    margin-bottom: 5mm;
+  }
+  .columns-3 {
+    column-count: 3;
+    column-gap: 5mm;
+    column-rule: 0.3mm solid #111;
+    margin-bottom: 5mm;
+  }
+  .columns-2 {
+    column-count: 2;
+    column-gap: 6mm;
+    column-rule: 0.3mm solid #111;
+    margin-bottom: 5mm;
+  }
+
+  article.column-article {
+    break-inside: avoid;
+    margin-bottom: 2mm;
+  }
+
+  article h3 {
+    font-size: 10pt;
+    margin: 0 0 1mm;
+    line-height: 1.25;
+    letter-spacing: 0.04em;
+    font-weight: 900;
+    border-top: 0.3mm solid #111;
+    border-bottom: 0.3mm solid #111;
+    padding: 0.6mm 0;
+  }
+  article h3.kicker-style::before {
+    content: "■ ";
+  }
+
+  article .byline {
+    font-family: "Noto Sans JP", "Hiragino Sans", "Yu Gothic", sans-serif;
+    font-size: 7.5pt;
+    letter-spacing: 0.16em;
+    margin: 0 0 1.5mm;
+    color: #111;
+  }
+
+  article p {
+    font-size: 7.5pt;
+    line-height: 1.4;
+    margin: 0 0 0.4mm;
+    text-indent: 1em;
+  }
+  article p.no-indent { text-indent: 0; }
+
+  /* ───────── 縦書き欄（社告・古めかしさ用） ───────── */
+  .vertical-box {
+    writing-mode: vertical-rl;
+    -webkit-writing-mode: vertical-rl;
+    border: 0.5mm solid #111;
+    padding: 4mm 4mm 4mm 4mm;
+    height: 80mm;
+    font-family: "Noto Serif JP", "Hiragino Mincho ProN", "Yu Mincho", serif;
+    font-size: 10pt;
+    line-height: 1.9;
+    letter-spacing: 0.06em;
+    margin-bottom: 5mm;
+  }
+  .vertical-box h4 {
+    margin: 0 0 0 6mm;
+    font-size: 12pt;
+    font-weight: 900;
+    letter-spacing: 0.18em;
+  }
+
+  /* ───────── 「今日は何の日」枠 ───────── */
+  .today-box {
+    border: 0.5mm double #111;
+    padding: 3mm 4mm 3mm;
+    margin-bottom: 4mm;
+    background: transparent;
+  }
+  .today-box h4 {
+    margin: 0 0 2mm;
+    font-size: 11pt;
+    letter-spacing: 0.12em;
+    border-bottom: 0.3mm dotted #111;
+    padding-bottom: 1mm;
+    font-family: "Noto Serif JP", "Hiragino Mincho ProN", serif;
+    font-weight: 900;
+  }
+  .today-box h4::before { content: "◆ "; }
+  .today-box ul {
+    margin: 0;
+    padding-left: 4mm;
+    font-size: 8.5pt;
+    line-height: 1.6;
+  }
+  .today-box li { margin-bottom: 1mm; }
+  .today-box li strong { font-weight: 700; }
+
+  /* ───────── 4コマ漫画 ───────── */
+  .yonkoma {
+    border: 0.5mm solid #111;
+    padding: 3mm;
+    margin-bottom: 4mm;
+    text-align: center;
+    background: #fff;
+  }
+  .yonkoma h4 {
+    margin: 0 0 2mm;
+    font-size: 11pt;
+    letter-spacing: 0.16em;
+    text-align: left;
+    border-bottom: 0.3mm solid #111;
+    padding-bottom: 1mm;
+    font-family: "Noto Serif JP", "Hiragino Mincho ProN", serif;
+    font-weight: 900;
+  }
+  .yonkoma img {
+    width: 100%;
+    height: auto;
+    display: block;
+    filter: grayscale(100%) contrast(1.05);
+  }
+  .yonkoma .caption {
+    font-size: 7.5pt;
+    letter-spacing: 0.08em;
+    margin-top: 2mm;
+    text-align: right;
+    color: #111;
+    font-family: "Noto Sans JP", "Hiragino Sans", sans-serif;
+  }
+
+  /* ───────── 社告・広告枠 ───────── */
+  .notice {
+    border: 0.4mm solid #111;
+    padding: 0.5mm 1.5mm;
+    margin-bottom: 4mm;
+    background: transparent;
+    break-inside: avoid;
+  }
+  .notice h4 {
+    margin: 0 0 1.5mm;
+    font-size: 10.5pt;
+    letter-spacing: 0.1em;
+    font-weight: 900;
+    border-bottom: 0.3mm dotted #111;
+    padding-bottom: 1mm;
+  }
+  .notice h4::before { content: "● "; }
+  .notice p {
+    font-size: 8.5pt;
+    line-height: 1.55;
+    margin: 0 0 1mm;
+  }
+  .notice .meta {
+    font-family: "Menlo", monospace;
+    font-size: 7.5pt;
+    word-break: break-all;
+  }
+
+  /* ───────── 大記事（基金特集） ───────── */
+  .feature {
+    border-top: 1.2mm solid #111;
+    border-bottom: 1.2mm solid #111;
+    padding: 5mm 0;
+    margin-bottom: 5mm;
+  }
+  .feature .kicker {
+    text-align: center;
+    margin-bottom: 3mm;
+    font-family: "Noto Sans JP", "Hiragino Sans", sans-serif;
+    font-size: 9pt;
+    letter-spacing: 0.32em;
+  }
+  .feature .kicker span {
+    border: 0.3mm solid #111;
+    padding: 1mm 4mm;
+  }
+  .feature h2 {
+    text-align: center;
+    font-size: 26pt;
+    margin: 0 0 3mm;
+    line-height: 1.3;
+    letter-spacing: 0.04em;
+    font-weight: 900;
+  }
+  .feature .deck {
+    text-align: center;
+    font-size: 11.5pt;
+    line-height: 1.6;
+    margin: 0 0 4mm;
+    letter-spacing: 0.06em;
+  }
+  .feature-image {
+    width: 100%;
+    height: 50mm;
+    object-fit: cover;
+    object-position: center 55%;
+    display: block;
+    margin: 0 0 3mm;
+    border-top: 0.3mm solid #111;
+    border-bottom: 0.3mm solid #111;
+    filter: grayscale(100%) contrast(1.05);
+  }
+
+  /* ───────── ページフッター（欄外） ───────── */
+  .page-footer {
+    border-top: 0.5mm solid #111;
+    padding-top: 0.3mm;
+    margin-top: 0.3mm;
+    display: flex;
+    justify-content: space-between;
+    font-family: "Noto Sans JP", "Hiragino Sans", "Yu Gothic", sans-serif;
+    font-size: 8pt;
+    letter-spacing: 0.1em;
+    color: #444;
+  }
+  .page-footer strong { color: #111; letter-spacing: 0.16em; }
+
+  /* ───────── 第二面ヘッダー ───────── */
+  .second-head {
+    border-top: 1mm solid #111;
+    border-bottom: 0.5mm solid #111;
+    padding: 0.5mm 0;
+    margin-bottom: 1mm;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: "Noto Serif JP", "Hiragino Mincho ProN", serif;
+  }
+  .second-head .pg {
+    font-size: 16pt;
+    font-weight: 900;
+    letter-spacing: 0.1em;
+  }
+  .second-head .title {
+    font-size: 11pt;
+    letter-spacing: 0.16em;
+    font-weight: 700;
+  }
+  .second-head .meta {
+    font-size: 8pt;
+    font-family: "Noto Sans JP", "Hiragino Sans", sans-serif;
+    letter-spacing: 0.06em;
+  }
+
+  /* ───────── 旧字風アクセント ───────── */
+  .ornament {
+    text-align: center;
+    margin: 3mm 0;
+    font-size: 12pt;
+    letter-spacing: 1em;
+    color: #111;
+  }
+  .ornament::before { content: "◆ ◇ ◆"; letter-spacing: 0.6em; }
+
+  /* ───────── スタブ・編集予定枠 ───────── */
+  .stub {
+    border: 0.3mm dashed #111;
+    padding: 4mm;
+    color: #111;
+    font-size: 8.5pt;
+    line-height: 1.6;
+    background: transparent;
+    font-family: "Noto Sans JP", "Hiragino Sans", sans-serif;
+    margin-bottom: 4mm;
+    break-inside: avoid;
+  }
+  .stub::before {
+    content: "［編集中／差し替え予定］";
+    display: block;
+    font-weight: 700;
+    color: #111;
+    margin-bottom: 1.5mm;
+    letter-spacing: 0.1em;
+  }
+
+  /* ───────── 記事内QRコード ───────── */
+  .qr-inline {
+    display: flex;
+    align-items: center;
+    gap: 3mm;
+    border-top: 0.3mm dotted #111;
+    margin-top: 2mm;
+    padding-top: 2mm;
+    break-inside: avoid;
+  }
+  .qr-inline svg, .qr-inline img.qr {
+    flex: 0 0 18mm;
+    width: 18mm;
+    height: 18mm;
+    display: block;
+  }
+  .qr-inline .qr-text {
+    flex: 1 1 auto;
+    font-family: "Noto Sans JP", "Hiragino Sans", sans-serif;
+    font-size: 7.5pt;
+    line-height: 1.45;
+  }
+  .qr-inline .qr-text strong {
+    display: block;
+    font-size: 8pt;
+    letter-spacing: 0.16em;
+    margin-bottom: 0.5mm;
+  }
+  .qr-inline .qr-text .url {
+    font-family: "Menlo", monospace;
+    font-size: 6.8pt;
+    word-break: break-all;
+    display: block;
+    margin-top: 0.5mm;
+    color: #111;
+  }
+  .qr-row { display: flex; gap: 3mm; margin-top: 2mm; }
+  .qr-row .qr-inline { flex: 1; border-top: none; padding-top: 0; margin-top: 0; }
+
+  /* 多段組内のQR: 段の幅に収まるよう小さく */
+  .columns-5 .qr-inline > img.qr,
+  .columns-6 .qr-inline > img.qr,
+  .columns-7 .qr-inline > img.qr {
+    width: 12mm;
+    height: 12mm;
+    flex: 0 0 12mm;
+  }
+  .columns-5 .qr-text,
+  .columns-6 .qr-text,
+  .columns-7 .qr-text {
+    font-size: 6.2pt;
+    line-height: 1.35;
+  }
+  /* 段組内記事は段境界で切れていい・余白だけ確保 */
+  .columns-5 article.column-article,
+  .columns-6 article.column-article,
+  .columns-7 article.column-article,
+  .columns-5 .notice,
+  .columns-6 .notice,
+  .columns-7 .notice {
+    margin-bottom: 2mm;
+  }
+  /* notice は段境界で切らない（タイトルが分かれると見苦しい） */
+  .columns-5 .notice,
+  .columns-6 .notice,
+  .columns-7 .notice {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+  /* 段の幅に収まらない見出しは折り返しを許可 */
+  .columns-5 .notice h4,
+  .columns-6 .notice h4,
+  .columns-7 .notice h4,
+  .columns-5 article h3,
+  .columns-6 article h3,
+  .columns-7 article h3 {
+    word-break: keep-all;
+    overflow-wrap: anywhere;
+  }
+
+  @media print {
+    body { background: white; }
+    .sheet { margin: 0; box-shadow: none; }
+    .action-bar { display: none !important; }
+  }
+
+  /* ───────── 画面用 アクションバー（印刷時非表示） ───────── */
+  .action-bar {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(255,255,255,0.96);
+    backdrop-filter: saturate(120%) blur(6px);
+    -webkit-backdrop-filter: saturate(120%) blur(6px);
+    border-bottom: 1px solid #ddd;
+    padding: 8px 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: "Noto Sans JP", "Hiragino Sans", "Yu Gothic", sans-serif;
+  }
+  .action-bar .brand {
+    font-family: "Noto Serif JP", "Hiragino Mincho ProN", serif;
+    font-weight: 900;
+    font-size: 15px;
+    letter-spacing: 0.04em;
+    color: #111;
+    text-decoration: none;
+  }
+  .action-bar .brand .tag {
+    display: inline-block;
+    border: 1px solid #111;
+    padding: 1px 8px;
+    margin-right: 8px;
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    vertical-align: 2px;
+  }
+  .action-bar .actions {
+    display: flex;
+    gap: 8px;
+  }
+  .action-bar button,
+  .action-bar a.btn {
+    background: #111;
+    color: #fff;
+    border: 0;
+    border-radius: 4px;
+    padding: 7px 14px;
+    font-family: inherit;
+    font-size: 13px;
+    letter-spacing: 0.06em;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: opacity 0.15s;
+  }
+  .action-bar button:hover,
+  .action-bar a.btn:hover {
+    opacity: 0.78;
+  }
+  .action-bar button.outline,
+  .action-bar a.btn.outline {
+    background: #fff;
+    color: #111;
+    border: 1px solid #111;
+  }
+
+  /* ───────── レスポンシブ：タブレット・スマホ ───────── */
+  @media screen and (max-width: 900px) {
+    body { background: #f5f4ee; padding: 0; }
+    .sheet {
+      width: 100% !important;
+      height: auto !important;
+      max-width: 880px;
+      margin: 16px auto !important;
+      padding: 18px 20px !important;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+    }
+
+    /* 多段組をすべて1段に */
+    .columns-2, .columns-3, .columns-4, .columns-5, .columns-6, .columns-7 {
+      column-count: 1 !important;
+      column-rule: none !important;
+    }
+
+    /* 各記事に下ボーダー線で区切り */
+    article.column-article {
+      border-bottom: 1px dotted #aaa;
+      padding-bottom: 14px;
+      margin-bottom: 14px;
+      break-inside: auto !important;
+    }
+
+    /* マスト（題字）を縦組み */
+    .title-row {
+      gap: 12px;
+    }
+    .title-row .deco-logo { flex: 0 0 60px; }
+    .title-row .deco-logo img { width: 60px; height: 60px; }
+    .title-row .deco { flex: 0 0 56px; }
+    h1.paper-title {
+      font-size: 28pt;
+    }
+
+    /* トップヒーロー：縦並び */
+    .sheet > div[style*="grid-template-columns: 105mm"] {
+      display: block !important;
+    }
+    .sheet > div[style*="grid-template-columns: 105mm"] figure {
+      margin: 0 0 12px !important;
+    }
+    .sheet > div[style*="grid-template-columns: 105mm"] figure img {
+      height: auto !important;
+      max-height: 320px;
+      object-position: center 35% !important;
+    }
+
+    /* 第二面トップ feature-top：縦並び */
+    article.feature-top {
+      grid-template-columns: 1fr !important;
+      gap: 14px !important;
+    }
+    article.feature-top img {
+      height: auto !important;
+      min-height: 0 !important;
+      max-height: 280px;
+    }
+    article.feature-top h2 { font-size: 20pt !important; white-space: normal !important; }
+
+    /* 3社告グリッドを1列 or 2列 */
+    .sheet > div[style*="grid-template-columns:1fr 1fr 1fr"],
+    .sheet > div[style*="grid-template-columns: 1fr 1fr 1fr"] {
+      grid-template-columns: 1fr !important;
+      gap: 12px !important;
+    }
+
+    /* 4枠 grid（1面下段）を2列 */
+    .sheet > div[style*="grid-template-columns: repeat(4"] {
+      grid-template-columns: 1fr 1fr !important;
+      gap: 10px !important;
+    }
+
+    /* 養老語録の3列を1列 */
+    .pullquote-fullwidth div[style*="grid-template-columns:1fr 1fr 1fr"] {
+      grid-template-columns: 1fr 1fr !important;
+    }
+
+    /* フォントサイズの底上げ */
+    article p, .notice p, .notice p[style] {
+      font-size: 11pt !important;
+      line-height: 1.7 !important;
+      margin-bottom: 6px !important;
+    }
+    article h3 {
+      font-size: 14pt !important;
+      padding: 4px 0 !important;
+    }
+    article .byline {
+      font-size: 9.5pt !important;
+    }
+    article figure img:not(.deco-img):not(.qr) {
+      height: auto !important;
+      max-height: 360px;
+      width: 100%;
+    }
+
+    /* スケジュール表 */
+    table.schedule-table td:nth-child(1),
+    table.schedule-table td:nth-child(2),
+    table.schedule-table td:nth-child(3),
+    table.schedule-table td:nth-child(5) { white-space: normal !important; }
+    table.schedule-table { font-size: 10pt !important; line-height: 1.5 !important; }
+    table.schedule-table th, table.schedule-table td {
+      padding: 5px 8px !important;
+    }
+  }
+
+  @media screen and (max-width: 600px) {
+    .sheet {
+      margin: 8px auto !important;
+      padding: 14px !important;
+    }
+    /* マストを縦組み */
+    .title-row {
+      flex-direction: column !important;
+      gap: 8px !important;
+    }
+    .title-row .deco-logo,
+    .title-row .deco {
+      flex: 0 0 auto !important;
+    }
+    .title-row .deco-logo img { width: 56px; height: 56px; }
+    .title-row .deco {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .title-row .deco div[style*="font-size:26pt"] {
+      font-size: 22pt !important;
+    }
+    .title-row .deco .cap {
+      margin-top: 0 !important;
+      padding-top: 0 !important;
+      border-top: none !important;
+    }
+    h1.paper-title {
+      font-size: 26pt !important;
+      letter-spacing: 0.04em !important;
+    }
+    .colophon-bar { font-size: 10pt !important; line-height: 1.6 !important; }
+    .colophon-bar span { display: inline-block; margin: 0 0.5em 2px; }
+    article p, .notice p, .notice p[style] {
+      font-size: 12pt !important;
+      line-height: 1.75 !important;
+    }
+    article h3 { font-size: 14pt !important; }
+
+    /* 4枠グリッドも1列に */
+    .sheet > div[style*="grid-template-columns: repeat(4"] {
+      grid-template-columns: 1fr !important;
+    }
+    /* 養老語録 1列 */
+    .pullquote-fullwidth div[style*="grid-template-columns:1fr 1fr 1fr"] {
+      grid-template-columns: 1fr !important;
+    }
+    .action-bar { padding: 6px 10px; }
+    .action-bar .brand { font-size: 13px; }
+    .action-bar .brand .tag { font-size: 10px; padding: 1px 6px; }
+    .action-bar button, .action-bar a.btn {
+      padding: 6px 10px;
+      font-size: 12px;
+    }
+  }
+
+  /* 第二面 columns-4 段組内の調整 */
+  .sheet:nth-of-type(2) .columns-4 article figure img:not(.deco-img) { height: 36mm !important; object-fit: cover; }
+  .sheet:nth-of-type(2) .columns-4 article p { font-size: 7pt; line-height: 1.42; margin-bottom: 0.4mm; }
+  .sheet:nth-of-type(2) .columns-4 article h3 { font-size: 9.5pt; }
+  .sheet:nth-of-type(2) .columns-4 article figure { margin-bottom: 1.2mm; }
+  .sheet:nth-of-type(2) .columns-4 article figcaption { font-size: 6.2pt; line-height: 1.35; }
+  .sheet:nth-of-type(2) .columns-4 article { break-inside: auto; page-break-inside: auto; }
+  .sheet:nth-of-type(2) .notice p,
+  .sheet:nth-of-type(2) .notice p[style] { font-size: 6.5pt; line-height: 1.35; }
+  .sheet:nth-of-type(2) .notice h4 { font-size: 9pt; padding-bottom: 0.5mm; margin-bottom: 0.8mm; }
+  .sheet:nth-of-type(2) .notice { padding: 0.4mm 1.2mm; }
+  .sheet:nth-of-type(2) .feature-top h2 { font-size: 16pt; }
+  .sheet:nth-of-type(2) .feature-top { padding: 1.2mm 0 1.2mm; margin-bottom: 1mm; }
+
+  /* カッコ・カギで始まる段落は冒頭詰め（text-indent: 0） */
+  article p.no-indent-bracket { text-indent: 0; }
+
+  /* スケジュール表の日付・形式列は折り返し禁止 */
+  table.schedule-table td:nth-child(1),
+  table.schedule-table td:nth-child(2),
+  table.schedule-table td:nth-child(3),
+  table.schedule-table td:nth-child(5) { white-space: nowrap; }
+
+  /* ───────── QRリンク化（PC/スマホでクリッカブル） ───────── */
+  a.qr-link {
+    display: block;
+    color: inherit;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  a.qr-link.qr-inline-link {
+    display: flex;
+  }
+  @media screen {
+    a.qr-link:hover {
+      opacity: 0.65;
+      transition: opacity 0.15s;
+    }
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════ アクションバー（画面用・印刷時非表示） ═══════════════════════════ -->
+<header class="action-bar">
+  <a class="brand" href="/">
+    <span class="tag">第０号</span>養老昆虫クラブ新聞
+  </a>
+  <div class="actions">
+    <button onclick="window.print()" type="button" aria-label="印刷">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <polyline points="6 9 6 2 18 2 18 9"></polyline>
+        <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
+        <rect x="6" y="14" width="12" height="8"></rect>
+      </svg>
+      印刷
+    </button>
+    <a class="btn outline" href="/news/issue-0.pdf" download>
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+        <polyline points="7 10 12 15 17 10"></polyline>
+        <line x1="12" y1="15" x2="12" y2="3"></line>
+      </svg>
+      PDF
+    </a>
+  </div>
+</header>
+
+<!-- ═══════════════════════════ 第一面 ═══════════════════════════ -->
+<div class="sheet">
+
+  <!-- ───── 題字 ───── -->
+  <div class="masthead">
+    <div class="masthead-top">
+      <div class="left">
+        2026年（令和8年）4月26日　日曜日
+      </div>
+      <div class="right">
+        <strong>第０号　全２頁</strong>
+        発行：養老昆虫クラブ
+      </div>
+    </div>
+    <div class="title-row">
+      <div class="deco-logo">
+        <img src="logo_satoh.jpg" alt="養老昆虫クラブ ロゴ（佐藤卓）">
+      </div>
+      <h1 class="paper-title"><span class="yoro">養老昆虫クラブ新聞</span></h1>
+      <div class="deco" style="flex:0 0 32mm;">
+        <div style="font-family:'Noto Serif JP','Hiragino Mincho ProN',serif; font-size:26pt; font-weight:900; line-height:1.0; letter-spacing:0.02em; color:#111; text-align:center; padding:0; white-space:nowrap;">第０号</div>
+        <span class="cap" style="font-size:10pt; letter-spacing:0.12em; margin-top:1.2mm; padding-top:1.2mm; font-weight:900;">創刊準備号</span>
+      </div>
+    </div>
+    <div class="subtitle-row">
+      <span class="en">YORO  INSECT  CLUB  NEWSPAPER</span>
+      みて、かんじて、そしてかんがえよう
+    </div>
+    <div class="colophon-bar">
+      <span><span class="label">主筆</span>養老　孟司</span>
+      <span><span class="label">発行人</span>平野　友康</span>
+      <span><span class="label">編集人</span>足立　真穂</span>
+      <span><span class="label">編集同人</span>柳瀬　博一</span>
+      <span><span class="label">ロゴ</span>佐藤　卓</span>
+    </div>
+  </div>
+
+  <!-- ───── トップ：創刊の辞 + メインビジュアル 横並び ───── -->
+  <div style="display:grid; grid-template-columns: 105mm 1fr; gap:5mm; border-top:1mm solid #111; border-bottom:0.4mm solid #111; padding:1mm 0 0.5mm; margin-bottom:1mm; align-items:start;">
+    <figure style="margin:0;">
+      <img src="photo_aoki_oozoumushi.jpg" alt="オオゾウムシ写真の前に立つ養老孟司" style="width:100%; height:55mm; object-fit:cover; object-position:center 30%; display:block; filter:grayscale(100%) contrast(1.08);">
+      <figcaption style="margin-top:1.2mm; font-family:'Noto Sans JP','Hiragino Sans',sans-serif; font-size:7.5pt; line-height:1.45;">
+        <strong>「目の前にある自然の答え」</strong>──オオゾウムシの超拡大写真の前に立つ、養老孟司。一体の虫に、宇宙が広がる。<span style="float:right; font-size:7pt;">写真：青木登（新潮社）</span>
+      </figcaption>
+    </figure>
+    <div style="text-align:left;">
+      <span style="font-family:'Noto Sans JP','Hiragino Sans',sans-serif; font-size:8.5pt; letter-spacing:0.35em; border:0.3mm solid #111; display:inline-block; padding:0.8mm 3mm; margin-bottom:2mm;">創 刊 の 辞</span>
+      <h2 style="font-size:24pt; line-height:1.18; margin:0 0 1.5mm; letter-spacing:0.04em; font-weight:900;">答えはぜんぶ、<br>虫にある。</h2>
+      <p style="font-size:10pt; letter-spacing:0.06em; line-height:1.4; margin:0 0 1.5mm; font-weight:700;">かたちを見る。すべてはそこからはじまった。</p>
+      <p style="font-size:9pt; letter-spacing:0.03em; line-height:1.55; margin:0;">ありのままを見ればいいんです。木の枝の葉っぱをよく見てください。あの葉っぱ一枚が、すべての答えでしょう。虫だってそう。もう、答えはそこにある。自然からの答えは、もう目の前にあるのです。<br><span style="font-size:8.5pt;">──養老孟司</span></p>
+    </div>
+  </div>
+
+  <!-- ───── 6段組み本記事群（緩急つき） ───── -->
+  <div class="columns-6">
+
+    <article class="column-article">
+      <h3>創刊にあたって</h3>
+      <p>本日、東京都写真美術館にて開催中の特別展「養老孟司と小檜山賢二の虫展」会場にて、本紙『養老昆虫クラブ新聞』を創刊する。</p>
+      <p>会期はあと一ヶ月足らず。会場で受け取った驚きを、家に帰っても、明日の電車のなかでも、もう一度反芻していただきたい。本紙はそのための小さな道具である。</p>
+      <p>養老孟司は語る。<span class="no-indent-bracket-inline">「虫けら、なんていうけれど、一寸の虫にも五分の魂というでしょう。虫を通して世界を見ると、世界は変わっていきます」</span>と。本紙はその考えを、紙面という形で持ち帰っていただくものだ。自分の世界を、面白く楽しく、変えてみてほしい。</p>
+      <p>創刊号では、虫展にまつわる各ニュースをお知らせしつつ、第二面では、本日ギャラリートークに立つ柳瀬博一が東京科学大学で進める「すずかけ池ホタル再生プロジェクト」を紹介する。</p>
+      <p class="byline" style="text-align:right; margin-top:1mm; white-space:nowrap; letter-spacing:-0.04em; font-feature-settings:'palt' 1;">（養老昆虫クラブ 編集部）</p>
+    </article>
+
+    <article class="column-article">
+      <h3>養老孟司、虫を語る</h3>
+      <p class="byline no-indent-bracket" style="font-size:7pt; color:#444;">（以下本紙の言葉は、養老昆虫クラブが見聞きしたものです）</p>
+      <figure style="margin:0 0 2mm; break-inside:avoid;">
+        <img src="photo_aoki_0906.jpg" alt="養老孟司と小檜山賢二" style="width:100%; height:auto; display:block; filter:grayscale(100%) contrast(1.05); border:0.3mm solid #111;">
+        <figcaption style="text-indent:0; font-size:7pt; line-height:1.4; margin:1mm 0 0; font-family:'Noto Sans JP','Hiragino Sans',sans-serif;">
+          虫展会場にて。養老孟司（左）と小檜山賢二（右）。<br>
+          <span style="font-size:6.5pt;">写真：青木登（新潮社）</span>
+        </figcaption>
+      </figure>
+      <p class="no-indent-bracket">「自分の狭い考えに縛られると『なんでこんな自分なのか』とわからなくなることがある。それが『バカの壁』です。自分の脳ミソに入ることしか、理解できないのは当たり前。</p>
+      <p>でも、人間は変わることができる。なにかを発見すると、自分も、脳ミソも変わる。虫という自然は、それをすぐに教えてくれる。</p>
+      <p class="no-indent-bracket">『発見』した自分は、もう、それまでの自分とは変わっているのです」</p>
+      <p class="no-indent" style="font-size:7.5pt; margin-top:2mm; line-height:1.5;">虫展では、そんな養老先生の珠玉の言葉をとらえていく。</p>
+    </article>
+
+    <article class="column-article">
+      <h3>小檜山写真の衝撃</h3>
+      <p>会場で来場者が瞠目するのが、小檜山賢二による高解像度の昆虫写真である。その数52点。一匹の「虫けら」の小さな体には、拡大していくと、次々と構造が浮かび上がる。写真を100倍にすると、情報も100倍になるのだ。</p>
+      <p class="no-indent-bracket">「これがいま、目の前で生きている生きものだという事実。それが衝撃なんです」（来場者・40代女性）</p>
+      <p>全体にピントを合わせられるカメラはない。マイクロプレゼンスがすごいのは、それを成し遂げて、虫の姿をものの見事に再現してみせたことだ。</p>
+    </article>
+
+    <article class="column-article">
+      <h3>ようろうボックスの<br>愉しみ</h3>
+      <p>会場のあちこちに、不思議な箱がある。「ようろうボックス」と呼ばれるでこぼこの装置を覗き込むと、そこには言葉と写真をちりばめた小さな世界が広がっている。覗いた瞬間、思わず声を上げてしまう来場者が多い。ある箱には、養老先生が子どものころに書いた新聞が載り、別の箱には猫のまるがかわいい顔をのぞかせている。玉手箱の中身は、ぜひ会場で確かめていただきたい。</p>
+    </article>
+
+    <article class="column-article">
+      <h3>そもそも、虫展とは何か。</h3>
+      <p class="no-indent-bracket">「養老孟司と小檜山賢二の虫展」は、解剖学者・養老孟司と写真家・小檜山賢二によるふたり展である。長年の虫友達だそうで、「一緒に虫を採ったり話したりしながらかれこれ四十年近く、面白い世界を見せてもらってきました」と養老は語る。</p>
+      <p>養老の言葉が誘う会場の主役は、小檜山の超拡大写真だ。30年前から、独自に撮影してきた写真のピントの合った部分を深度合成してつくりあげたこの「<strong>マイクロプレゼンス</strong>」写真は、高精細で鮮やかだ。養老は感嘆する。「これまで電子顕微鏡で自分がのぞいていた世界は部分にしかピントが合わなかった。それを脳内で自分で合成していたと思う。その脳内のイメージが目の前に差し出されたようで、とにかく驚嘆した」。</p>
+      <p>本展は2024年に大分県立美術館で開催され、約３万人の来場者を集めた。今回の東京都写真美術館では、アートディレクターに<strong>岡崎智弘</strong>を迎えて、バージョンアップしての公開となっている。Eテレ「デザインあ 解散！／集合！コーナー」の企画制作から「虫展-デザインのお手本-」（21_21 DESIGN SIGHT）の展示構成まで、多岐にわたる活動で注目のグラフィックデザイナーだ。</p>
+    </article>
+
+    <article class="column-article">
+      <h3>虫展の会期・トーク予告</h3>
+      <p>『養老孟司と小檜山賢二の虫展』の会期は、<strong>3月21日〜5月24日</strong>。<strong>残り29日</strong>となる。開催中はトークイベントが盛りだくさんだ。全トーク予定は第二面を参照してほしい。</p>
+    </article>
+
+    <article class="column-article">
+      <h3>虫にまつわる活動を<br>応援します</h3>
+      <p>養老昆虫クラブは、虫と自然を愛する有志がゆるくつながっているクラブです。とりあえずXをフォローしておいてくださると、そのうち何かお知らせが届くかもしれません。届かなくても気長に待ってください。</p>
+      <p class="byline" style="text-align:right; margin-top:0.5mm; white-space:nowrap; letter-spacing:-0.04em; font-feature-settings:'palt' 1;">（養老昆虫クラブ事務局）</p>
+      <div style="display:flex; gap:2mm; margin-top:1mm; align-items:flex-start;">
+        <div style="text-align:center; flex:1;">
+          <img src="qr_yoroclub.svg" alt="" style="width:100%; max-width:18mm; aspect-ratio:1/1; display:block; margin:0 auto;">
+          <div style="font-size:6pt; line-height:1.2; margin-top:0.5mm; font-family:'Noto Sans JP','Hiragino Sans',sans-serif;"><strong>WEB</strong></div>
+        </div>
+        <div style="text-align:center; flex:1;">
+          <img src="qr_x.svg" alt="" style="width:100%; max-width:18mm; aspect-ratio:1/1; display:block; margin:0 auto;">
+          <div style="font-size:6pt; line-height:1.2; margin-top:0.5mm; font-family:'Noto Sans JP','Hiragino Sans',sans-serif;"><strong>X</strong>@yoroclub</div>
+        </div>
+      </div>
+    </article>
+
+  </div>
+
+  <!-- ═══ 全幅引用ボックス：養老語録 ═══ -->
+  <article class="pullquote-fullwidth" style="border-top:0.8mm double #111; border-bottom:0.8mm double #111; padding:1mm 5mm 0.5mm; margin-bottom:0.8mm; break-inside:avoid; text-align:center;">
+    <h3 style="border:none; padding:0; margin:0 0 1.2mm; text-align:center; font-size:11pt; letter-spacing:0.32em;">─── 養 老 語 録 よ り ───</h3>
+    <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:4mm; text-align:left;">
+      <p style="font-size:9pt; line-height:1.55; margin:0; text-indent:0; font-family:'Noto Serif JP','Hiragino Mincho ProN',serif;">「答えがわかっていたら、調べても仕方がない。<strong>わからないからこそ、面白い</strong>」</p>
+      <p style="font-size:9pt; line-height:1.55; margin:0; text-indent:0; font-family:'Noto Serif JP','Hiragino Mincho ProN',serif;">「ロケットを打ち上げる時代になっても、<strong>人間はハエ一匹作り出せない</strong>」</p>
+      <p style="font-size:9pt; line-height:1.55; margin:0; text-indent:0; font-family:'Noto Serif JP','Hiragino Mincho ProN',serif;">「自然は人間がつくり出したものではない。<strong>その代表が虫だと私は思っている</strong>」</p>
+      <p style="font-size:9pt; line-height:1.55; margin:0; text-indent:0; font-family:'Noto Serif JP','Hiragino Mincho ProN',serif;">「光が照らす部分には、<strong>影が必ずできる</strong>」</p>
+      <p style="font-size:9pt; line-height:1.55; margin:0; text-indent:0; font-family:'Noto Serif JP','Hiragino Mincho ProN',serif;">「言葉を信じすぎない方がいい。目の前のものや起こることは、<strong>言葉とはまったく違う</strong>」</p>
+      <p style="font-size:9pt; line-height:1.55; margin:0; text-indent:0; font-family:'Noto Serif JP','Hiragino Mincho ProN',serif;">「<strong>一寸の虫にも五分の魂</strong>──私は、この言葉が大好きです」</p>
+    </div>
+    <p style="text-align:right; font-size:6.5pt; margin:1mm 0 0; font-family:'Noto Sans JP','Hiragino Sans',sans-serif; text-indent:0;">『虫展』より</p>
+  </article>
+
+  <!-- ═══ 後半：3枠グリッド（下端揃え） ═══ -->
+  <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap:3mm; margin-bottom:1mm; align-items:stretch;">
+
+    <article class="column-article boxed">
+      <h3>片田陽依（ひより）さん、<br>虫展アンバサダー就任</h3>
+      <p>俳優で音楽家の<strong>片田陽依</strong>（かただ・ひより）さんが、本展の公式アンバサダーに就任した。小檜山賢二の超拡大写真と養老孟司の言葉が並ぶ会場を、ひとつずつ丁寧にめぐり、来場者と同じ目線で「虫」の世界を伝えてくれている。</p>
+      <p>5月5日（火・祝）16時からは、イモムシ画家・<strong>桃山鈴子</strong>さんとのギャラリートークも予定されている。「虫を見る人」と「虫を描く人」──ふたつの視点が交差する１時間になるはずだ。詳細は会場掲示・公式SNSにて。</p>
+    </article>
+
+    <article class="column-article boxed">
+      <h3>内覧会の様子を、見られます</h3>
+      <p>プレス内覧会に、新潮社「<strong>イノベーション読書</strong>」の動画カメラが密着。<strong>養老先生の独占インタビュー</strong>、小檜山さんによる超精細「マイクロプレゼンス」写真の見どころ紹介、東京都写真美術館で初お目見えの「<strong>昆虫を拡大・縮小する動画</strong>」「<strong>3D Gaussian Splatting映像</strong>」の一部も特別公開。下記リンクから視聴可能。</p>
+      <div class="qr-inline">
+        <img class="qr" src="qr_innovation_reading.svg" alt="QR 内覧会動画">
+        <div class="qr-text">
+          <strong>WATCH</strong>
+          内覧会動画<br>YouTube
+          <span class="url">youtu.be/KzxftN_oozg</span>
+        </div>
+      </div>
+    </article>
+
+    <article class="column-article boxed">
+      <h3>本日のギャラリートークについて</h3>
+      <p class="byline">「虫とデジタル」をテーマに語ります。<br>16:00〜 ／ 地下１階展示室内</p>
+      <p style="text-indent:0;"><strong>柳瀬博一</strong>（やなせ・ひろいち）東京科学大学教授（メディア論）。書籍編集者を経て、メディアと自然をめぐる研究と発信。<strong>すずかけ池ホタルの谷再生プロジェクト</strong>発起人の一人。本紙編集同人。</p>
+      <p style="text-indent:0; margin-top:1.5mm;"><strong>平野友康</strong>（ひらの・ともやす）メディアクリエイター、<strong>生成AIの専門家</strong>。本紙発行人として、AI編集者「エディ」と編集システムを開発。</p>
+    </article>
+
+  </div>
+
+  <!-- ───── 第一面欄外 ───── -->
+  <div class="page-footer">
+    <div><strong>第一面</strong>　養老昆虫クラブ新聞　創刊号</div>
+    <div>2026.04.26　東京都写真美術館 にて 配布　／　発行：養老昆虫クラブ</div>
+  </div>
+
+</div>
+
+<!-- ═══════════════════════════ 第二面 ═══════════════════════════ -->
+<div class="sheet">
+
+  <div class="second-head">
+    <div class="pg">第　二　面</div>
+    <div class="title">ご 紹 介 ─ 横浜キャンパスにホタルと自然を！</div>
+    <div class="meta">養老昆虫クラブ新聞　創刊号　2026.04.26</div>
+  </div>
+
+  <!-- ───── 二面トップ：柳瀬さんからのご紹介（本人テキスト + QRのみ） ───── -->
+  <article class="feature-top" style="border-top:1.2mm solid #111; border-bottom:0.4mm solid #111; padding:1.5mm 0 1.5mm; margin-bottom:1.2mm; break-inside:avoid; display:grid; grid-template-columns: 55mm 1fr 32mm; gap:4mm; align-items:stretch;">
+    <img src="illustration_satoyama.png" alt="棚田と池とホタルのある里山風景" style="width:100%; height:100%; min-height:65mm; object-fit:cover; object-position:center 55%; display:block; filter:grayscale(100%) contrast(1.05); border:0.3mm solid #111;">
+    <div>
+      <div style="margin-bottom:1.5mm; font-family:'Noto Sans JP','Hiragino Sans',sans-serif; font-size:7.5pt; letter-spacing:0.16em;">
+        <span style="border:0.3mm solid #111; padding:0.4mm 2mm;">本日のギャラリートーク登壇者・柳瀬博一さんからのご紹介</span>
+      </div>
+      <h2 style="font-size:16pt; margin:0 0 1mm; line-height:1.2; letter-spacing:-0.02em; font-weight:900; white-space:nowrap; font-feature-settings:'palt' 1;">「横浜キャンパスにホタルと自然を！」基金、設立しました。</h2>
+      <p style="font-size:8.5pt; line-height:1.55; margin:0 0 1.5mm; letter-spacing:0.02em; text-indent:1em;">東京科学大学の横浜キャンパス周辺には、ホタルが生息できる自然環境が残っています。しかし、その環境には一定の条件があり、住環境等の変化から、ホタルの生息地が減少する可能性を危惧し、2024年より横浜キャンパス中央に位置する「すずかけ池」を整備し、ホタルの生息地を再生・確保するプロジェクトに取り組んできました。</p>
+      <p style="font-size:8.5pt; line-height:1.55; margin:0; letter-spacing:0.02em; text-indent:1em;">ホタルを含めた地域在来種および自然環境（ビオトープ）を保全・再生することを目指す、すずかけ池ビオトープ・里山整備プロジェクト「横浜キャンパスにホタルと自然を！」を通して、横浜キャンパスをより魅力的にできるよう、皆様からの温かいご支援を心よりお待ちしております。詳しくは右のQRコードのサイトにて。<span style="margin-left:0.3em;">（柳瀬博一）</span></p>
+    </div>
+    <div style="text-align:center; padding-top:0.5mm;">
+      <img src="qr_firefly.svg" alt="QR ホタル基金" style="width:30mm; height:30mm; display:block; margin:0 auto;">
+      <div style="font-family:'Noto Sans JP','Hiragino Sans',sans-serif; font-size:7.5pt; line-height:1.4; margin-top:1.2mm; letter-spacing:0.04em;">
+        <strong style="display:block; font-size:8pt; letter-spacing:0.16em; margin-bottom:0.5mm;">LINK</strong>
+        東京科学大学 公式<br><span style="letter-spacing:-0.02em; font-feature-settings:'palt' 1; font-size:7pt;">「ホタルと自然を！」基金</span>
+        <span style="font-family:'Menlo',monospace; font-size:6.2pt; word-break:break-all; display:block; margin-top:0.8mm; color:#111;">szc.titech.ac.jp/news/fireflyfund/</span>
+      </div>
+    </div>
+  </article>
+
+  <!-- ───── 残りの大段組フロー ───── -->
+  <div class="columns-4" style="margin-bottom:1mm; column-gap:4mm; column-rule:0.3mm solid #111; column-fill:balance;">
+
+    <article class="column-article">
+      <div style="font-family:'Noto Sans JP','Hiragino Sans',sans-serif; font-size:7.5pt; letter-spacing:0.28em; border:0.3mm solid #111; display:inline-block; padding:0.5mm 2mm; margin-bottom:1.5mm;">レ ポ ー ト</div>
+      <h3 style="letter-spacing:-0.05em; font-feature-settings:'palt' 1;">「虫ってさ、80年見てても飽きないね」<br><span style="font-size:8.5pt; letter-spacing:0.02em;">─ 養老孟司＆小檜山賢二が語る　<span style="display:inline-block; border-radius:50%; background:#111; color:#fff; padding:0.2mm 1.5mm; font-size:7pt; letter-spacing:0.1em;">●終了</span></span></h3>
+      <p class="byline">2026年4月4日（土）14:00〜15:30 ／ 東京都写真美術館1階ホール ／ 司会：足立真穂</p>
+      <p class="no-indent-bracket">養老さんの「<strong>展示については、とにかく見てからです</strong>」という挨拶にはじまり、小檜山さんが「なぜこんな写真を撮ることになったのか」をスライドとともに解説していった。会場からの質問にも丁寧に答えていく。</p>
+      <p>事前に寄せてもらった中でいちばん多かった質問は、なんと「<strong>変身したい虫はいるでしょうか？　その理由は？</strong>」というもの。お返事は以下の通り。</p>
+      <p style="text-indent:0;"><strong>養老孟司　＝　アサギマダラ</strong>。理由：「遠くまで飛べるから」。</p>
+      <p style="text-indent:0;"><strong>小檜山賢二　＝　ハンミョウ</strong>。理由：「きれいだし、飛べるから」。</p>
+      <p>お二人とも、どこかへ飛んでいきたい様子であった（笑）。本日のギャラリートーク登壇者・柳瀬博一氏、平野友康氏の答えは、ぜひ会場でお確かめいただきたい。</p>
+      <p style="text-indent:0; font-size:7pt; color:#444; padding-top:0.8mm; border-top:0.3mm dotted #aaa; margin-top:1.5mm;">なお、4月4日の様子は動画や記事で紹介予定とのこと、しばしお待ちを。</p>
+    </article>
+
+    <article class="column-article">
+      <div style="font-family:'Noto Sans JP','Hiragino Sans',sans-serif; font-size:7.5pt; letter-spacing:0.28em; border:0.3mm solid #111; display:inline-block; padding:0.5mm 2mm; margin-bottom:1.5mm;">レ ポ ー ト</div>
+      <h3>「虫を知ると毎日が面白くなる」<br><span style="font-size:9pt;">─ 池田清彦先生、虫展を語る　<span style="display:inline-block; border-radius:50%; background:#111; color:#fff; padding:0.2mm 1.5mm; font-size:7pt; letter-spacing:0.1em;">●終了</span></span></h3>
+      <p class="byline">2026年4月24日（金）18:45〜19:45 ／ 東京都写真美術館1階ホール ／ 司会：足立真穂</p>
+      <p>本紙創刊の２日前、2026年4月24日には、養老孟司の〈虫採りともだちナンバーワン〉、生物学者・<strong>池田清彦</strong>先生が登壇された。</p>
+      <figure style="margin:1mm 0 1.5mm; break-inside:avoid;">
+        <img src="laos_photo.jpg" alt="ラオスにて" style="width:100%; height:28mm; object-fit:cover; object-position:center 75%; display:block; filter:grayscale(100%) contrast(1.05); border:0.3mm solid #111;">
+        <figcaption style="text-indent:0; font-size:6.5pt; line-height:1.4; margin:1mm 0 0; font-family:'Noto Sans JP','Hiragino Sans',sans-serif;">
+          <strong>2007年、ラオスにて</strong>──養老（中央）と池田（左）。〈虫採りともだちナンバーワン〉のはじめての地。<span style="display:block; text-align:right; font-size:6pt;">写真提供：足立真穂</span>
+        </figcaption>
+      </figure>
+      <p>前半は、池田が選んだ小檜山写真５点（ロクロクビオトシブミ、ハリネズムトゲハムシ、フゾロイヒラタハムシ、アシナガメクラチビゴミムシ、アオマイマイカブリ）の<strong>虫豆知識と解説</strong>。「この虫はどんなところで暮らしているか」を聞くと写真の見え方が変わっていく。虫を知ると世界を見る目が変わる、毎日が面白いものになる──イベントのタイトル通りだ。</p>
+      <p>後半はラオスでの虫採り回顧。足立は「養老先生は『<strong>虫採りをするなら池田君だよ</strong>』とおっしゃる」と紹介。象のそばで虫を採ったタイの話、10メートルの虫採り網のこと（展示会場に写真あり）、変人だと思った虫屋さんの話──会場は終始笑いに包まれた。</p>
+      <p>池田先生のメルマガ「<strong>池田清彦のやせ我慢日記</strong>」（月２回・月440円・初回無料）は養老先生も愛読する面白さだ。当日に配信された第310回は虫展特集に。同日発売の最新刊『<strong>人はなぜ働かなくていいのか</strong>』や養老先生との共著『<strong>年寄りは本気だ</strong>』の話題にもなった。</p>
+      <p style="text-indent:0; font-size:7pt; line-height:1.5; margin:2mm 0 0; padding-top:1mm; border-top:0.3mm dotted #111; font-family:'Noto Sans JP','Hiragino Sans',sans-serif;">
+        <strong>PROFILE</strong>　池田清彦（いけだ・きよひこ）　1947年東京生まれ。生物学者。早稲田大学・山梨大学名誉教授。100冊以上の著書。フジテレビ「ホンマでっか!?TV」等に出演。
+      </p>
+    </article>
+
+    <article class="column-article" style="break-before:column; -webkit-column-break-before:always;">
+      <h3>テーマソング「むしのいどころ」</h3>
+      <p class="byline" style="letter-spacing:-0.02em; font-feature-settings:'palt' 1;">作・歌：すてぃぎもろく ／ 映像：岡崎智弘</p>
+      <figure style="margin:0 0 1.5mm; break-inside:avoid;">
+        <img src="mv_pvscene.png" alt="MV" style="width:100%; height:auto; display:block; filter:grayscale(100%) contrast(1.08); border:0.3mm solid #111;">
+        <figcaption style="text-indent:0; font-size:6.5pt; line-height:1.4; margin:1mm 0 0; font-family:'Noto Sans JP','Hiragino Sans',sans-serif;">
+          MV「むしのいどころ」より。<span style="display:block; text-align:right; font-size:6pt;">映像：岡崎智弘</span>
+        </figcaption>
+      </figure>
+      <p>養老昆虫クラブには、テーマソングがある。タイトルは「<strong>むしのいどころ</strong>」。〈世界を揺るがす三人組バンド〉<strong>すてぃぎもろく</strong>が、虫展のために書き下ろした一曲（2026年3月18日リリース）。</p>
+      <p>ミュージックビデオは、虫展のアートディレクターでもある<strong>岡崎智弘</strong>が制作。小檜山賢二の作品写真などをコマ撮りし、虫たちと人物が画面の中で踊り出す映像となっており、養老先生が山梨で養老昆虫メンバーと虫採りをする様子も。</p>
+      <p>曲を聞いた養老先生は「<strong>外に飛び出したくなるのがいい</strong>」と一言。歌のなかで、虫たちの〈居所〉と、わたしたちの〈心の居所〉が、ふっと重なる瞬間がある。会場帰りの電車のなかで、ぜひイヤホンを挿していただきたい。</p>
+      <div class="qr-inline">
+        <img class="qr" src="qr_song.svg" alt="QR テーマソング">
+        <div class="qr-text">
+          <strong>LISTEN</strong>
+          むしのいどころ<br>MV (YouTube)
+          <span class="url">youtube.com/watch?v=HoRqKxLJFAo</span>
+        </div>
+      </div>
+      <p style="text-indent:0; font-size:7pt; line-height:1.5; margin:2mm 0 0; padding-top:1mm; border-top:0.3mm dotted #111; font-family:'Noto Sans JP','Hiragino Sans',sans-serif;">
+        <strong>すてぃぎもろく公式：</strong>www.stygimoloch.com／Music・Schedule・Video・Goods・News・Podcast 配信中
+      </p>
+    </article>
+
+    <article class="column-article" style="break-before:column; -webkit-column-break-before:always;">
+      <h3>編集後記</h3>
+      <p>創刊号は、虫展のニュースを伝え、本日のギャラリートーク登壇者・柳瀬博一さんの基金プロジェクトを特集の柱に据えた。虫展のテーマである「身近な自然の答え」が、横浜のすずかけ池でも進行中だと知ったのは、編集部にとって大きな発見だった。</p>
+      <p>──ところで本紙、実はAI編集者「<strong>エディ</strong>」と、発行人・平野（メディアクリエイター／<strong>生成AIの専門家</strong>）が開発中の<strong>編集システム</strong>を使って組まれている。編集人となった<strong>足立真穂</strong>から「養老先生のメディアをなにかつくろう」と依頼があったのは3月はじめのこと。編集会議3回目には、編集同人となった<strong>柳瀬博一</strong>も加わり、会場で情報を伝えるにはどうしたらいいのかという課題があがった。この情報伝達方法の模索は、いつのまにか養老昆虫クラブの連絡メールと合体していき、会場での新聞配布となった。創刊準備号らしくデザインレイアウトの粗さはあえて残した。お許しいただきたい。素材から構造へ、構造から原稿へ、原稿から紙面へ。一冊の本も一枚の新聞も、同じ編集の流れで作れる仕組みだ。「編集会議の大切さがわかった」とは足立の弁だ。当たり前だが、こちらの脳みそ以上のものは出てこない。本紙はその試運転であり、いつか近い将来にはこの新しい「編集」のかたちを伝える日がくるだろう。</p>
+      <p>個人的な話をひとつ。編集者として<strong>養老先生のラオス取材に同行</strong>したことがある。虫採りに夢中になる先生方の、子どものような笑顔は今も忘れられない。あの軽やかな空気が、本紙のどこかに残っていればと願う。</p>
+      <p>「面白そうなことは、まずやってしまう」──それが養老昆虫クラブの編集姿勢である。読者諸氏の感想・寄稿、心よりお待ちしております。</p>
+      <p class="byline" style="text-align:right; margin-top:1mm;">（発行人・平野友康）</p>
+      <figure style="margin:8mm 0 0; text-align:center; break-inside:avoid; line-height:0;">
+        <img class="deco-img" src="asagimadara_cropped.png" alt="アサギマダラ" style="height:17mm; width:auto; display:block; margin:0 auto; filter:grayscale(100%) contrast(1.05);">
+      </figure>
+    </article>
+
+  </div>
+
+  <!-- ───── 社告：3列・等高 ───── -->
+  <div style="display:grid; grid-template-columns:1fr 1fr 1.4fr; gap:3mm; margin-bottom:0.5mm; align-items:stretch;">
+    <div class="notice" style="margin-bottom:0; display:flex; flex-direction:column;">
+      <h4>養老昆虫クラブ ウェブサイト</h4>
+      <div style="display:flex; gap:2.5mm; align-items:center; flex:1;">
+        <img src="qr_yoroclub.svg" alt="" style="width:24mm; height:24mm; flex:0 0 24mm;">
+        <div>
+          <p style="font-size:7.5pt; line-height:1.5; margin:0;">サイト内に<strong>虫捕りゲーム</strong>あり。<strong>100匹捕まえるとボーナスステージが出現する</strong>ので、ぜひ頑張って捕獲を（パソコンよりスマホ推奨）。</p>
+          <p class="meta" style="font-size:6.5pt; margin-top:1mm;">yoroclub.vercel.app</p>
+        </div>
+      </div>
+    </div>
+    <div class="notice" style="margin-bottom:0; display:flex; flex-direction:column;">
+      <h4>SNS（X / Instagram）</h4>
+      <div style="display:flex; gap:2.5mm; align-items:center; flex:1;">
+        <img src="qr_x.svg" alt="" style="width:24mm; height:24mm; flex:0 0 24mm;">
+        <div>
+          <p style="font-size:7.5pt; line-height:1.5; margin:0;">会期中、<strong>毎日更新中</strong>。虫展の見どころ、養老語録、小檜山写真の解説、来場者の声など、現場のリアルタイムをお届けします。</p>
+          <p class="meta" style="font-size:6.5pt; margin-top:1mm;">X: @yoroclub　／　Instagram: @yoro_mushi</p>
+        </div>
+      </div>
+    </div>
+    <div class="notice" style="margin-bottom:0;">
+      <h4>次号予告（みたいなもの）</h4>
+      <p style="font-size:7pt; line-height:1.45; margin-bottom:0.8mm;">次号は、虫展会期終了後（2026年6月以降）の予定。──とはいえ、詳細はまだ考えてもいません。</p>
+      <p style="font-size:7pt; line-height:1.45; margin-bottom:0.8mm;">会期中のギャラリートークだけでも、すでにかなりの回数。柳瀬×平野（本日）、片田陽依×桃山鈴子、横山寛多、小檜山賢二の複数回……レポートだけで紙面が埋まりそうです。</p>
+      <p style="font-size:7pt; line-height:1.45; margin-bottom:0;">「面白そうなことは、まずやってしまう」。次号もその姿勢で、ゆるく準備中。</p>
+    </div>
+  </div>
+
+  <!-- ───── 会期中トークイベント全スケジュール（公式情報・横並び圧縮） ───── -->
+  <article class="column-article" style="border:0.5mm double #111; padding:0.2mm 2mm; margin-bottom:0; break-inside:avoid;">
+    <h3 style="border:none; padding:0; margin:0; font-size:8.5pt; text-align:center; letter-spacing:0.16em;">会期中　トークイベント　全スケジュール</h3>
+    <p class="byline" style="text-align:center; margin-bottom:0.3mm; font-size:6pt;">『養老孟司と小檜山賢二の虫展』連動企画　／　会場：東京都写真美術館　／　時間が許せばぜひ複数回のご来場を。</p>
+
+    <!-- 統合スケジュール表（全イベント時系列） -->
+    <table class="schedule-table" style="width:100%; border-collapse:collapse; font-size:7pt; line-height:1.3; font-family:'Noto Sans JP','Hiragino Sans',sans-serif; margin:0 0 1.2mm;">
+      <thead>
+        <tr style="background:#111; color:#fff; font-size:7pt; letter-spacing:0.06em;">
+          <th style="border:0.3mm solid #111; padding:0.6mm 1.5mm; text-align:left; width:26mm; white-space:nowrap;">日付</th>
+          <th style="border:0.3mm solid #111; padding:0.6mm 1.5mm; text-align:left; width:11mm; white-space:nowrap;">時間</th>
+          <th style="border:0.3mm solid #111; padding:0.6mm 1.5mm; text-align:left; width:32mm; white-space:nowrap;">形式・会場</th>
+          <th style="border:0.3mm solid #111; padding:0.6mm 1.5mm; text-align:left;">登壇者・テーマ</th>
+          <th style="border:0.3mm solid #111; padding:0.6mm 1.5mm; text-align:center; width:14mm; white-space:nowrap;">状況</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr style="color:#888;"><td style="border:0.3mm solid #111; padding:0.05mm 1.5mm;">3月21日(土)</td><td style="border:0.3mm solid #111; padding:0.05mm 1.5mm;">14:00</td><td style="border:0.3mm solid #111; padding:0.05mm 1.5mm;">ギャラリー・地下１階</td><td style="border:0.3mm solid #111; padding:0.05mm 1.5mm;">小檜山賢二</td><td style="border:0.3mm solid #111; padding:0.05mm 1.5mm; text-align:center;">終了</td></tr>
+        <tr style="color:#888;"><td style="border:0.3mm solid #111; padding:0.05mm 1.5mm;">3月28日(土)</td><td style="border:0.3mm solid #111; padding:0.05mm 1.5mm;">14:00</td><td style="border:0.3mm solid #111; padding:0.05mm 1.5mm;">ギャラリー・地下１階</td><td style="border:0.3mm solid #111; padding:0.05mm 1.5mm;">小檜山賢二</td><td style="border:0.3mm solid #111; padding:0.05mm 1.5mm; text-align:center;">終了</td></tr>
+        <tr style="color:#888;"><td style="border:0.3mm solid #111; padding:0.05mm 1.5mm;">4月4日(土)</td><td style="border:0.3mm solid #111; padding:0.05mm 1.5mm;">14:00</td><td style="border:0.3mm solid #111; padding:0.05mm 1.5mm;">公演・1階ホール</td><td style="border:0.3mm solid #111; padding:0.05mm 1.5mm;">養老孟司＆小檜山賢二「虫ってさ、80年見てても飽きないね」</td><td style="border:0.3mm solid #111; padding:0.05mm 1.5mm; text-align:center;">終了</td></tr>
+        <tr style="color:#888;"><td style="border:0.3mm solid #111; padding:0.05mm 1.5mm;">4月24日(金)</td><td style="border:0.3mm solid #111; padding:0.05mm 1.5mm;">18:45</td><td style="border:0.3mm solid #111; padding:0.05mm 1.5mm;">公演・1階ホール</td><td style="border:0.3mm solid #111; padding:0.05mm 1.5mm;">池田清彦「虫を知ると毎日が面白くなる」</td><td style="border:0.3mm solid #111; padding:0.05mm 1.5mm; text-align:center;">終了</td></tr>
+        <tr style="color:#888;"><td style="border:0.3mm solid #111; padding:0.05mm 1.5mm;">4月25日(土)</td><td style="border:0.3mm solid #111; padding:0.05mm 1.5mm;">14:00</td><td style="border:0.3mm solid #111; padding:0.05mm 1.5mm;">ギャラリー・地下１階</td><td style="border:0.3mm solid #111; padding:0.05mm 1.5mm;">小檜山賢二</td><td style="border:0.3mm solid #111; padding:0.05mm 1.5mm; text-align:center;">終了</td></tr>
+        <tr style="background:#111; color:#fff;"><td style="border:0.3mm solid #111; padding:0.05mm 1.5mm;"><strong>4月26日(日)</strong></td><td style="border:0.3mm solid #111; padding:0.05mm 1.5mm;"><strong>16:00</strong></td><td style="border:0.3mm solid #111; padding:0.05mm 1.5mm;"><strong>ギャラリー・地下１階</strong></td><td style="border:0.3mm solid #111; padding:0.05mm 1.5mm;"><strong>柳瀬博一×平野友康「虫とデジタル」</strong></td><td style="border:0.3mm solid #111; padding:0.05mm 1.5mm; text-align:center;"><strong>本日</strong></td></tr>
+        <tr><td style="border:0.3mm solid #111; padding:0.05mm 1.5mm;">4月30日(木)</td><td style="border:0.3mm solid #111; padding:0.05mm 1.5mm;">18:45</td><td style="border:0.3mm solid #111; padding:0.05mm 1.5mm;"><strong>要申込</strong>・1階ホール</td><td style="border:0.3mm solid #111; padding:0.05mm 1.5mm;"><strong>養老孟司</strong>「希望とは自分が変わること」</td><td style="border:0.3mm solid #111; padding:0.05mm 1.5mm; text-align:center;">受付中</td></tr>
+        <tr><td style="border:0.3mm solid #111; padding:0.05mm 1.5mm;">5月2日(土)</td><td style="border:0.3mm solid #111; padding:0.05mm 1.5mm;">14:00</td><td style="border:0.3mm solid #111; padding:0.05mm 1.5mm;">ギャラリー・地下１階</td><td style="border:0.3mm solid #111; padding:0.05mm 1.5mm;">小檜山賢二</td><td style="border:0.3mm solid #111; padding:0.05mm 1.5mm; text-align:center;">─</td></tr>
+        <tr><td style="border:0.3mm solid #111; padding:0.05mm 1.5mm;">5月4日(月)</td><td style="border:0.3mm solid #111; padding:0.05mm 1.5mm;">16:00</td><td style="border:0.3mm solid #111; padding:0.05mm 1.5mm;"><strong>要申込</strong>・スタジオ</td><td style="border:0.3mm solid #111; padding:0.05mm 1.5mm;"><strong>茂木健一郎</strong>「『写真』と『アート』のあいだを茂木健一郎さんと考える」</td><td style="border:0.3mm solid #111; padding:0.05mm 1.5mm; text-align:center;">受付中</td></tr>
+        <tr><td style="border:0.3mm solid #111; padding:0.05mm 1.5mm;">5月5日(火・祝)</td><td style="border:0.3mm solid #111; padding:0.05mm 1.5mm;">16:00</td><td style="border:0.3mm solid #111; padding:0.05mm 1.5mm;">ギャラリー・地下１階</td><td style="border:0.3mm solid #111; padding:0.05mm 1.5mm;"><strong>片田陽依</strong>（俳優・虫展アンバサダー）<strong>×桃山鈴子</strong>（イモムシ画家）</td><td style="border:0.3mm solid #111; padding:0.05mm 1.5mm; text-align:center;">─</td></tr>
+        <tr><td style="border:0.3mm solid #111; padding:0.05mm 1.5mm;">5月6日(水・祝)</td><td style="border:0.3mm solid #111; padding:0.05mm 1.5mm;">14:00</td><td style="border:0.3mm solid #111; padding:0.05mm 1.5mm;">ギャラリー・地下１階</td><td style="border:0.3mm solid #111; padding:0.05mm 1.5mm;">小檜山賢二</td><td style="border:0.3mm solid #111; padding:0.05mm 1.5mm; text-align:center;">─</td></tr>
+        <tr><td style="border:0.3mm solid #111; padding:0.05mm 1.5mm;">5月9日(土)</td><td style="border:0.3mm solid #111; padding:0.05mm 1.5mm;">14:00</td><td style="border:0.3mm solid #111; padding:0.05mm 1.5mm;">ギャラリー・地下１階</td><td style="border:0.3mm solid #111; padding:0.05mm 1.5mm;">小檜山賢二</td><td style="border:0.3mm solid #111; padding:0.05mm 1.5mm; text-align:center;">─</td></tr>
+        <tr><td style="border:0.3mm solid #111; padding:0.05mm 1.5mm;">5月10日(日)</td><td style="border:0.3mm solid #111; padding:0.05mm 1.5mm;">10:30</td><td style="border:0.3mm solid #111; padding:0.05mm 1.5mm;">ギャラリー・地下１階</td><td style="border:0.3mm solid #111; padding:0.05mm 1.5mm;"><strong>横山寛多</strong>（絵本作家）</td><td style="border:0.3mm solid #111; padding:0.05mm 1.5mm; text-align:center;">─</td></tr>
+      </tbody>
+    </table>
+
+    <!-- 注意書き + QRストリップ -->
+    <div style="display:grid; grid-template-columns:1fr auto; gap:4mm; align-items:center; padding-top:1mm; border-top:0.3mm dotted #111;">
+      <p style="text-indent:0; font-size:6.8pt; line-height:1.45; margin:0; font-family:'Noto Sans JP','Hiragino Sans',sans-serif;">
+        ◇ <strong>「要申込」</strong>のイベントは Peatix で受付中（有料）。<strong>ギャラリートーク</strong>は入場券のみ・事前申込なし。混雑時は入場制限する場合あり。諸事情により変更・中止の可能性。最新情報は主催者クレヴィスHP・虫展公式SNS参照。
+      </p>
+      <div style="display:flex; gap:2.5mm; align-items:flex-end;">
+        <div style="text-align:center;">
+          <img src="qr_crevis.svg" alt="" style="width:14mm; height:14mm; display:block;">
+          <div style="font-size:6pt; line-height:1.2; margin-top:0.4mm; font-family:'Noto Sans JP','Hiragino Sans',sans-serif;"><strong>公式</strong><br>クレヴィス</div>
+        </div>
+        <div style="text-align:center;">
+          <img src="qr_mushiten_x.svg" alt="" style="width:14mm; height:14mm; display:block;">
+          <div style="font-size:6pt; line-height:1.2; margin-top:0.4mm; font-family:'Noto Sans JP','Hiragino Sans',sans-serif;"><strong>X</strong><br>@yoro_mushi</div>
+        </div>
+        <div style="text-align:center;">
+          <img src="qr_mushiten_ig.svg" alt="" style="width:14mm; height:14mm; display:block;">
+          <div style="font-size:6pt; line-height:1.2; margin-top:0.4mm; font-family:'Noto Sans JP','Hiragino Sans',sans-serif;"><strong>IG</strong><br>yoro_mushi</div>
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <!-- ───── 第二面欄外 ───── -->
+  <div class="page-footer">
+    <div><strong>第二面</strong>　養老昆虫クラブ新聞　創刊号</div>
+    <div>本紙は無料配布資料です。転載・引用の際は出典明記をお願い致します。</div>
+  </div>
+
+</div>
+
+</body>
+</html>

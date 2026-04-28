@@ -68,6 +68,23 @@ export const dictionaries: Record<Locale, Record<string, string>> = {
     // Bugs
     "bugs.collected": "匹捕獲！",
     "bugs.goal": "100匹つかまえよう！",
+
+    // Newspaper
+    "newspaper.label": "Newspaper",
+    "newspaper.title": "養老昆虫クラブ新聞",
+    "newspaper.lead1":
+      "虫と自然を愛する有志がつくる小さな新聞です。「養老孟司と小檜山賢二の虫展」会場（東京都写真美術館）で実際に配布している紙の新聞を、こちらでもWeb版・PDFでお読みいただけます。",
+    "newspaper.lead2":
+      "会場で受け取った驚きを、家に帰っても、明日の電車のなかでも、もう一度反芻していただきたい——そんな思いで編集しています。号を重ねるごとに、虫展の現場・取材・対談などをお伝えしていきます。",
+    "newspaper.distribution":
+      "紙の新聞は会場限定配布。お近くの方はぜひ会場でお手に取ってみてください。でもたまにしか配布していないのでご了承ください。",
+    "newspaper.latest": "Latest Issue",
+    "newspaper.read": "読む（Web版）",
+    "newspaper.printNote":
+      "PDFはA3またはB4でプリントすると会場と同じ紙面で読めます。",
+    "newspaper.backissues": "Back Issues",
+    "newspaper.comingSoon":
+      "次号、準備中。号を重ねるごとにここに並びます。",
   },
 
   en: {
@@ -143,6 +160,23 @@ export const dictionaries: Record<Locale, Record<string, string>> = {
     // Bugs
     "bugs.collected": " caught!",
     "bugs.goal": "Catch 100 bugs!",
+
+    // Newspaper
+    "newspaper.label": "Newspaper",
+    "newspaper.title": "Yoro Insect Club Newspaper",
+    "newspaper.lead1":
+      "A small newspaper made by insect-loving friends. The paper edition is distributed at the “Takeshi Yoro & Kenji Kohiyama Insect Exhibition” (Tokyo Photographic Art Museum). The web and PDF versions are also available here.",
+    "newspaper.lead2":
+      "We hope you can revisit the wonders you encountered at the venue—at home, on the train tomorrow, anywhere. Each issue brings reports, interviews, and dialogues from the exhibition.",
+    "newspaper.distribution":
+      "The paper edition is venue-only. If you’re nearby, please pick up a copy at the museum—though distribution is occasional, so no guarantees.",
+    "newspaper.latest": "Latest Issue",
+    "newspaper.read": "Read (Web)",
+    "newspaper.printNote":
+      "Print the PDF on A3 or B4 for the same broadsheet experience.",
+    "newspaper.backissues": "Back Issues",
+    "newspaper.comingSoon":
+      "Next issue coming. Future issues will be listed here.",
   },
 
   zh: {
@@ -212,5 +246,22 @@ export const dictionaries: Record<Locale, Record<string, string>> = {
     // Bugs
     "bugs.collected": " 只已捕获！",
     "bugs.goal": "捕捉100只虫子吧！",
+
+    // Newspaper
+    "newspaper.label": "报纸",
+    "newspaper.title": "养老昆虫俱乐部报纸",
+    "newspaper.lead1":
+      "由热爱昆虫与自然的伙伴们制作的小报。在「养老孟司与小桧山贤二的虫展」（东京都摄影美术馆）会场实际派发的纸质报纸，亦可在此以网页版与PDF版阅读。",
+    "newspaper.lead2":
+      "希望您将在会场获得的惊喜，回家后、明天的电车上，能够再次回味——抱持着这样的心情进行编辑。每一期都会带来虫展的现场、采访、对谈等内容。",
+    "newspaper.distribution":
+      "纸质报纸仅在会场限定派发。在附近的朋友请到会场取阅。但派发并非常态，敬请理解。",
+    "newspaper.latest": "最新号",
+    "newspaper.read": "阅读（网页版）",
+    "newspaper.printNote":
+      "PDF以A3或B4打印，可获得与会场相同的版面体验。",
+    "newspaper.backissues": "往期",
+    "newspaper.comingSoon":
+      "下一期筹备中，更多期数将在此显示。",
   },
 };
