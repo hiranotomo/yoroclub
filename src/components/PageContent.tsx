@@ -109,9 +109,26 @@ export default function PageContent() {
             <p className="text-[10px] tracking-[3px] text-gray-500 uppercase font-[var(--font-jetbrains-mono)] mb-6">
               {t("exhibition.label")}
             </p>
+
+            {/* メインビジュアル（ポスター） */}
+            <a
+              href="https://topmuseum.jp/exhibition/5454/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="block mb-8 group"
+              aria-label={t("exhibition.title")}
+            >
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/exhibition-poster.png"
+                alt={t("exhibition.title")}
+                className="w-full max-w-md mx-auto block transition-opacity group-hover:opacity-90"
+              />
+            </a>
+
             <h2 className="text-lg md:text-2xl font-bold tracking-wide mb-3">
               <a
-                href="https://crevis.co.jp/exhibitions/mushi_ten/"
+                href="https://topmuseum.jp/exhibition/5454/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="hover:text-gray-300 transition-colors underline decoration-gray-700 underline-offset-4 hover:decoration-gray-400"
@@ -128,6 +145,26 @@ export default function PageContent() {
             <p className="mt-6 text-sm leading-[2] text-gray-400">
               {t("exhibition.note")}
             </p>
+
+            {/* 公式リンク */}
+            <div className="mt-6 flex flex-wrap gap-3">
+              <a
+                href="https://topmuseum.jp/exhibition/5454/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-4 py-2 bg-white text-black text-xs font-[var(--font-jetbrains-mono)] hover:bg-gray-200 transition-colors"
+              >
+                ▶ {t("exhibition.officialSite")}
+              </a>
+              <a
+                href="https://crevis.co.jp/exhibitions/mushi_ten/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-4 py-2 bg-gray-800 text-white text-xs font-[var(--font-jetbrains-mono)] hover:bg-gray-700 transition-colors"
+              >
+                ▶ {t("exhibition.organizer")}
+              </a>
+            </div>
           </div>
         </section>
 

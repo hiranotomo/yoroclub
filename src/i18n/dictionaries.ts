@@ -23,6 +23,8 @@ export const dictionaries: Record<Locale, Record<string, string>> = {
     "exhibition.venue": "東京都写真美術館（恵比寿）",
     "exhibition.date": "2026.3.21 (土) — 5.24 (日)",
     "exhibition.note": "養老昆虫クラブは本展に協力&応援中！",
+    "exhibition.officialSite": "東京都写真美術館 公式",
+    "exhibition.organizer": "主催・クレヴィス",
 
     // Events
     "events.label": "Events",
@@ -75,7 +77,7 @@ export const dictionaries: Record<Locale, Record<string, string>> = {
     "newspaper.lead1":
       "虫と自然を愛する有志がつくる小さな新聞です。「養老孟司と小檜山賢二の虫展」会場（東京都写真美術館）で実際に配布している紙の新聞を、こちらでもWeb版・PDFでお読みいただけます。",
     "newspaper.lead2":
-      "会場で受け取った驚きを、家に帰っても、明日の電車のなかでも、もう一度反芻していただきたい——そんな思いで編集しています。号を重ねるごとに、虫展の現場・取材・対談などをお伝えしていきます。",
+      "ゆるくつくっています。決まったスケジュールはありませんが、号を重ねるごとに、ここに並べていきます。",
     "newspaper.distribution":
       "紙の新聞は会場限定配布。お近くの方はぜひ会場でお手に取ってみてください。でもたまにしか配布していないのでご了承ください。",
     "newspaper.latest": "Latest Issue",
@@ -113,6 +115,8 @@ export const dictionaries: Record<Locale, Record<string, string>> = {
     "exhibition.date": "2026.3.21 (Sat) — 5.24 (Sun)",
     "exhibition.note":
       "Yoro Insect Club is supporting this exhibition!",
+    "exhibition.officialSite": "TOP MUSEUM (Official)",
+    "exhibition.organizer": "Crevis (Organizer)",
 
     // Events
     "events.label": "Events",
@@ -167,7 +171,7 @@ export const dictionaries: Record<Locale, Record<string, string>> = {
     "newspaper.lead1":
       "A small newspaper made by insect-loving friends. The paper edition is distributed at the “Takeshi Yoro & Kenji Kohiyama Insect Exhibition” (Tokyo Photographic Art Museum). The web and PDF versions are also available here.",
     "newspaper.lead2":
-      "We hope you can revisit the wonders you encountered at the venue—at home, on the train tomorrow, anywhere. Each issue brings reports, interviews, and dialogues from the exhibition.",
+      "We make this casually—no fixed schedule. New issues will appear here as they happen.",
     "newspaper.distribution":
       "The paper edition is venue-only. If you’re nearby, please pick up a copy at the museum—though distribution is occasional, so no guarantees.",
     "newspaper.latest": "Latest Issue",
@@ -201,6 +205,8 @@ export const dictionaries: Record<Locale, Record<string, string>> = {
     "exhibition.venue": "东京都写真美术馆（惠比寿）",
     "exhibition.date": "2026.3.21 (周六) — 5.24 (周日)",
     "exhibition.note": "养老昆虫俱乐部正在协助和支持本展！",
+    "exhibition.officialSite": "TOP美术馆（官方）",
+    "exhibition.organizer": "主办・Crevis",
 
     // Events
     "events.label": "活动",
@@ -253,7 +259,7 @@ export const dictionaries: Record<Locale, Record<string, string>> = {
     "newspaper.lead1":
       "由热爱昆虫与自然的伙伴们制作的小报。在「养老孟司与小桧山贤二的虫展」（东京都摄影美术馆）会场实际派发的纸质报纸，亦可在此以网页版与PDF版阅读。",
     "newspaper.lead2":
-      "希望您将在会场获得的惊喜，回家后、明天的电车上，能够再次回味——抱持着这样的心情进行编辑。每一期都会带来虫展的现场、采访、对谈等内容。",
+      "我们悠闲地制作着这份报纸，没有固定的发刊计划。新一期出来时会陆续在此显示。",
     "newspaper.distribution":
       "纸质报纸仅在会场限定派发。在附近的朋友请到会场取阅。但派发并非常态，敬请理解。",
     "newspaper.latest": "最新号",
