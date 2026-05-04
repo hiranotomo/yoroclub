@@ -16,14 +16,14 @@ type Issue = {
 
 const ISSUES: Issue[] = [
   {
-    id: "issue-0",
-    number: "第０号",
-    status: "創刊準備号",
-    date: "2026.04.26",
+    id: "issue-1",
+    number: "第１号",
+    status: "創刊号",
+    date: "2026.05.05",
     title: "「ホタルと里山の再生」特集",
-    thumb: "/news/issue-0-thumb.png",
-    htmlPath: "/news/issue-0/index.html",
-    pdfPath: "/news/issue-0.pdf",
+    thumb: "/news/issue-1-thumb.png",
+    htmlPath: "/news/issue-1/index.html",
+    pdfPath: "/news/issue-1.pdf",
   },
 ];
 
