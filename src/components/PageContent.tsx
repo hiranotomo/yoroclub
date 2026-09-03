@@ -52,7 +52,7 @@ const MEDIA_LIST = [
   { outlet: "東京新聞", date: "4/23 都心版" },
 ];
 
-export default function PageContent() {
+export default function PageContent({ lastUpdated }: { lastUpdated: string }) {
   const { t } = useLanguage();
   const { playSE } = useSoundEngine();
   const [bugsEnabled, setBugsEnabled] = useState(true);
@@ -461,6 +461,9 @@ export default function PageContent() {
             </div>
             <p className="text-xs text-gray-400 font-[var(--font-jetbrains-mono)]">
               {t("footer.copyright")}
+            </p>
+            <p className="mt-2 text-xs text-gray-500 font-[var(--font-jetbrains-mono)]">
+              {t("footer.lastUpdated")} {lastUpdated}
             </p>
           </div>
         </footer>

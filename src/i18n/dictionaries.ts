@@ -66,6 +66,7 @@ export const dictionaries: Record<Locale, Record<string, string>> = {
     "footer.followUs": "Follow Us",
     "footer.followNote": "最新情報はXでチェック！",
     "footer.copyright": "© 養老昆虫クラブ",
+    "footer.lastUpdated": "最終更新",
 
     // Bugs
     "bugs.collected": "匹捕獲！",
@@ -160,6 +161,7 @@ export const dictionaries: Record<Locale, Record<string, string>> = {
     "footer.followUs": "Follow Us",
     "footer.followNote": "Follow us on X for the latest updates!",
     "footer.copyright": "© Yoro Insect Club",
+    "footer.lastUpdated": "Last updated",
 
     // Bugs
     "bugs.collected": " caught!",
@@ -248,6 +250,7 @@ export const dictionaries: Record<Locale, Record<string, string>> = {
     "footer.followUs": "关注我们",
     "footer.followNote": "在X上关注我们获取最新信息！",
     "footer.copyright": "© 养老昆虫俱乐部",
+    "footer.lastUpdated": "最后更新",
 
     // Bugs
     "bugs.collected": " 只已捕获！",
