@@ -45,8 +45,7 @@ const TOUR_SCHEDULE = [
     start: "2026-10-09",
     end: "2026-11-29",
   },
-  { period: "2026 冬", venue: "九州地方" },
-  { period: "2027 夏", venue: "東海地方" },
+  { period: "2026 冬", venue: "九州芸文館" },
 ];
 
 type TourItem = (typeof TOUR_SCHEDULE)[number];
@@ -93,7 +92,10 @@ const MEDIA_LIST = [
     outlet: "読売新聞 コラム（鵜飼哲夫・編集委員）",
     date: "5/31 掲載",
   },
-  { outlet: "TBS「クレイジージャーニー」片田陽依", date: "6/15 放送" },
+  {
+    outlet: "TBS「クレイジージャーニー」虫展アンバサダー・片田陽依さん出演",
+    date: "6/15 放送",
+  },
 ];
 
 export default function PageContent({
