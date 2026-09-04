@@ -85,6 +85,8 @@ export const dictionaries: Record<Locale, Record<string, string>> = {
 
     // Event Photo
     "eventPhoto.caption": "2026.4.4 講演会の様子",
+    "eventPhoto.note":
+      "出展のふたりのトークの最後に、片田陽依さんアンバサダー就任の発表も",
 
     // Footer
     "footer.followUs": "Follow Us",
@@ -204,6 +206,8 @@ export const dictionaries: Record<Locale, Record<string, string>> = {
 
     // Event Photo
     "eventPhoto.caption": "2026.4.4 Lecture Event",
+    "eventPhoto.note":
+      "At the close of the talk by the two exhibiting artists, Yoi Katada was announced as ambassador.",
 
     // Footer
     "footer.followUs": "Follow Us",
@@ -318,6 +322,8 @@ export const dictionaries: Record<Locale, Record<string, string>> = {
 
     // Event Photo
     "eventPhoto.caption": "2026.4.4 讲演会现场",
+    "eventPhoto.note":
+      "参展两人对谈的最后，还发布了片田阳依就任大使的消息。",
 
     // Footer
     "footer.followUs": "关注我们",

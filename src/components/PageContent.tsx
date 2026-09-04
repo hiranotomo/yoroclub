@@ -45,7 +45,7 @@ const TOUR_SCHEDULE = [
     start: "2026-10-09",
     end: "2026-11-29",
   },
-  { period: "2026 冬", venue: "九州芸文館" },
+  { period: "2026 冬", venue: "九州地方" },
 ];
 
 type TourItem = (typeof TOUR_SCHEDULE)[number];
@@ -252,6 +252,9 @@ export default function PageContent({
             />
             <p className="text-[10px] text-gray-600 font-[var(--font-jetbrains-mono)] mt-2 text-center">
               {t("eventPhoto.caption")}
+            </p>
+            <p className="text-[11px] text-gray-500 mt-1 text-center leading-relaxed">
+              {t("eventPhoto.note")}
             </p>
           </div>
         </section>
