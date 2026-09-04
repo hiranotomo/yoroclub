@@ -182,6 +182,9 @@ export default function PageContent({
                 className="w-full max-w-md mx-auto block transition-opacity group-hover:opacity-90"
               />
             </a>
+            <p className="-mt-6 mb-8 text-center text-[10px] text-gray-500">
+              {t("exhibition.posterNote")}
+            </p>
 
             <h2 className="text-lg md:text-2xl font-bold tracking-wide mb-3">
               <a
@@ -327,15 +330,15 @@ export default function PageContent({
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-y-8 gap-x-4">
               {(
                 [
-                  ["56", "record.days"],
-                  ["約2万", "record.visitors"],
-                  ["15", "record.talks"],
-                  ["10", "record.speakers"],
+                  ["record.daysNum", "record.days"],
+                  ["record.visitorsNum", "record.visitors"],
+                  ["record.talksNum", "record.talks"],
+                  ["record.speakersNum", "record.speakers"],
                 ] as const
-              ).map(([n, key]) => (
+              ).map(([numKey, key]) => (
                 <div key={key}>
                   <p className="text-2xl md:text-3xl font-bold font-[var(--font-jetbrains-mono)] leading-none">
-                    {n}
+                    {t(numKey)}
                   </p>
                   <p className="text-[10px] text-gray-500 mt-2">{t(key)}</p>
                 </div>

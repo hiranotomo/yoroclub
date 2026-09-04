@@ -52,6 +52,10 @@ export default function NewspaperShelf() {
   const back = ISSUES.slice(1);
   // Web版がある号はそちらへ、無い号はPDFへ。読む側にはどちらも「読む」で足りる。
   const latestRead = latest.htmlPath ?? latest.pdfPath;
+  // Web版が無い号で「Web版を読む」と出すと嘘になる。
+  // さらに、Web版が無ければ「読む」も「PDF」も同じPDFを開くので、ボタンは一つでいい。
+  const hasWeb = Boolean(latest.htmlPath);
+  const latestReadLabel = hasWeb ? t("newspaper.read") : t("newspaper.readPdf");
 
   return (
     <section
@@ -151,8 +155,9 @@ export default function NewspaperShelf() {
                   <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
                   <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
                 </svg>
-                {t("newspaper.read")}
+                {latestReadLabel}
               </SoundLink>
+              {hasWeb && (
               <SoundLink
                 href={latest.pdfPath}
                 download
@@ -175,6 +180,7 @@ export default function NewspaperShelf() {
                 </svg>
                 PDF
               </SoundLink>
+              )}
             </div>
             <p className="text-[10px] text-gray-400 mt-4 leading-relaxed">
               {t("newspaper.printNote")}
