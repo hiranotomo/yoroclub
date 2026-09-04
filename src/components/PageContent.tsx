@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import PixelHero from "@/components/PixelHero";
 import PixelDivider from "@/components/PixelDivider";
 import YouTubeEmbed from "@/components/YouTubeEmbed";
@@ -23,13 +23,52 @@ const GALLERY_TALKS = [
   { date: "5/9 (土) 14:00", speaker: "小檜山賢二" },
 ];
 
+// 会期を持つ会場は start/end を書く。開催中かどうかは日付から決めるので、
+// 誰かが手で「NOW」を付け替える必要はない(付け替え忘れると、終わった会場が
+// 開催中に見えてしまう。2026年9月に実際そうなっていた)。
 const TOUR_SCHEDULE = [
-  { period: "2026.3.21 — 5.24", venue: "東京都写真美術館", status: "now" },
-  { period: "2026.7.11 — 9.23", venue: "豊田市博物館", status: "" },
-  { period: "2026.10.9 — 11.29", venue: "岡山県立美術館", status: "" },
-  { period: "2026 冬", venue: "九州地方", status: "coming" },
-  { period: "2027 夏", venue: "東海地方", status: "coming" },
+  {
+    period: "2026.3.21 — 5.24",
+    venue: "東京都写真美術館",
+    start: "2026-03-21",
+    end: "2026-05-24",
+  },
+  {
+    period: "2026.7.11 — 9.23",
+    venue: "豊田市博物館",
+    start: "2026-07-11",
+    end: "2026-09-23",
+  },
+  {
+    period: "2026.10.9 — 11.29",
+    venue: "岡山県立美術館",
+    start: "2026-10-09",
+    end: "2026-11-29",
+  },
+  { period: "2026 冬", venue: "九州地方" },
+  { period: "2027 夏", venue: "東海地方" },
 ];
+
+type TourItem = (typeof TOUR_SCHEDULE)[number];
+
+/** 会期の最終日まで、今日を含めてあと何日か。会期が無いものは null。 */
+function daysLeft(item: TourItem, today: string) {
+  const end = "end" in item ? item.end : undefined;
+  if (!end) return null;
+  const ms = Date.parse(`${end}T00:00:00+09:00`) - Date.parse(`${today}T00:00:00+09:00`);
+  const d = Math.round(ms / 86400000) + 1;
+  return d > 0 ? d : null;
+}
+
+/** 会期と今日を比べて、終了・開催中・これから のどれかを返す。 */
+function tourStatus(item: TourItem, today: string) {
+  const start = "start" in item ? item.start : undefined;
+  const end = "end" in item ? item.end : undefined;
+  if (!start || !end) return "coming" as const;
+  if (today > end) return "ended" as const;
+  if (today >= start) return "now" as const;
+  return "upcoming" as const;
+}
 
 const MEDIA_LIST = [
   {
@@ -50,9 +89,27 @@ const MEDIA_LIST = [
   { outlet: "毎日小学生新聞", date: "4/24" },
   { outlet: "朝日学生新聞", date: "4/17, 4/26" },
   { outlet: "東京新聞", date: "4/23 都心版" },
+  {
+    outlet: "読売新聞 コラム（鵜飼哲夫・編集委員）",
+    date: "5/31 掲載",
+  },
+  { outlet: "TBS「クレイジージャーニー」片田陽依", date: "6/15 放送" },
 ];
 
-export default function PageContent({ lastUpdated }: { lastUpdated: string }) {
+export default function PageContent({
+  lastUpdated,
+  buildDate,
+}: {
+  lastUpdated: string;
+  buildDate: string;
+}) {
+  // 初回描画はビルド日で判定し、表示後に閲覧者の「今日」で上書きする。
+  // こうしておくと、しばらく出し直していなくても表示が古びない。
+  const [today, setToday] = useState(buildDate);
+  useEffect(() => {
+    const d = new Date().toLocaleDateString("sv-SE", { timeZone: "Asia/Tokyo" });
+    setToday(d);
+  }, []);
   const { t } = useLanguage();
   const { playSE } = useSoundEngine();
   const [bugsEnabled, setBugsEnabled] = useState(true);
@@ -112,7 +169,7 @@ export default function PageContent({ lastUpdated }: { lastUpdated: string }) {
 
             {/* メインビジュアル（ポスター） */}
             <a
-              href="https://topmuseum.jp/exhibition/5454/"
+              href="https://hakubutsukan.city.toyota.aichi.jp/exhibitions/special/16"
               target="_blank"
               rel="noopener noreferrer"
               className="block mb-8 group"
@@ -128,7 +185,7 @@ export default function PageContent({ lastUpdated }: { lastUpdated: string }) {
 
             <h2 className="text-lg md:text-2xl font-bold tracking-wide mb-3">
               <a
-                href="https://topmuseum.jp/exhibition/5454/"
+                href="https://hakubutsukan.city.toyota.aichi.jp/exhibitions/special/16"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="hover:text-gray-300 transition-colors underline decoration-gray-700 underline-offset-4 hover:decoration-gray-400"
@@ -142,6 +199,18 @@ export default function PageContent({ lastUpdated }: { lastUpdated: string }) {
             <p className="text-sm md:text-base text-white py-3 border-b border-gray-800 font-[var(--font-jetbrains-mono)]">
               {t("exhibition.date")}
             </p>
+            {/* いま行ける会場の実用情報。紙面(第3号)と豊田市博物館の公式による */}
+            <dl className="mt-6 grid grid-cols-[5.5rem_1fr] gap-y-2 text-xs md:text-sm text-gray-300 border border-gray-800 p-4">
+              <dt className="text-gray-500">{t("venue.address")}</dt>
+              <dd>{t("venue.addressValue")}</dd>
+              <dt className="text-gray-500">{t("venue.hours")}</dt>
+              <dd>{t("venue.hoursValue")}</dd>
+              <dt className="text-gray-500">{t("venue.closed")}</dt>
+              <dd>{t("venue.closedValue")}</dd>
+              <dt className="text-gray-500">{t("venue.admission")}</dt>
+              <dd>{t("venue.admissionValue")}</dd>
+            </dl>
+
             <p className="mt-6 text-sm leading-[2] text-gray-400">
               {t("exhibition.note")}
             </p>
@@ -149,7 +218,7 @@ export default function PageContent({ lastUpdated }: { lastUpdated: string }) {
             {/* 公式リンク */}
             <div className="mt-6 flex flex-wrap gap-3">
               <a
-                href="https://topmuseum.jp/exhibition/5454/"
+                href="https://hakubutsukan.city.toyota.aichi.jp/exhibitions/special/16"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 px-4 py-2 bg-white text-black text-xs font-[var(--font-jetbrains-mono)] hover:bg-gray-200 transition-colors"
@@ -185,8 +254,12 @@ export default function PageContent({ lastUpdated }: { lastUpdated: string }) {
         {/* EVENTS */}
         <section className="bg-black text-white px-6 py-16">
           <div className="max-w-2xl mx-auto">
-            <p className="text-[10px] tracking-[3px] text-gray-500 uppercase font-[var(--font-jetbrains-mono)] mb-6">
+            <p className="text-[10px] tracking-[3px] text-gray-500 uppercase font-[var(--font-jetbrains-mono)] mb-2">
               {t("events.label")}
+            </p>
+            {/* 東京会期の催し。すべて終わっているので、そう分かるようにしておく */}
+            <p className="text-xs text-gray-500 mb-6 border-l-2 border-gray-700 pl-3 leading-relaxed">
+              {t("events.endedNote")}
             </p>
 
             {/* Lecture */}
@@ -242,6 +315,35 @@ export default function PageContent({ lastUpdated }: { lastUpdated: string }) {
           </div>
         </section>
 
+        {/* RECORD 東京会期の実績。数字は第2号の紙面から */}
+        <section className="bg-black text-white px-6 py-16 border-t border-gray-900">
+          <div className="max-w-2xl mx-auto">
+            <p className="text-[10px] tracking-[3px] text-gray-500 uppercase font-[var(--font-jetbrains-mono)] mb-6">
+              {t("record.label")}
+            </p>
+            <h3 className="text-sm md:text-base font-bold mb-6">
+              {t("record.title")}
+            </h3>
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-y-8 gap-x-4">
+              {(
+                [
+                  ["56", "record.days"],
+                  ["約2万", "record.visitors"],
+                  ["15", "record.talks"],
+                  ["10", "record.speakers"],
+                ] as const
+              ).map(([n, key]) => (
+                <div key={key}>
+                  <p className="text-2xl md:text-3xl font-bold font-[var(--font-jetbrains-mono)] leading-none">
+                    {n}
+                  </p>
+                  <p className="text-[10px] text-gray-500 mt-2">{t(key)}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
         {/* TOUR */}
         <section className="bg-black text-white px-6 py-16 border-t border-gray-900">
           <div className="max-w-2xl mx-auto">
@@ -252,29 +354,47 @@ export default function PageContent({ lastUpdated }: { lastUpdated: string }) {
               {t("tour.title")}
             </h3>
             <div className="space-y-3">
-              {TOUR_SCHEDULE.map((item, i) => (
-                <div
-                  key={i}
-                  className={`flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-4 py-2 border-b border-gray-900 ${
-                    item.status === "now" ? "text-white" : "text-gray-500"
-                  }`}
-                >
-                  <span className="font-[var(--font-jetbrains-mono)] text-xs w-40 shrink-0">
-                    {item.period}
-                  </span>
-                  <span className="text-sm">{item.venue}</span>
-                  {item.status === "now" && (
-                    <span className="text-[10px] bg-white text-black px-2 py-0.5 font-bold font-[var(--font-jetbrains-mono)] w-fit">
-                      NOW
+              {TOUR_SCHEDULE.map((item, i) => {
+                const status = tourStatus(item, today);
+                return (
+                  <div
+                    key={i}
+                    className={`flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-4 py-2 border-b border-gray-900 ${
+                      status === "now" ? "text-white" : "text-gray-500"
+                    } ${status === "ended" ? "opacity-60" : ""}`}
+                  >
+                    <span className="font-[var(--font-jetbrains-mono)] text-xs w-40 shrink-0">
+                      {item.period}
                     </span>
-                  )}
-                  {item.status === "coming" && (
-                    <span className="text-[10px] text-gray-600 font-[var(--font-jetbrains-mono)]">
-                      COMING
-                    </span>
-                  )}
-                </div>
-              ))}
+                    <span className="text-sm">{item.venue}</span>
+                    {status === "now" && (
+                      <span className="flex items-center gap-2">
+                        <span className="text-[10px] bg-white text-black px-2 py-0.5 font-bold font-[var(--font-jetbrains-mono)] w-fit">
+                          {t("tour.now")}
+                        </span>
+                        {daysLeft(item, today) !== null && (
+                          <span className="text-[10px] text-white font-[var(--font-jetbrains-mono)]">
+                            {t("tour.countdown").replace(
+                              "{n}",
+                              String(daysLeft(item, today)),
+                            )}
+                          </span>
+                        )}
+                      </span>
+                    )}
+                    {status === "ended" && (
+                      <span className="text-[10px] border border-gray-700 text-gray-500 px-2 py-0.5 font-[var(--font-jetbrains-mono)] w-fit">
+                        {t("tour.ended")}
+                      </span>
+                    )}
+                    {status === "coming" && (
+                      <span className="text-[10px] text-gray-600 font-[var(--font-jetbrains-mono)]">
+                        COMING
+                      </span>
+                    )}
+                  </div>
+                );
+              })}
             </div>
           </div>
         </section>

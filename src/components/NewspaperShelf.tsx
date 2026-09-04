@@ -10,11 +10,30 @@ type Issue = {
   date: string; // 2026.04.26
   title: string; // 特集タイトル等
   thumb: string;
-  htmlPath: string;
+  /** Web版がある号だけ。無い号はPDFを開く */
+  htmlPath?: string;
   pdfPath: string;
 };
 
+/** 新しい号を先頭に足す。先頭が最新号として大きく出る。 */
 const ISSUES: Issue[] = [
+  {
+    id: "issue-3",
+    number: "第３号",
+    date: "2026.07.11",
+    title: "豊田市博物館にて、虫展開催",
+    thumb: "/news/issue-3-thumb.png",
+    pdfPath: "/news/issue-3.pdf",
+  },
+  {
+    id: "issue-2",
+    number: "第２号",
+    status: "閉幕報告号",
+    date: "2026.06.04",
+    title: "虫展、56日間で閉幕。",
+    thumb: "/news/issue-2-thumb.png",
+    pdfPath: "/news/issue-2.pdf",
+  },
   {
     id: "issue-1",
     number: "第１号",
@@ -31,6 +50,8 @@ export default function NewspaperShelf() {
   const { t } = useLanguage();
   const latest = ISSUES[0];
   const back = ISSUES.slice(1);
+  // Web版がある号はそちらへ、無い号はPDFへ。読む側にはどちらも「読む」で足りる。
+  const latestRead = latest.htmlPath ?? latest.pdfPath;
 
   return (
     <section
@@ -76,7 +97,7 @@ export default function NewspaperShelf() {
         <div className="flex flex-col md:flex-row gap-8 mb-16">
           {/* サムネイル */}
           <SoundLink
-            href={latest.htmlPath}
+            href={latestRead}
             target="_blank"
             rel="noopener noreferrer"
             className="block flex-shrink-0 group"
@@ -111,7 +132,7 @@ export default function NewspaperShelf() {
             </p>
             <div className="flex flex-wrap gap-3">
               <SoundLink
-                href={latest.htmlPath}
+                href={latestRead}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 px-5 py-3 bg-black text-white text-sm font-bold hover:bg-gray-800 transition-colors"
@@ -171,7 +192,7 @@ export default function NewspaperShelf() {
               {back.map((issue) => (
                 <SoundLink
                   key={issue.id}
-                  href={issue.htmlPath}
+                  href={issue.htmlPath ?? issue.pdfPath}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="block group"

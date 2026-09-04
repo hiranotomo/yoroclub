@@ -12,6 +12,11 @@ const lastUpdated = new Intl.DateTimeFormat("ja-JP", {
   day: "numeric",
 }).format(new Date());
 
+// 会期の判定に使う「今日」。ビルド時の日本時間。
+const buildDate = new Intl.DateTimeFormat("sv-SE", {
+  timeZone: "Asia/Tokyo",
+}).format(new Date());
+
 export default function Home() {
-  return <PageContent lastUpdated={lastUpdated} />;
+  return <PageContent lastUpdated={lastUpdated} buildDate={buildDate} />;
 }
