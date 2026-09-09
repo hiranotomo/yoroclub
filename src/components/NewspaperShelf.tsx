@@ -23,6 +23,7 @@ const ISSUES: Issue[] = [
     date: "2026.07.11",
     title: "豊田市博物館にて、虫展開催",
     thumb: "/news/issue-3-thumb.png",
+    htmlPath: "/news/issue-3/index.html",
     pdfPath: "/news/issue-3.pdf",
   },
   {
